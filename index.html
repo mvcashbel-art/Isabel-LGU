@@ -4,8 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Municipality of Isabel — Official LGU Portal</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
   <style>
+    /* Full-Screen Watermark Background with Isabel Seal */
     body {
       background-color: #0f172a;
       background-image: 
@@ -23,87 +27,132 @@
   <!-- Main Header Banner -->
   <header class="bg-gradient-to-r from-slate-900/90 via-blue-950/90 to-slate-900/90 p-5 md:p-6 rounded-2xl shadow-2xl border border-slate-700/60 backdrop-blur-md flex flex-col md:flex-row justify-between items-center gap-4">
     <div class="flex items-center gap-4">
-      <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Isabel Seal" class="w-14 h-14 object-contain rounded-full border border-emerald-400/40 shadow">
+      <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-14 h-14 object-contain rounded-full border border-emerald-400/40 shadow">
       <div>
         <h1 class="text-xl md:text-3xl font-black tracking-tight text-white">Municipality of Isabel</h1>
         <p class="text-xs md:text-sm text-emerald-400 font-semibold">Local Government Unit • Province of Leyte</p>
       </div>
     </div>
+    
+    <!-- Search Bar -->
     <div class="w-full md:w-72">
-      <input type="text" placeholder="Search services, offices, permits..." class="w-full px-4 py-2 bg-slate-950/80 border border-slate-700 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+      <input type="text" id="portalSearch" placeholder="Search services, offices..." class="w-full px-4 py-2 bg-slate-950/80 border border-slate-700 rounded-xl text-xs md:text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
     </div>
   </header>
 
   <!-- Department Services Grid -->
-  <section class="space-y-3">
-    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-      <span>🏛️</span> Municipal Offices & Digital Portals
-    </h2>
+  <section class="space-y-4">
+    <div class="flex justify-between items-center">
+      <h2 class="text-lg font-bold text-white flex items-center gap-2">
+        <span>🏛️</span> Municipal Offices & Digital Services
+      </h2>
+      <span class="text-xs text-slate-400">Select an office to open system</span>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="officeGrid">
 
-      <!-- BPLO Card (Linked directly to your BPLO Tracker) -->
-      <a href="./bplo/index.html" class="group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-emerald-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+      <!-- 1. BPLO Field Tracker (Live External Link) -->
+      <a href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-emerald-500/60 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
         <div class="space-y-2">
           <div class="flex justify-between items-center">
-            <span class="text-2xl">💼</span>
-            <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">ONLINE SYSTEM</span>
+            <span class="text-3xl">💼</span>
+            <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">LIVE SYSTEM</span>
           </div>
           <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition">BPLO Tracker & Permitting</h3>
-          <p class="text-xs text-slate-400">Business Permit & Licensing Office inspection tracker, establishment map, and status lookup.</p>
+          <p class="text-xs text-slate-400">Business Permit & Licensing Office field inspection tracker, establishment mapping, and status monitoring.</p>
         </div>
         <div class="mt-4 text-xs font-bold text-emerald-400 flex items-center gap-1">
-          Launch Portal →
+          Launch Live App ↗
         </div>
       </a>
 
-      <!-- Mayor's Office -->
-      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
-        <div class="text-2xl">👑</div>
-        <h3 class="text-base font-bold text-white">Office of the Municipal Mayor</h3>
-        <p class="text-xs text-slate-400">Executive issuances, public appointments, community assistance, and mayor's clearance services.</p>
-        <div class="pt-2">
-          <button class="text-xs text-blue-400 font-semibold hover:underline">View Office Information →</button>
+      <!-- 2. Office of the Municipal Mayor -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-blue-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">👑</span>
+            <span class="bg-blue-500/20 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-500/30">EXECUTIVE</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition">Mayor's Office</h3>
+          <p class="text-xs text-slate-400">Executive orders, public consultation appointments, community assistance, and Mayor's clearance services.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-blue-400 flex items-center gap-1 cursor-pointer">
+          Access Office Info →
         </div>
       </div>
 
-      <!-- Local Civil Registrar -->
-      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
-        <div class="text-2xl">📑</div>
-        <h3 class="text-base font-bold text-white">Local Civil Registrar (LCR)</h3>
-        <p class="text-xs text-slate-400">Registration of birth, marriage, and death certificates, timely/late registration guidance.</p>
-        <div class="pt-2">
-          <button class="text-xs text-blue-400 font-semibold hover:underline">View Requirements & Guides →</button>
+      <!-- 3. Local Civil Registrar (LCR) -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-indigo-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">📑</span>
+            <span class="bg-indigo-500/20 text-indigo-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-indigo-500/30">CIVIL REGISTRY</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-indigo-400 transition">Local Civil Registrar</h3>
+          <p class="text-xs text-slate-400">Registration of birth, marriage, and death certificates, document requests, and legal instruments.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-indigo-400 flex items-center gap-1 cursor-pointer">
+          View Requirements →
         </div>
       </div>
 
-      <!-- Municipal Assessor -->
-      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
-        <div class="text-2xl">📐</div>
-        <h3 class="text-base font-bold text-white">Municipal Assessor's Office</h3>
-        <p class="text-xs text-slate-400">Real Property Tax Declarations, tax mapping, land assessments, and property transfer records.</p>
-        <div class="pt-2">
-          <button class="text-xs text-blue-400 font-semibold hover:underline">Inquire Assessment →</button>
+      <!-- 4. Municipal Assessor's Office -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-amber-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">📐</span>
+            <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/30">REAL PROPERTY</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition">Municipal Assessor</h3>
+          <p class="text-xs text-slate-400">Real Property Tax Declarations (RPTD), tax mapping inquiries, land assessment, and ownership transfer records.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-amber-400 flex items-center gap-1 cursor-pointer">
+          Inquire Assessment →
         </div>
       </div>
 
-      <!-- Municipal Accounting & Treasury -->
-      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
-        <div class="text-2xl">💰</div>
-        <h3 class="text-base font-bold text-white">Accounting & Treasury Office</h3>
-        <p class="text-xs text-slate-400">Tax payments, official receipt verification, municipal financial statements, and clearance issuance.</p>
-        <div class="pt-2">
-          <button class="text-xs text-blue-400 font-semibold hover:underline">Payment Guidelines →</button>
+      <!-- 5. Accounting & Treasury Office -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-purple-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">💰</span>
+            <span class="bg-purple-500/20 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-500/30">FINANCIALS</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-purple-400 transition">Accounting & Treasury</h3>
+          <p class="text-xs text-slate-400">Local tax payments, Official Receipt (OR) issuance, financial statement disclosures, and municipal clearances.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-purple-400 flex items-center gap-1 cursor-pointer">
+          Payment Guidelines →
         </div>
       </div>
 
-      <!-- Emergency Services (BFP & BJMP) -->
-      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
-        <div class="text-2xl">🚒</div>
-        <h3 class="text-base font-bold text-white">BFP & BJMP Public Safety</h3>
-        <p class="text-xs text-slate-400">Bureau of Fire Protection clearance guidelines and BJMP jail management/visitation schedules.</p>
-        <div class="pt-2">
-          <button class="text-xs text-rose-400 font-semibold hover:underline">Emergency Contacts →</button>
+      <!-- 6. Bureau of Fire Protection (BFP) -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-rose-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">🚒</span>
+            <span class="bg-rose-500/20 text-rose-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-rose-500/30">PUBLIC SAFETY</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-rose-400 transition">Bureau of Fire Protection</h3>
+          <p class="text-xs text-slate-400">Fire Safety Inspection Certificates (FSIC), fire safety compliance guidelines, and emergency dispatch.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-rose-400 flex items-center gap-1 cursor-pointer">
+          FSIC Guidelines & Contact →
+        </div>
+      </div>
+
+      <!-- 7. Bureau of Jail Management and Penology (BJMP) -->
+      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-cyan-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-3xl">🚓</span>
+            <span class="bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-500/30">CORRECTIONS</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition">BJMP Isabel Station</h3>
+          <p class="text-xs text-slate-400">Facility inmate visitation schedules, visitor registration rules, and facility contact details.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-cyan-400 flex items-center gap-1 cursor-pointer">
+          Visitor Rules & Info →
         </div>
       </div>
 
@@ -111,9 +160,26 @@
   </section>
 
   <!-- Footer -->
-  <footer class="text-center text-xs text-slate-500 pt-6 border-t border-slate-800">
-    © 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.
+  <footer class="text-center text-xs text-slate-500 pt-6 border-t border-slate-800 space-y-1">
+    <div>© 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.</div>
+    <div class="text-[10px] text-slate-600">LGU Digital Infrastructure & Web Application Portal</div>
   </footer>
 
+  <!-- Simple Client-Side Search Script -->
+  <script>
+    document.getElementById('portalSearch').addEventListener('input', function(e) {
+      const q = e.target.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.office-card');
+      
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
