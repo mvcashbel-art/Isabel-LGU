@@ -3,182 +3,549 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Municipality of Isabel — Official LGU Portal</title>
+  <title>Municipality of Isabel — Official LGU Digital Portal</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            isabel: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            },
+            govBlue: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    /* Full-Screen Watermark Background with Isabel Seal */
     body {
-      background-color: #0f172a;
+      background-color: #f8fafc;
       background-image: 
-        radial-gradient(circle at center, rgba(15, 23, 42, 0.90) 0%, rgba(15, 23, 42, 0.98) 100%),
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.08) 0%, rgba(248, 250, 252, 0) 70%),
         url('isabel-seal.png');
       background-repeat: no-repeat;
-      background-position: center center;
-      background-size: 40rem;
+      background-position: center 200px;
+      background-size: 38rem;
       background-attachment: fixed;
     }
   </style>
 </head>
-<body class="text-slate-100 font-sans min-h-screen p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+<body class="text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-teal-500 selection:text-white">
 
-  <!-- Main Header Banner -->
-  <header class="bg-gradient-to-r from-slate-900/90 via-blue-950/90 to-slate-900/90 p-5 md:p-6 rounded-2xl shadow-2xl border border-slate-700/60 backdrop-blur-md flex flex-col md:flex-row justify-between items-center gap-4">
-    <div class="flex items-center gap-4">
-      <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-14 h-14 object-contain rounded-full border border-emerald-400/40 shadow">
-      <div>
-        <h1 class="text-xl md:text-3xl font-black tracking-tight text-white">Municipality of Isabel</h1>
-        <p class="text-xs md:text-sm text-emerald-400 font-semibold">Local Government Unit • Province of Leyte</p>
+  <!-- Top Emergency Ticker -->
+  <div class="bg-gradient-to-r from-govBlue-900 via-sky-900 to-teal-900 text-white py-2 px-4 shadow-sm text-xs font-medium">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center gap-2 truncate">
+        <span class="bg-emerald-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full animate-pulse">Official Portal</span>
+        <span class="text-slate-200 truncate">Welcome to the Official Web Gateway of LGU Isabel, Leyte</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] shrink-0 font-semibold">
+        <span class="flex items-center gap-1 text-teal-300">📞 Emergency Dispatch:</span>
+        <a href="tel:09171234567" class="hover:underline text-white">MDRRMO: 0917-XXX-XXXX</a>
+        <span class="text-slate-500">•</span>
+        <a href="tel:160" class="hover:underline text-rose-300">BFP Hotline: 160</a>
       </div>
     </div>
-    
-    <!-- Search Bar -->
-    <div class="w-full md:w-72">
-      <input type="text" id="portalSearch" placeholder="Search services, offices..." class="w-full px-4 py-2 bg-slate-950/80 border border-slate-700 rounded-xl text-xs md:text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+  </div>
+
+  <div class="max-w-7xl mx-auto w-full p-4 md:p-8 space-y-6 flex-1">
+
+    <!-- Bright Hero Header with Integrated Seal -->
+    <header class="bg-white/95 rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/80 backdrop-blur-md relative overflow-hidden">
+      <!-- Decorative Accent Glows -->
+      <div class="absolute -top-12 -right-12 w-48 h-48 bg-teal-200/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+        
+        <!-- Seal & Title Group -->
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 md:gap-5">
+          <div class="relative group shrink-0">
+            <div class="absolute -inset-1 bg-gradient-to-r from-teal-500 to-sky-500 rounded-full blur-xs opacity-75 group-hover:opacity-100 transition duration-300"></div>
+            <img src="isabel-seal.png" 
+                 onerror="this.src='https://placehold.co/120x120/0d9488/ffffff?text=LGU+ISABEL'" 
+                 alt="Municipality of Isabel Seal" 
+                 class="relative w-20 h-20 md:w-24 md:h-24 object-contain rounded-full bg-white p-1 shadow-md">
+          </div>
+          <div class="space-y-1">
+            <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold uppercase tracking-wider">
+              <span>🇵🇭</span> Republic of the Philippines
+            </div>
+            <h1 class="text-2xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+              Municipality of Isabel
+            </h1>
+            <p class="text-sm md:text-base text-govBlue-700 font-bold">
+              Local Government Unit • Province of Leyte
+            </p>
+          </div>
+        </div>
+
+        <!-- Integrated Search Bar -->
+        <div class="w-full md:w-80 space-y-2">
+          <label for="portalSearch" class="block text-xs font-bold text-slate-600 uppercase tracking-wider">
+            🔍 Search Services & Offices
+          </label>
+          <div class="relative">
+            <input type="text" 
+                   id="portalSearch" 
+                   placeholder="Search BPLO, Mayor, Assessor, Permits..." 
+                   class="w-full px-4 py-3 pl-10 bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-teal-500 rounded-2xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-4 focus:ring-teal-500/15 shadow-inner transition">
+            <span class="absolute left-3.5 top-3.5 text-slate-400 text-sm">🔎</span>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Quick Filter Chips & Status Banner -->
+    <div class="bg-white/95 rounded-2xl p-4 shadow-md border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4">
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 text-xs font-bold" id="categoryFilterRow">
+        <button type="button" onclick="filterByCategory('all')" class="cat-pill active px-3.5 py-2 rounded-xl bg-govBlue-700 text-white transition shadow-sm shrink-0">
+          All Offices
+        </button>
+        <button type="button" onclick="filterByCategory('tax')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
+          Permitting & Tax
+        </button>
+        <button type="button" onclick="filterByCategory('civil')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
+          Civil Records
+        </button>
+        <button type="button" onclick="filterByCategory('safety')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
+          Public Safety
+        </button>
+        <button type="button" onclick="filterByCategory('executive')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
+          Executive
+        </button>
+      </div>
+
+      <span id="activeCountBadge" class="bg-teal-50 text-teal-800 border border-teal-200 text-xs px-3 py-1.5 rounded-xl font-bold shrink-0">
+        Showing 7 Departments
+      </span>
     </div>
-  </header>
 
-  <!-- Department Services Grid -->
-  <section class="space-y-4">
-    <div class="flex justify-between items-center">
-      <h2 class="text-lg font-bold text-white flex items-center gap-2">
-        <span>🏛️</span> Municipal Offices & Digital Services
-      </h2>
-      <span class="text-xs text-slate-400">Select an office to open system</span>
+    <!-- Department Cards Grid -->
+    <main class="space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="officeGrid">
+
+        <!-- 1. BPLO Tracker (Live External Link) -->
+        <a href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           data-category="tax"
+           class="office-card group bg-white hover:bg-slate-50/80 border-2 border-emerald-500/40 hover:border-emerald-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-xs">
+            ✨ LIVE ONLINE SYSTEM
+          </div>
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              💼
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Permits & Licensing</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-emerald-700 transition mt-1">
+                BPLO Tracker & Permitting
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Business Permit & Licensing Office — Field inspection tracker, establishment GIS map, and permit status monitoring.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
+            <span>Launch Live Tracker App</span>
+            <span class="text-base">↗</span>
+          </div>
+        </a>
+
+        <!-- 2. Office of the Municipal Mayor -->
+        <div onclick="openOfficeModal('mayor')" 
+             data-category="executive"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-govBlue-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              👑
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-govBlue-600 bg-govBlue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Executive Office</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-govBlue-700 transition mt-1">
+                Office of the Municipal Mayor
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Executive orders, public consultation appointments, mayor's clearances, community assistance programs, and executive services.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-govBlue-700">
+            <span>View Executive Details</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+        <!-- 3. Local Civil Registrar (LCR) -->
+        <div onclick="openOfficeModal('lcr')" 
+             data-category="civil"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-indigo-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              📑
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Civil Registry</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-indigo-700 transition mt-1">
+                Local Civil Registrar (LCR)
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Birth, marriage, and death certificate registrations, delayed registration guidance, and certified true copy requests.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-700">
+            <span>View Registry Guidance</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+        <!-- 4. Municipal Assessor's Office -->
+        <div onclick="openOfficeModal('assessor')" 
+             data-category="tax"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-amber-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              📐
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Real Property</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-800 transition mt-1">
+                Municipal Assessor's Office
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Real Property Tax Declarations (RPTD), tax mapping, land assessment records, and property ownership transfer clearance.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-800">
+            <span>Inquire Land Assessment</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+        <!-- 5. Accounting & Treasury Office -->
+        <div onclick="openOfficeModal('treasury')" 
+             data-category="tax"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-teal-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              💰
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Revenue & Finance</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-teal-800 transition mt-1">
+                Accounting & Treasury
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Local tax payments, Official Receipt (OR) verification, financial transparency disclosures, and municipal tax clearances.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-800">
+            <span>Payment Schedules & Taxes</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+        <!-- 6. Bureau of Fire Protection (BFP) -->
+        <div onclick="openOfficeModal('bfp')" 
+             data-category="safety"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-rose-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              🚒
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Public Safety</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-rose-700 transition mt-1">
+                Bureau of Fire Protection (BFP)
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Fire Safety Inspection Certificates (FSIC), building fire safety compliance, emergency response, and fire prevention.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-rose-700">
+            <span>FSIC & Fire Safety Info</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+        <!-- 7. Bureau of Jail Management and Penology (BJMP) -->
+        <div onclick="openOfficeModal('bjmp')" 
+             data-category="safety"
+             class="office-card group bg-white hover:bg-slate-50/80 border border-slate-200/90 hover:border-cyan-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer">
+          <div class="space-y-3">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+              🚓
+            </div>
+            <div>
+              <span class="text-[10px] font-extrabold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Penology & Safety</span>
+              <h3 class="text-lg font-black text-slate-900 group-hover:text-cyan-800 transition mt-1">
+                BJMP Isabel Station
+              </h3>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                Facility visitation schedules, inmate visitor registration rules, correctional services, and official station contacts.
+              </p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-cyan-800">
+            <span>Visitation Rules & Contacts</span>
+            <span class="text-base">→</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- No Results State -->
+      <div id="noResultsMsg" style="display: none;" class="bg-white p-8 rounded-3xl border border-slate-200 text-center space-y-2 shadow-sm">
+        <div class="text-3xl">🔍</div>
+        <h4 class="text-base font-bold text-slate-800">No matching municipal office found</h4>
+        <p class="text-xs text-slate-500">Try searching for keywords like "BPLO", "Tax", "Mayor", "Birth Certificate", or "Fire".</p>
+      </div>
+    </main>
+
+    <!-- Emergency Hotline & Direct Assistance Section -->
+    <section class="bg-white rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4">
+      <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+        <span>🚨 Isabel Municipal Emergency Hotlines</span>
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-800">MDRRMO Isabel</div>
+          <div class="text-slate-500">Disaster & Medical Response</div>
+          <a href="tel:09171234567" class="text-teal-700 font-bold hover:underline block">📞 0917-XXX-XXXX</a>
+        </div>
+        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-800">BFP Isabel Station</div>
+          <div class="text-slate-500">Fire Emergency Hotline</div>
+          <a href="tel:160" class="text-rose-600 font-bold hover:underline block">📞 160 / (053) XXX-XXXX</a>
+        </div>
+        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-800">Isabel Police Station</div>
+          <div class="text-slate-500">PNP Patrol & Safety</div>
+          <a href="tel:911" class="text-sky-700 font-bold hover:underline block">📞 911 / 0998-XXX-XXXX</a>
+        </div>
+        <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-800">Rural Health Unit (RHU)</div>
+          <div class="text-slate-500">Municipal Health Office</div>
+          <a href="tel:09171234568" class="text-emerald-700 font-bold hover:underline block">📞 0917-XXX-YYYY</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- INTERACTIVE OFFICE DETAILS MODAL -->
+  <div id="officeModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 space-y-5 my-auto max-h-[90vh] overflow-y-auto border border-slate-200">
+      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-3">
+          <div id="modalIcon" class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl font-bold shrink-0">🏛️</div>
+          <div>
+            <h3 id="modalTitle" class="text-lg font-black text-slate-900 leading-tight">Office Title</h3>
+            <span id="modalBadge" class="text-[10px] font-extrabold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Department</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeOfficeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">📋 Overview & Services</h4>
+          <p id="modalDesc" class="text-slate-600 leading-relaxed">Description text...</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+          <div>
+            <span class="block font-bold text-slate-500 uppercase text-[10px]">🕒 Office Hours</span>
+            <span id="modalHours" class="font-semibold text-slate-800">Mon - Fri: 8:00 AM - 5:00 PM</span>
+          </div>
+          <div>
+            <span class="block font-bold text-slate-500 uppercase text-[10px]">📍 Location</span>
+            <span id="modalLocation" class="font-semibold text-slate-800">Municipal Hall, Isabel</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">📞 Contact & Assistance</h4>
+          <div id="modalContact" class="bg-slate-50 p-3 rounded-2xl border border-slate-200 font-mono font-bold text-teal-700">
+            Contact Info...
+          </div>
+        </div>
+
+        <div id="modalActionContainer">
+          <!-- Dynamically populated CTA button -->
+        </div>
+      </div>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="officeGrid">
-
-      <!-- 1. BPLO Field Tracker (Live External Link) -->
-      <a href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-emerald-500/60 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">💼</span>
-            <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">LIVE SYSTEM</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition">BPLO Tracker & Permitting</h3>
-          <p class="text-xs text-slate-400">Business Permit & Licensing Office field inspection tracker, establishment mapping, and status monitoring.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-emerald-400 flex items-center gap-1">
-          Launch Live App ↗
-        </div>
-      </a>
-
-      <!-- 2. Office of the Municipal Mayor -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-blue-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">👑</span>
-            <span class="bg-blue-500/20 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-500/30">EXECUTIVE</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-blue-400 transition">Mayor's Office</h3>
-          <p class="text-xs text-slate-400">Executive orders, public consultation appointments, community assistance, and Mayor's clearance services.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-blue-400 flex items-center gap-1 cursor-pointer">
-          Access Office Info →
-        </div>
-      </div>
-
-      <!-- 3. Local Civil Registrar (LCR) -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-indigo-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">📑</span>
-            <span class="bg-indigo-500/20 text-indigo-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-indigo-500/30">CIVIL REGISTRY</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-indigo-400 transition">Local Civil Registrar</h3>
-          <p class="text-xs text-slate-400">Registration of birth, marriage, and death certificates, document requests, and legal instruments.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-indigo-400 flex items-center gap-1 cursor-pointer">
-          View Requirements →
-        </div>
-      </div>
-
-      <!-- 4. Municipal Assessor's Office -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-amber-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">📐</span>
-            <span class="bg-amber-500/20 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/30">REAL PROPERTY</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-amber-400 transition">Municipal Assessor</h3>
-          <p class="text-xs text-slate-400">Real Property Tax Declarations (RPTD), tax mapping inquiries, land assessment, and ownership transfer records.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-amber-400 flex items-center gap-1 cursor-pointer">
-          Inquire Assessment →
-        </div>
-      </div>
-
-      <!-- 5. Accounting & Treasury Office -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-purple-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">💰</span>
-            <span class="bg-purple-500/20 text-purple-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-purple-500/30">FINANCIALS</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-purple-400 transition">Accounting & Treasury</h3>
-          <p class="text-xs text-slate-400">Local tax payments, Official Receipt (OR) issuance, financial statement disclosures, and municipal clearances.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-purple-400 flex items-center gap-1 cursor-pointer">
-          Payment Guidelines →
-        </div>
-      </div>
-
-      <!-- 6. Bureau of Fire Protection (BFP) -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-rose-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">🚒</span>
-            <span class="bg-rose-500/20 text-rose-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-rose-500/30">PUBLIC SAFETY</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-rose-400 transition">Bureau of Fire Protection</h3>
-          <p class="text-xs text-slate-400">Fire Safety Inspection Certificates (FSIC), fire safety compliance guidelines, and emergency dispatch.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-rose-400 flex items-center gap-1 cursor-pointer">
-          FSIC Guidelines & Contact →
-        </div>
-      </div>
-
-      <!-- 7. Bureau of Jail Management and Penology (BJMP) -->
-      <div class="office-card group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-cyan-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
-        <div class="space-y-2">
-          <div class="flex justify-between items-center">
-            <span class="text-3xl">🚓</span>
-            <span class="bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-cyan-500/30">CORRECTIONS</span>
-          </div>
-          <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition">BJMP Isabel Station</h3>
-          <p class="text-xs text-slate-400">Facility inmate visitation schedules, visitor registration rules, and facility contact details.</p>
-        </div>
-        <div class="mt-4 text-xs font-bold text-cyan-400 flex items-center gap-1 cursor-pointer">
-          Visitor Rules & Info →
-        </div>
-      </div>
-
-    </div>
-  </section>
+  </div>
 
   <!-- Footer -->
-  <footer class="text-center text-xs text-slate-500 pt-6 border-t border-slate-800 space-y-1">
-    <div>© 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.</div>
-    <div class="text-[10px] text-slate-600">LGU Digital Infrastructure & Web Application Portal</div>
+  <footer class="bg-white border-t border-slate-200 py-6 px-4 mt-8 text-center text-xs text-slate-500 space-y-1">
+    <div class="font-bold text-slate-700">Municipality of Isabel, Leyte — Official LGU Web Hub</div>
+    <div>© 2026 Local Government Unit of Isabel. All Rights Reserved.</div>
+    <div class="text-[10px] text-slate-400 font-mono">Powered by LGU Digital Public Infrastructure System</div>
   </footer>
 
-  <!-- Simple Client-Side Search Script -->
+  <!-- Scripts: Search & Modal Management -->
   <script>
-    document.getElementById('portalSearch').addEventListener('input', function(e) {
-      const q = e.target.value.toLowerCase().trim();
+    let activeCategory = 'all';
+
+    const OFFICE_DATA = {
+      mayor: {
+        title: "Office of the Municipal Mayor",
+        badge: "Executive Office",
+        icon: "👑",
+        desc: "The executive head of the Municipality of Isabel. Responsible for local policy execution, issuing executive orders, conducting public consultations, granting Mayor's clearances, and administering community assistance programs.",
+        hours: "Mon - Fri: 8:00 AM - 5:00 PM",
+        location: "2nd Floor, Executive Wing, Isabel Municipal Hall",
+        contact: "📞 Phone: (053) XXX-MAYO / ✉️ mayor@isabel.gov.ph"
+      },
+      lcr: {
+        title: "Local Civil Registrar (LCR)",
+        badge: "Civil Registry",
+        icon: "📑",
+        desc: "Handles official registration of vital civil events including birth, marriage, and death. Manages delayed registrations, court decrees, supplemental reports, and issues certified true copies of civil documents.",
+        hours: "Mon - Fri: 8:00 AM - 5:00 PM",
+        location: "1st Floor, Ground Wing, Isabel Municipal Hall",
+        contact: "📞 Phone: (053) XXX-LCR1 / ✉️ lcr@isabel.gov.ph"
+      },
+      assessor: {
+        title: "Municipal Assessor's Office",
+        badge: "Real Property",
+        icon: "📐",
+        desc: "Maintains real property tax assessment rolls, issues Real Property Tax Declarations (RPTD), conducts property tax mapping, appraises land/buildings, and grants property ownership transfer clearances.",
+        hours: "Mon - Fri: 8:00 AM - 5:00 PM",
+        location: "1st Floor, Finance Wing, Isabel Municipal Hall",
+        contact: "📞 Phone: (053) XXX-LAND / ✉️ assessor@isabel.gov.ph"
+      },
+      treasury: {
+        title: "Accounting & Treasury Office",
+        badge: "Revenue & Finance",
+        icon: "💰",
+        desc: "Responsible for collecting local municipal taxes, real property taxes, issuing Official Receipts (OR), managing municipal funds, releasing financial transparency reports, and issuing treasury clearances.",
+        hours: "Mon - Fri: 8:00 AM - 5:00 PM",
+        location: "1st Floor, Treasury Counter, Isabel Municipal Hall",
+        contact: "📞 Phone: (053) XXX-TREAS / ✉️ treasury@isabel.gov.ph"
+      },
+      bfp: {
+        title: "Bureau of Fire Protection (BFP)",
+        badge: "Public Safety",
+        icon: "🚒",
+        desc: "Ensures public safety through fire prevention education, building inspections, and issuing Fire Safety Inspection Certificates (FSIC) required for business permit applications and building occupancy.",
+        hours: "24/7 Emergency Response | Office: Mon - Fri 8AM - 5PM",
+        location: "BFP Isabel Fire Station, Poblacion, Isabel, Leyte",
+        contact: "📞 Emergency Hotline: 160 / Mobile: 0917-XXX-FIRE"
+      },
+      bjmp: {
+        title: "BJMP Isabel District Station",
+        badge: "Penology & Safety",
+        icon: "🚓",
+        desc: "Oversees local detention facility operations, maintains secure and humane offender management, organizes inmate visitation schedules, and conducts community reintegration assistance.",
+        hours: "Visiting Hours: Tue, Thu, Sat & Sun (9:00 AM - 3:00 PM)",
+        location: "BJMP Facility, Brgy. Matlang, Isabel, Leyte",
+        contact: "📞 Station Desk: (053) XXX-BJMP / Mobile: 0998-XXX-BJMP"
+      }
+    };
+
+    function applyFilters() {
+      const q = document.getElementById('portalSearch').value.toLowerCase().trim();
       const cards = document.querySelectorAll('.office-card');
-      
+      let visibleCount = 0;
+
       cards.forEach(card => {
         const text = card.textContent.toLowerCase();
-        if (text.includes(q)) {
+        const category = card.getAttribute('data-category');
+        
+        const matchesSearch = text.includes(q);
+        const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
+
+        if (matchesSearch && matchesCategory) {
           card.style.display = 'flex';
+          visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
+
+      const noResults = document.getElementById('noResultsMsg');
+      const countBadge = document.getElementById('activeCountBadge');
+
+      noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
+      countBadge.textContent = `Showing ${visibleCount} Department${visibleCount === 1 ? '' : 's'}`;
+    }
+
+    function filterByCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.remove('bg-govBlue-700', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+      
+      event.target.classList.remove('bg-slate-100', 'text-slate-700');
+      event.target.classList.add('bg-govBlue-700', 'text-white');
+
+      applyFilters();
+    }
+
+    document.getElementById('portalSearch').addEventListener('input', applyFilters);
+
+    function openOfficeModal(key) {
+      const data = OFFICE_DATA[key];
+      if (!data) return;
+
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalBadge').textContent = data.badge;
+      document.getElementById('modalIcon').textContent = data.icon;
+      document.getElementById('modalDesc').textContent = data.desc;
+      document.getElementById('modalHours').textContent = data.hours;
+      document.getElementById('modalLocation').textContent = data.location;
+      document.getElementById('modalContact').textContent = data.contact;
+
+      document.getElementById('officeModal').style.display = 'flex';
+    }
+
+    function closeOfficeModal() {
+      document.getElementById('officeModal').style.display = 'none';
+    }
+
+    // Close modal on background click
+    document.getElementById('officeModal').addEventListener('click', function(e) {
+      if (e.target === this) closeOfficeModal();
     });
   </script>
 </body>
