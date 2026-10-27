@@ -59,8 +59,17 @@
       background-size: 38rem;
       filter: blur(10px);
       opacity: 0.45;
-      transform: scale(1.03); /* Prevent blurry edges around viewport */
+      transform: scale(1.03);
       pointer-events: none;
+    }
+
+    /* Custom Smooth Scrollbar for Horizontally Scrolled Services */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
@@ -77,7 +86,7 @@
         <span class="text-slate-200 truncate">Welcome to the Official Web Gateway of LGU Isabel, Leyte</span>
       </div>
       <div class="flex items-center gap-3 text-[11px] shrink-0 font-semibold">
-        <span class="flex items-center gap-1 text-teal-300">📞 Emergency:</span>
+        <span class="flex items-center gap-1 text-teal-300">📞 Emergency Hotlines:</span>
         <a href="tel:09171234567" class="hover:underline text-white">MDRRMO: 0917-XXX-XXXX</a>
         <span class="text-slate-500">•</span>
         <a href="tel:160" class="hover:underline text-rose-300">BFP: 160</a>
@@ -85,46 +94,46 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto w-full p-4 md:p-8 space-y-6 flex-1 relative z-10">
+  <div class="max-w-7xl mx-auto w-full p-4 md:p-6 space-y-5 flex-1 relative z-10">
 
-    <!-- Bright Hero Header with Integrated Seal & Login Control -->
-    <header class="bg-white/90 rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/80 backdrop-blur-md relative overflow-hidden">
+    <!-- Bright Hero Header with Seal & Login Controls -->
+    <header class="bg-white/95 rounded-3xl p-5 md:p-6 shadow-xl shadow-slate-200/60 border border-slate-200/80 backdrop-blur-md relative overflow-hidden">
       <!-- Decorative Accent Glows -->
       <div class="absolute -top-12 -right-12 w-48 h-48 bg-teal-200/40 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
         
         <!-- Seal & Title Group -->
-        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 md:gap-5">
+        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4">
           <div class="relative group shrink-0">
             <div class="absolute -inset-1 bg-gradient-to-r from-teal-500 to-sky-500 rounded-full blur-xs opacity-75 group-hover:opacity-100 transition duration-300"></div>
             <img src="isabel-seal.png" 
                  onerror="this.src='https://placehold.co/120x120/0d9488/ffffff?text=LGU+ISABEL'" 
                  alt="Municipality of Isabel Seal" 
-                 class="relative w-20 h-20 md:w-24 md:h-24 object-contain rounded-full bg-white p-1 shadow-md">
+                 class="relative w-16 h-16 md:w-20 md:h-20 object-contain rounded-full bg-white p-1 shadow-md">
           </div>
-          <div class="space-y-1">
-            <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold uppercase tracking-wider">
+          <div class="space-y-0.5">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[11px] font-bold uppercase tracking-wider">
               <span>🇵🇭</span> Republic of the Philippines
             </div>
-            <h1 class="text-2xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+            <h1 class="text-xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
               Municipality of Isabel
             </h1>
-            <p class="text-sm md:text-base text-govBlue-700 font-bold">
-              Local Government Unit • Province of Leyte
+            <p class="text-xs md:text-sm text-govBlue-700 font-bold">
+              Local Government Unit • Public Information & Digital Services Gateway
             </p>
           </div>
         </div>
 
         <!-- Search Bar & Login Control -->
-        <div class="w-full md:w-80 space-y-3">
+        <div class="w-full md:w-80 space-y-2">
           <div class="flex items-center justify-between">
-            <label for="portalSearch" class="block text-xs font-bold text-slate-600 uppercase tracking-wider">
-              🔍 Search Portal
-            </label>
+            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              🔎 Search Portal
+            </span>
             
-            <!-- Auth Login Status Trigger Button -->
+            <!-- Auth Status Trigger -->
             <div id="authStatusContainer">
               <button type="button" onclick="openLoginModal()" id="loginBtn" class="bg-govBlue-700 hover:bg-govBlue-800 text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
                 <span>🔐</span> Official Login
@@ -135,259 +144,484 @@
           <div class="relative">
             <input type="text" 
                    id="portalSearch" 
-                   placeholder="Search offices, services, clearances..." 
-                   class="w-full px-4 py-3 pl-10 bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-teal-500 rounded-2xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-4 focus:ring-teal-500/15 shadow-inner transition">
-            <span class="absolute left-3.5 top-3.5 text-slate-400 text-sm">🔎</span>
+                   placeholder="Search updates, announcements, services..." 
+                   class="w-full px-4 py-2.5 pl-9 bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-teal-500 rounded-2xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-4 focus:ring-teal-500/15 shadow-inner transition">
+            <span class="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
           </div>
         </div>
 
       </div>
     </header>
 
-    <!-- Quick Filter Chips & Status Banner -->
-    <div class="bg-white/90 rounded-2xl p-4 shadow-md border border-slate-200/80 backdrop-blur-md flex flex-col md:flex-row justify-between items-center gap-4">
-      <!-- Category Filter Pills -->
-      <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 text-xs font-bold" id="categoryFilterRow">
-        <button type="button" onclick="filterByCategory('all')" class="cat-pill active px-3.5 py-2 rounded-xl bg-govBlue-700 text-white transition shadow-sm shrink-0">
-          All Offices
-        </button>
-        <button type="button" onclick="filterByCategory('tax')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
-          Permitting & Tax
-        </button>
-        <button type="button" onclick="filterByCategory('civil')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
-          Civil Records
-        </button>
-        <button type="button" onclick="filterByCategory('safety')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
-          Public Safety
-        </button>
-        <button type="button" onclick="filterByCategory('executive')" class="cat-pill px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition shrink-0">
-          Executive
+    <!-- HORIZONTAL SCROLLABLE & COLLAPSIBLE SERVICES BAR -->
+    <section class="bg-white/95 rounded-3xl p-4 shadow-md border border-slate-200/90 backdrop-blur-md space-y-3">
+      <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">🏛️</span>
+          <h2 class="text-xs md:text-sm font-black text-slate-900 uppercase tracking-wider">LGU Offices & Quick Services</h2>
+          <span id="serviceCountBadge" class="bg-teal-50 text-teal-800 border border-teal-200 text-[10px] px-2 py-0.5 rounded-md font-bold">
+            6 Offices
+          </span>
+        </div>
+        
+        <button type="button" 
+                id="toggleServicesBtn" 
+                onclick="toggleServicesContainer()" 
+                class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1 cursor-pointer">
+          <span id="toggleServicesIcon">🙈</span>
+          <span id="toggleServicesText">Hide Services</span>
         </button>
       </div>
 
-      <span id="activeCountBadge" class="bg-teal-50 text-teal-800 border border-teal-200 text-xs px-3 py-1.5 rounded-xl font-bold shrink-0">
-        Showing 6 Departments
-      </span>
-    </div>
+      <!-- Scrollable / Grid Services Wrapper -->
+      <div id="servicesWrapper" class="transition-all duration-300">
+        <!-- Horizontal Scrollable Track -->
+        <div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1 no-scrollbar" id="servicesTrack">
 
-    <!-- Department Cards Grid -->
-    <main class="space-y-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="officeGrid">
-
-        <!-- 1. RESTRICTED BPLO TRACKER CARD (HIDDEN BY DEFAULT, SHOWN ONLY WHEN LOGGED IN AS MAYOR / ADMIN) -->
-        <a id="bploRestrictedCard" 
-           href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
-           target="_blank" 
-           rel="noopener noreferrer"
-           data-category="tax"
-           style="display: none;"
-           class="office-card group bg-gradient-to-br from-emerald-500/10 via-white to-teal-500/10 hover:bg-white border-2 border-emerald-500 p-6 rounded-3xl transition duration-300 shadow-lg hover:shadow-2xl flex flex-col justify-between relative overflow-hidden backdrop-blur-md">
-          <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-bl-xl shadow-xs flex items-center gap-1">
-            <span>👑</span> AUTHORIZATION GRANTED
-          </div>
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition duration-300">
+          <!-- 1. RESTRICTED BPLO CARD (HIDDEN BY DEFAULT) -->
+          <a id="bploRestrictedCard" 
+             href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             style="display: none;"
+             class="group min-w-[260px] max-w-[280px] bg-gradient-to-br from-emerald-500/10 via-white to-teal-500/10 hover:bg-white border-2 border-emerald-500 p-3.5 rounded-2xl transition shadow-md hover:shadow-xl flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xl shrink-0 shadow-sm group-hover:scale-105 transition">
               💼
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md uppercase tracking-wider border border-emerald-300">Restricted Executive App</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-emerald-700 transition mt-1">
-                BPLO Tracker & GIS Mapping
-              </h3>
-              <p class="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
-                Business Permit & Licensing Office — Confidential field inspection status, GIS mapping, and live establishment tracker.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-black text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded uppercase">Restricted App</span>
+              <h3 class="text-xs font-black text-slate-900 truncate group-hover:text-emerald-700 transition">BPLO Field Tracker</h3>
+              <span class="text-[10px] text-emerald-700 font-bold block truncate">Launch App ↗</span>
             </div>
-          </div>
-          <div class="mt-6 pt-4 border-t border-emerald-200 flex items-center justify-between text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
-            <span class="flex items-center gap-1">Launch Executive Tracker Portal</span>
-            <span class="text-base">↗</span>
-          </div>
-        </a>
+          </a>
 
-        <!-- 2. Office of the Municipal Mayor -->
-        <div onclick="openOfficeModal('mayor')" 
-             data-category="executive"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-govBlue-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 2. Mayor's Office -->
+          <div onclick="openOfficeModal('mayor')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-govBlue-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               👑
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-govBlue-600 bg-govBlue-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Executive Office</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-govBlue-700 transition mt-1">
-                Office of the Municipal Mayor
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Executive orders, public consultation appointments, mayor's clearances, community assistance programs, and executive services.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-govBlue-600 bg-govBlue-50 px-1.5 py-0.5 rounded uppercase">Executive</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-govBlue-700">Mayor's Office</h3>
+              <span class="text-[10px] text-slate-500 truncate block">Clearances & Appointments</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-govBlue-700">
-            <span>View Executive Details</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-        <!-- 3. Local Civil Registrar (LCR) -->
-        <div onclick="openOfficeModal('lcr')" 
-             data-category="civil"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-indigo-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 3. Local Civil Registrar -->
+          <div onclick="openOfficeModal('lcr')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               📑
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Civil Registry</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-indigo-700 transition mt-1">
-                Local Civil Registrar (LCR)
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Birth, marriage, and death certificate registrations, delayed registration guidance, and certified true copy requests.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded uppercase">Civil Registry</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-indigo-700">Civil Registrar</h3>
+              <span class="text-[10px] text-slate-500 truncate block">Birth, Marriage, Death</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-700">
-            <span>View Registry Guidance</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-        <!-- 4. Municipal Assessor's Office -->
-        <div onclick="openOfficeModal('assessor')" 
-             data-category="tax"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-amber-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 4. Municipal Assessor -->
+          <div onclick="openOfficeModal('assessor')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-amber-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               📐
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Real Property</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-800 transition mt-1">
-                Municipal Assessor's Office
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Real Property Tax Declarations (RPTD), tax mapping, land assessment records, and property ownership transfer clearance.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded uppercase">Real Property</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-amber-800">Assessor's Office</h3>
+              <span class="text-[10px] text-slate-500 truncate block">Land Assessment & RPTD</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-800">
-            <span>Inquire Land Assessment</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-        <!-- 5. Accounting & Treasury Office -->
-        <div onclick="openOfficeModal('treasury')" 
-             data-category="tax"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-teal-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 5. Accounting & Treasury -->
+          <div onclick="openOfficeModal('treasury')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-teal-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               💰
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Revenue & Finance</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-teal-800 transition mt-1">
-                Accounting & Treasury
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Local tax payments, Official Receipt (OR) verification, financial transparency disclosures, and municipal tax clearances.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded uppercase">Finance</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-teal-800">Treasury & Tax</h3>
+              <span class="text-[10px] text-slate-500 truncate block">Local Taxes & Receipts</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-teal-800">
-            <span>Payment Schedules & Taxes</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-        <!-- 6. Bureau of Fire Protection (BFP) -->
-        <div onclick="openOfficeModal('bfp')" 
-             data-category="safety"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-rose-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 6. BFP Isabel -->
+          <div onclick="openOfficeModal('bfp')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-rose-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               🚒
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Public Safety</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-rose-700 transition mt-1">
-                Bureau of Fire Protection (BFP)
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Fire Safety Inspection Certificates (FSIC), building fire safety compliance, emergency response, and fire prevention.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded uppercase">Public Safety</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-rose-700">BFP Station</h3>
+              <span class="text-[10px] text-slate-500 truncate block">FSIC Clearance & Safety</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-rose-700">
-            <span>FSIC & Fire Safety Info</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-        <!-- 7. Bureau of Jail Management and Penology (BJMP) -->
-        <div onclick="openOfficeModal('bjmp')" 
-             data-category="safety"
-             class="office-card group bg-white/95 hover:bg-white border border-slate-200/90 hover:border-cyan-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between cursor-pointer backdrop-blur-md">
-          <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-800 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+          <!-- 7. BJMP Isabel -->
+          <div onclick="openOfficeModal('bjmp')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-cyan-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
+            <div class="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
               🚓
             </div>
-            <div>
-              <span class="text-[10px] font-extrabold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Penology & Safety</span>
-              <h3 class="text-lg font-black text-slate-900 group-hover:text-cyan-800 transition mt-1">
-                BJMP Isabel Station
-              </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Facility visitation schedules, inmate visitor registration rules, correctional services, and official station contacts.
-              </p>
+            <div class="min-w-0 flex-1">
+              <span class="text-[9px] font-bold text-cyan-700 bg-cyan-50 px-1.5 py-0.5 rounded uppercase">Corrections</span>
+              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-cyan-800">BJMP Station</h3>
+              <span class="text-[10px] text-slate-500 truncate block">Visitation Rules & Info</span>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-cyan-800">
-            <span>Visitation Rules & Contacts</span>
-            <span class="text-base">→</span>
-          </div>
-        </div>
 
-      </div>
-
-      <!-- No Results State -->
-      <div id="noResultsMsg" style="display: none;" class="bg-white/90 backdrop-blur-md p-8 rounded-3xl border border-slate-200 text-center space-y-2 shadow-sm">
-        <div class="text-3xl">🔍</div>
-        <h4 class="text-base font-bold text-slate-800">No matching municipal office found</h4>
-        <p class="text-xs text-slate-500">Try searching for keywords like "Mayor", "Tax", "Assessor", "Birth Certificate", or "Fire".</p>
-      </div>
-    </main>
-
-    <!-- Emergency Hotline & Direct Assistance Section -->
-    <section class="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-slate-200 shadow-lg space-y-4">
-      <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-        <span>🚨 Isabel Municipal Emergency Hotlines</span>
-      </h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-        <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-1">
-          <div class="font-bold text-slate-800">MDRRMO Isabel</div>
-          <div class="text-slate-500">Disaster & Medical Response</div>
-          <a href="tel:09171234567" class="text-teal-700 font-bold hover:underline block">📞 0917-XXX-XXXX</a>
-        </div>
-        <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-1">
-          <div class="font-bold text-slate-800">BFP Isabel Station</div>
-          <div class="text-slate-500">Fire Emergency Hotline</div>
-          <a href="tel:160" class="text-rose-600 font-bold hover:underline block">📞 160 / (053) XXX-XXXX</a>
-        </div>
-        <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-1">
-          <div class="font-bold text-slate-800">Isabel Police Station</div>
-          <div class="text-slate-500">PNP Patrol & Safety</div>
-          <a href="tel:911" class="text-sky-700 font-bold hover:underline block">📞 911 / 0998-XXX-XXXX</a>
-        </div>
-        <div class="p-3.5 bg-slate-50/90 rounded-2xl border border-slate-200 space-y-1">
-          <div class="font-bold text-slate-800">Rural Health Unit (RHU)</div>
-          <div class="text-slate-500">Municipal Health Office</div>
-          <a href="tel:09171234568" class="text-emerald-700 font-bold hover:underline block">📞 0917-XXX-YYYY</a>
         </div>
       </div>
     </section>
+
+    <!-- MAIN BODY GRID: FACEBOOK-STYLE FEED (LEFT) + SIDEBAR (RIGHT) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEFT COLUMN: FACEBOOK-STYLE ANNOUNCEMENTS FEED -->
+      <main class="lg:col-span-8 space-y-4">
+
+        <!-- EXECUTIVE POST CREATOR (VISIBLE ONLY WHEN LOGGED IN AS MAYOR / ADMIN) -->
+        <div id="executivePostComposer" style="display: none;" class="bg-white/95 backdrop-blur-md rounded-3xl p-4 shadow-lg border-2 border-teal-500/80 space-y-3">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+            <div class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-bold">✍️</div>
+            <div>
+              <h3 class="text-xs font-black text-slate-900">Create Official Announcement</h3>
+              <p class="text-[10px] text-slate-500">Publish updates directly to the Municipal Feed</p>
+            </div>
+          </div>
+
+          <form id="createPostForm" class="space-y-3 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" 
+                     id="postTitleInput" 
+                     required 
+                     placeholder="Announcement Title *" 
+                     class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-bold text-slate-800">
+              
+              <select id="postCategoryInput" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-700">
+                <option value="Executive Advisory">📢 Executive Advisory</option>
+                <option value="Public Safety & Disaster">🚨 Public Safety & Disaster</option>
+                <option value="Health & Medical">🏥 Health & Community</option>
+                <option value="Permitting & Taxation">💼 Permitting & Taxes</option>
+                <option value="Public Notice">📋 General Public Notice</option>
+              </select>
+            </div>
+
+            <textarea id="postContentInput" 
+                      rows="3" 
+                      required 
+                      placeholder="Write announcement details for Isabel citizens..." 
+                      class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-xs font-medium text-slate-800"></textarea>
+
+            <div class="flex flex-col sm:flex-row gap-2 justify-between items-center">
+              <input type="url" 
+                     id="postImageInput" 
+                     placeholder="Optional Photo URL (https://...)" 
+                     class="w-full sm:w-2/3 p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] focus:outline-none focus:ring-2 focus:ring-teal-500">
+              
+              <button type="submit" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-extrabold px-5 py-2 rounded-xl shadow-md transition cursor-pointer flex items-center justify-center gap-1 shrink-0">
+                <span>📣</span> Publish Post
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Feed Header Title -->
+        <div class="flex items-center justify-between px-1">
+          <h2 class="text-sm font-black text-slate-900 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 animate-ping"></span>
+            <span>📰 Official Isabel LGU Announcements & Feed</span>
+          </h2>
+          <span class="text-[11px] font-bold text-slate-400">Public Stream</span>
+        </div>
+
+        <!-- Dynamic Social Posts Container -->
+        <div id="postsFeedContainer" class="space-y-4">
+
+          <!-- POST 1: BPLO RENEWAL ANNOUNCEMENT -->
+          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg" data-keywords="bplo permit business renewal tax">
+            <!-- Post Header -->
+            <div class="flex justify-between items-start">
+              <div class="flex items-center gap-3">
+                <img src="isabel-seal.png" onerror="this.src='https://placehold.co/80x80/0d9488/ffffff?text=BPLO'" alt="BPLO Seal" class="w-10 h-10 rounded-full border border-teal-200 bg-white p-0.5 object-contain">
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer">Business Permit & Licensing Office (BPLO)</h3>
+                    <span class="text-teal-600 text-xs" title="Official Verified Page">✔</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                    <span>Oct 27, 2026 at 8:30 AM</span>
+                    <span>•</span>
+                    <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Permitting & Taxation</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="text-slate-400 hover:text-slate-600 font-bold">•••</button>
+            </div>
+
+            <!-- Post Text Content -->
+            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
+              <h4 class="text-sm font-black text-slate-900">💼 REMINDER: Annual Business Permit Inspection & Renewal Drive</h4>
+              <p>
+                The Municipal Business Permit and Licensing Office (BPLO) reminds all business operators and commercial establishment owners across Isabel's 24 barangays to ensure compliance with field inspections and local tax clearances.
+              </p>
+              <ul class="list-disc list-inside bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1 font-medium text-slate-800">
+                <li>Field Inspectors are currently active in Barangay Poblacion, Matlang, and Marvel.</li>
+                <li>Please prepare your Barangay Clearance, Fire Safety Inspection Certificate (FSIC), and Real Property Tax Clearance.</li>
+              </ul>
+            </div>
+
+            <!-- Post Image Attachment -->
+            <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-inner max-h-80 bg-slate-100">
+              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80" alt="Isabel Business District" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Interactive Social Counter & Buttons -->
+            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
+                <span>👍 ❤️ <span class="like-count">48</span> Citizens Liked</span>
+                <span><span class="comment-count">12</span> Comments • 9 Shares</span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
+                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
+                </button>
+                <button type="button" onclick="toggleComments('commentBlock1')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>💬</span> Comment
+                </button>
+                <button type="button" onclick="sharePost('Annual Business Permit Drive')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>↗️</span> Share
+                </button>
+              </div>
+
+              <!-- Comment Input Section -->
+              <div id="commentBlock1" style="display: none;" class="pt-2 space-y-2">
+                <div class="flex gap-2">
+                  <input type="text" placeholder="Write a public inquiry..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
+                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
+                </div>
+                <div class="comments-list space-y-1.5 pt-1">
+                  <div class="p-2 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px]">
+                    <span class="font-bold text-slate-900">Barangay Matlang Resident:</span> What are the Saturday operating hours for inspection counter?
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 2: MDRRMO WEATHER & SAFETY ADVISORY -->
+          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg" data-keywords="mdrrmo weather emergency safety disaster alert">
+            <div class="flex justify-between items-start">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center text-xl font-bold shadow-md">🚨</div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer">MDRRMO Isabel Operations</h3>
+                    <span class="text-rose-600 text-xs" title="Official Emergency Channel">✔</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                    <span>Oct 26, 2026 at 4:15 PM</span>
+                    <span>•</span>
+                    <span class="bg-rose-50 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Public Safety</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="text-slate-400 hover:text-slate-600 font-bold">•••</button>
+            </div>
+
+            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
+              <h4 class="text-sm font-black text-rose-700">🌧️ WEATHER ADVISORY: Rainfall Preparedness & Coastal Monitoring</h4>
+              <p>
+                The Municipal Disaster Risk Reduction and Management Office (MDRRMO) advises all coastal and low-lying barangays to monitor tidal water levels. Emergency response teams are on 24/7 standby mode.
+              </p>
+              <div class="p-3 bg-rose-50 rounded-2xl border border-rose-200 text-rose-900 font-bold text-[11px] flex justify-between items-center">
+                <span>Direct Emergency Assistance Line:</span>
+                <a href="tel:09171234567" class="underline">📞 0917-XXX-XXXX</a>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
+                <span>👍 ❤️ 😮 <span class="like-count">92</span> Citizens Liked</span>
+                <span><span class="comment-count">5</span> Comments • 34 Shares</span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
+                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
+                </button>
+                <button type="button" onclick="toggleComments('commentBlock2')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>💬</span> Comment
+                </button>
+                <button type="button" onclick="sharePost('MDRRMO Weather Advisory')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>↗️</span> Share
+                </button>
+              </div>
+
+              <div id="commentBlock2" style="display: none;" class="pt-2 space-y-2">
+                <div class="flex gap-2">
+                  <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
+                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
+                </div>
+                <div class="comments-list space-y-1.5 pt-1"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- POST 3: RHU FREE MEDICAL CLINIC -->
+          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg" data-keywords="rhu health medical clinic doctor mayor care">
+            <div class="flex justify-between items-start">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold shadow-inner">🏥</div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer">Rural Health Unit (RHU Isabel)</h3>
+                    <span class="text-emerald-600 text-xs">✔</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                    <span>Oct 24, 2026 at 10:00 AM</span>
+                    <span>•</span>
+                    <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">Health & Community</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="text-slate-400 hover:text-slate-600 font-bold">•••</button>
+            </div>
+
+            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
+              <h4 class="text-sm font-black text-slate-900">🩺 Free Community Health Checkup & Dental Consultation Program</h4>
+              <p>
+                In coordination with the Office of the Municipal Mayor, the Rural Health Unit will be hosting a comprehensive Medical & Dental Outreach Mission at the Municipal Gymnasium this coming Friday.
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
+                <span>👍 ❤️ <span class="like-count">64</span> Citizens Liked</span>
+                <span><span class="comment-count">3</span> Comments • 18 Shares</span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
+                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
+                </button>
+                <button type="button" onclick="toggleComments('commentBlock3')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>💬</span> Comment
+                </button>
+                <button type="button" onclick="sharePost('RHU Free Health Outreach')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                  <span>↗️</span> Share
+                </button>
+              </div>
+
+              <div id="commentBlock3" style="display: none;" class="pt-2 space-y-2">
+                <div class="flex gap-2">
+                  <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
+                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
+                </div>
+                <div class="comments-list space-y-1.5 pt-1"></div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+      </main>
+
+      <!-- RIGHT COLUMN: SIDEBAR WIDGETS -->
+      <aside class="lg:col-span-4 space-y-5">
+
+        <!-- EMERGENCY HOTLINES CARD -->
+        <section class="bg-white/95 backdrop-blur-md rounded-3xl p-5 border border-slate-200/90 shadow-md space-y-3.5">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+            <span class="text-xl">🚨</span>
+            <div>
+              <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider">Emergency Hotlines</h3>
+              <p class="text-[10px] text-slate-500 font-medium">Isabel Municipal Dispatch Units</p>
+            </div>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center">
+              <div>
+                <div class="font-black text-slate-900">MDRRMO Isabel</div>
+                <div class="text-[10px] text-slate-500">Disaster & Rescue</div>
+              </div>
+              <a href="tel:09171234567" class="bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 font-extrabold px-2.5 py-1 rounded-xl text-[11px] transition">
+                📞 0917-XXX-XXXX
+              </a>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center">
+              <div>
+                <div class="font-black text-slate-900">BFP Fire Station</div>
+                <div class="text-[10px] text-slate-500">Fire Emergency</div>
+              </div>
+              <a href="tel:160" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-extrabold px-2.5 py-1 rounded-xl text-[11px] transition">
+                📞 160
+              </a>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center">
+              <div>
+                <div class="font-black text-slate-900">Isabel Police (PNP)</div>
+                <div class="text-[10px] text-slate-500">Public Safety</div>
+              </div>
+              <a href="tel:911" class="bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 font-extrabold px-2.5 py-1 rounded-xl text-[11px] transition">
+                📞 911
+              </a>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 flex justify-between items-center">
+              <div>
+                <div class="font-black text-slate-900">RHU Municipal Health</div>
+                <div class="text-[10px] text-slate-500">Medical Assistance</div>
+              </div>
+              <a href="tel:09171234568" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-extrabold px-2.5 py-1 rounded-xl text-[11px] transition">
+                📞 Call RHU
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- OPERATING HOURS & LOCATION WIDGET -->
+        <section class="bg-white/95 backdrop-blur-md rounded-3xl p-5 border border-slate-200/90 shadow-md space-y-3">
+          <div class="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+            <span class="text-xl">🕒</span>
+            <div>
+              <h3 class="text-xs font-black text-slate-900 uppercase tracking-wider">Municipal Office Hours</h3>
+              <p class="text-[10px] text-slate-500 font-medium">Standard Government Hours</p>
+            </div>
+          </div>
+
+          <div class="space-y-2 text-xs text-slate-700">
+            <div class="flex justify-between items-center py-1 border-b border-slate-100">
+              <span class="font-semibold">Monday - Friday:</span>
+              <span class="font-extrabold text-teal-800">8:00 AM - 5:00 PM</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-slate-100">
+              <span class="font-semibold">Saturday - Sunday:</span>
+              <span class="font-bold text-rose-600">Closed (Offices)</span>
+            </div>
+            <div class="flex justify-between items-center py-1">
+              <span class="font-semibold">Emergency Services:</span>
+              <span class="font-bold text-emerald-700">24/7 Operations</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- MUNICIPAL QUICK INFO FOOTER CARD -->
+        <section class="bg-gradient-to-br from-govBlue-900 to-teal-900 text-white rounded-3xl p-5 shadow-lg space-y-2 text-xs">
+          <div class="font-black text-sm">Republic of the Philippines</div>
+          <div class="text-teal-300 font-bold">Local Government Unit of Isabel</div>
+          <p class="text-[11px] text-slate-300 leading-relaxed">
+            Poblacion, Isabel, Leyte, Eastern Visayas (Region VIII)
+          </p>
+          <div class="pt-2 text-[10px] text-slate-400 border-t border-slate-700">
+            Official Public Transparency Portal • 2026
+          </div>
+        </section>
+
+      </aside>
+
+    </div>
 
   </div>
 
@@ -402,11 +636,11 @@
             <span class="text-[10px] font-bold text-slate-500">Mayor & Executive Access</span>
           </div>
         </div>
-        <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
+        <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer">✕</button>
       </div>
 
       <form id="portalLoginForm" class="space-y-4 text-xs">
-        <p class="text-slate-600 leading-relaxed">Enter your authorized official passcode to unlock access to restricted municipal apps (e.g. BPLO Tracker):</p>
+        <p class="text-slate-600 leading-relaxed">Enter your authorized official passcode to unlock access to restricted municipal apps (e.g. BPLO Tracker) and posting tools:</p>
         
         <div class="space-y-1">
           <label for="passcodeInput" class="block font-bold text-slate-700 uppercase text-[10px]">Official Passcode *</label>
@@ -467,14 +701,14 @@
 
   <!-- Footer -->
   <footer class="bg-white/95 border-t border-slate-200/90 py-6 px-4 mt-8 text-center text-xs text-slate-500 space-y-1 relative z-10 backdrop-blur-md">
-    <div class="font-bold text-slate-700">Municipality of Isabel, Leyte — Official LGU Web Hub</div>
+    <div class="font-bold text-slate-700">Municipality of Isabel, Leyte — Official LGU Web Portal</div>
     <div>© 2026 Local Government Unit of Isabel. All Rights Reserved.</div>
     <div class="text-[10px] text-slate-400 font-mono">Powered by LGU Digital Public Infrastructure System</div>
   </footer>
 
-  <!-- Scripts: Authentication, Search & Modal Management -->
+  <!-- Scripts: Authentication, Collapsible Bar, Social Interaction & Modals -->
   <script>
-    let activeCategory = 'all';
+    let isServicesVisible = true;
 
     // PASSCODE AUTHENTICATION ACCOUNTS
     const AUTH_PASSCODES = {
@@ -548,9 +782,13 @@
       const savedUser = localStorage.getItem('isabel_portal_logged_user');
       const bploCard = document.getElementById('bploRestrictedCard');
       const authContainer = document.getElementById('authStatusContainer');
+      const executiveComposer = document.getElementById('executivePostComposer');
+      const serviceBadge = document.getElementById('serviceCountBadge');
 
       if (savedUser) {
         bploCard.style.display = 'flex';
+        executiveComposer.style.display = 'block';
+        serviceBadge.textContent = '7 Offices (Executive Mode)';
         authContainer.innerHTML = `
           <div class="flex items-center gap-2">
             <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] px-2.5 py-1 rounded-xl font-extrabold flex items-center gap-1">
@@ -563,13 +801,14 @@
         `;
       } else {
         bploCard.style.display = 'none';
+        executiveComposer.style.display = 'none';
+        serviceBadge.textContent = '6 Offices';
         authContainer.innerHTML = `
           <button type="button" onclick="openLoginModal()" id="loginBtn" class="bg-govBlue-700 hover:bg-govBlue-800 text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
             <span>🔐</span> Official Login
           </button>
         `;
       }
-      applyFilters();
     }
 
     function openLoginModal() {
@@ -600,53 +839,178 @@
       checkAuthSession();
     }
 
-    // FILTERING LOGIC
-    function applyFilters() {
-      const q = document.getElementById('portalSearch').value.toLowerCase().trim();
-      const cards = document.querySelectorAll('.office-card');
-      const isLoggedIn = !!localStorage.getItem('isabel_portal_logged_user');
-      let visibleCount = 0;
+    // SERVICES COLLAPSE TOGGLE
+    function toggleServicesContainer() {
+      const wrapper = document.getElementById('servicesWrapper');
+      const icon = document.getElementById('toggleServicesIcon');
+      const text = document.getElementById('toggleServicesText');
 
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const category = card.getAttribute('data-category');
-        const isBplo = card.id === 'bploRestrictedCard';
-        
-        const matchesSearch = text.includes(q);
-        const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
+      if (isServicesVisible) {
+        wrapper.style.display = 'none';
+        icon.textContent = '👁️';
+        text.textContent = 'Show Services';
+        isServicesVisible = false;
+      } else {
+        wrapper.style.display = 'block';
+        icon.textContent = '🙈';
+        text.textContent = 'Hide Services';
+        isServicesVisible = true;
+      }
+    }
 
-        if (isBplo && !isLoggedIn) {
-          card.style.display = 'none';
-        } else if (matchesSearch && matchesCategory) {
-          card.style.display = 'flex';
-          visibleCount++;
+    // CREATE POST FORM SUBMISSION
+    document.getElementById('createPostForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('postTitleInput').value.trim();
+      const category = document.getElementById('postCategoryInput').value;
+      const content = document.getElementById('postContentInput').value.trim();
+      const imageUrl = document.getElementById('postImageInput').value.trim();
+      const loggedUser = localStorage.getItem('isabel_portal_logged_user') || 'Executive Office';
+
+      const now = new Date();
+      const timeString = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+      const newPostHtml = `
+        <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg">
+          <div class="flex justify-between items-start">
+            <div class="flex items-center gap-3">
+              <img src="isabel-seal.png" onerror="this.src='https://placehold.co/80x80/0d9488/ffffff?text=LGU'" alt="LGU Seal" class="w-10 h-10 rounded-full border border-teal-200 bg-white p-0.5 object-contain">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer">${loggedUser}</h3>
+                  <span class="text-teal-600 text-xs">✔</span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                  <span>${timeString}</span>
+                  <span>•</span>
+                  <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">${category}</span>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="text-slate-400 hover:text-slate-600 font-bold">•••</button>
+          </div>
+
+          <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
+            <h4 class="text-sm font-black text-slate-900">${title}</h4>
+            <p>${content}</p>
+          </div>
+
+          ${imageUrl ? `
+            <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-inner max-h-80 bg-slate-100">
+              <img src="${imageUrl}" onerror="this.style.display='none'" alt="Post Attachment" class="w-full h-full object-cover">
+            </div>
+          ` : ''}
+
+          <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+            <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
+              <span>👍 <span class="like-count">1</span> Citizen Liked</span>
+              <span><span class="comment-count">0</span> Comments • 0 Shares</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
+              <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <span class="like-icon">👍</span> <span class="like-text">Like</span>
+              </button>
+              <button type="button" onclick="toggleComments('commentNew${Date.now()}')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>💬</span> Comment
+              </button>
+              <button type="button" onclick="sharePost('${title}')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>↗️</span> Share
+              </button>
+            </div>
+
+            <div id="commentNew${Date.now()}" style="display: none;" class="pt-2 space-y-2">
+              <div class="flex gap-2">
+                <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
+                <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
+              </div>
+              <div class="comments-list space-y-1.5 pt-1"></div>
+            </div>
+          </div>
+        </article>
+      `;
+
+      const feedContainer = document.getElementById('postsFeedContainer');
+      feedContainer.insertAdjacentHTML('afterbegin', newPostHtml);
+      document.getElementById('createPostForm').reset();
+    });
+
+    // LIKE TOGGLE FUNCTION
+    function toggleLike(btn) {
+      const card = btn.closest('.post-card');
+      const likeCountElem = card.querySelector('.like-count');
+      let count = parseInt(likeCountElem.textContent) || 0;
+      const textElem = btn.querySelector('.like-text');
+
+      if (btn.classList.contains('text-teal-600')) {
+        btn.classList.remove('text-teal-600');
+        count--;
+        textElem.textContent = 'Like';
+      } else {
+        btn.classList.add('text-teal-600');
+        count++;
+        textElem.textContent = 'Liked';
+      }
+      likeCountElem.textContent = count;
+    }
+
+    // COMMENT BLOCK TOGGLE & ADD COMMENT
+    function toggleComments(id) {
+      const block = document.getElementById(id);
+      if (block) {
+        block.style.display = block.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+
+    function addComment(btn) {
+      const container = btn.closest('div');
+      const input = container.querySelector('input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const card = btn.closest('.post-card');
+      const commentCountElem = card.querySelector('.comment-count');
+      const commentsList = card.querySelector('.comments-list');
+
+      let count = parseInt(commentCountElem.textContent) || 0;
+      count++;
+      commentCountElem.textContent = count;
+
+      const newComment = document.createElement('div');
+      newComment.className = 'p-2 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px]';
+      newComment.innerHTML = `<span class="font-bold text-slate-900">Citizen:</span> ${text}`;
+      commentsList.appendChild(newComment);
+
+      input.value = '';
+    }
+
+    // SHARE FUNCTION
+    function sharePost(title) {
+      const dummy = document.createElement('input');
+      document.body.appendChild(dummy);
+      dummy.value = window.location.href;
+      dummy.select();
+      document.execCommand('copy');
+      document.body.removeChild(dummy);
+      alert(`🔗 Portal post link copied to clipboard!\n\n"${title}"`);
+    }
+
+    // LIVE SEARCH FILTER FOR POSTS & SERVICES
+    document.getElementById('portalSearch').addEventListener('input', function(e) {
+      const q = e.target.value.toLowerCase().trim();
+      const posts = document.querySelectorAll('.post-card');
+
+      posts.forEach(post => {
+        const text = post.textContent.toLowerCase();
+        if (text.includes(q)) {
+          post.style.display = 'block';
         } else {
-          card.style.display = 'none';
+          post.style.display = 'none';
         }
       });
+    });
 
-      const noResults = document.getElementById('noResultsMsg');
-      const countBadge = document.getElementById('activeCountBadge');
-
-      noResults.style.display = (visibleCount === 0) ? 'block' : 'none';
-      countBadge.textContent = `Showing ${visibleCount} Department${visibleCount === 1 ? '' : 's'}`;
-    }
-
-    function filterByCategory(cat) {
-      activeCategory = cat;
-      document.querySelectorAll('.cat-pill').forEach(btn => {
-        btn.classList.remove('bg-govBlue-700', 'text-white');
-        btn.classList.add('bg-slate-100', 'text-slate-700');
-      });
-      
-      event.target.classList.remove('bg-slate-100', 'text-slate-700');
-      event.target.classList.add('bg-govBlue-700', 'text-white');
-
-      applyFilters();
-    }
-
-    document.getElementById('portalSearch').addEventListener('input', applyFilters);
-
+    // OFFICE MODAL LOGIC
     function openOfficeModal(key) {
       const data = OFFICE_DATA[key];
       if (!data) return;
@@ -666,7 +1030,7 @@
       document.getElementById('officeModal').style.display = 'none';
     }
 
-    // Modal background click listeners
+    // Background Click Listeners
     document.getElementById('officeModal').addEventListener('click', function(e) {
       if (e.target === this) closeOfficeModal();
     });
