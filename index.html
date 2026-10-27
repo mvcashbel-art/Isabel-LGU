@@ -69,25 +69,25 @@
   <!-- Fixed Soft Blurred Seal Background -->
   <div class="bg-watermark"></div>
 
-  <!-- Top Emergency Ticker -->
+  <!-- Top Emergency Ticker & Auth Bar -->
   <div class="bg-gradient-to-r from-govBlue-900 via-sky-900 to-teal-900 text-white py-2 px-4 shadow-sm text-xs font-medium z-10">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
       <div class="flex items-center gap-2 truncate">
         <span class="bg-emerald-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full animate-pulse">Official Portal</span>
         <span class="text-slate-200 truncate">Welcome to the Official Web Gateway of LGU Isabel, Leyte</span>
       </div>
-      <div class="flex items-center gap-4 text-[11px] shrink-0 font-semibold">
-        <span class="flex items-center gap-1 text-teal-300">📞 Emergency Dispatch:</span>
+      <div class="flex items-center gap-3 text-[11px] shrink-0 font-semibold">
+        <span class="flex items-center gap-1 text-teal-300">📞 Emergency:</span>
         <a href="tel:09171234567" class="hover:underline text-white">MDRRMO: 0917-XXX-XXXX</a>
         <span class="text-slate-500">•</span>
-        <a href="tel:160" class="hover:underline text-rose-300">BFP Hotline: 160</a>
+        <a href="tel:160" class="hover:underline text-rose-300">BFP: 160</a>
       </div>
     </div>
   </div>
 
   <div class="max-w-7xl mx-auto w-full p-4 md:p-8 space-y-6 flex-1 relative z-10">
 
-    <!-- Bright Hero Header with Integrated Seal -->
+    <!-- Bright Hero Header with Integrated Seal & Login Control -->
     <header class="bg-white/90 rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/60 border border-slate-200/80 backdrop-blur-md relative overflow-hidden">
       <!-- Decorative Accent Glows -->
       <div class="absolute -top-12 -right-12 w-48 h-48 bg-teal-200/40 rounded-full blur-3xl pointer-events-none"></div>
@@ -117,15 +117,25 @@
           </div>
         </div>
 
-        <!-- Integrated Search Bar -->
-        <div class="w-full md:w-80 space-y-2">
-          <label for="portalSearch" class="block text-xs font-bold text-slate-600 uppercase tracking-wider">
-            🔍 Search Services & Offices
-          </label>
+        <!-- Search Bar & Login Control -->
+        <div class="w-full md:w-80 space-y-3">
+          <div class="flex items-center justify-between">
+            <label for="portalSearch" class="block text-xs font-bold text-slate-600 uppercase tracking-wider">
+              🔍 Search Portal
+            </label>
+            
+            <!-- Auth Login Status Trigger Button -->
+            <div id="authStatusContainer">
+              <button type="button" onclick="openLoginModal()" id="loginBtn" class="bg-govBlue-700 hover:bg-govBlue-800 text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+                <span>🔐</span> Official Login
+              </button>
+            </div>
+          </div>
+
           <div class="relative">
             <input type="text" 
                    id="portalSearch" 
-                   placeholder="Search BPLO, Mayor, Assessor, Permits..." 
+                   placeholder="Search offices, services, clearances..." 
                    class="w-full px-4 py-3 pl-10 bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-teal-500 rounded-2xl text-sm font-medium text-slate-800 focus:outline-none focus:ring-4 focus:ring-teal-500/15 shadow-inner transition">
             <span class="absolute left-3.5 top-3.5 text-slate-400 text-sm">🔎</span>
           </div>
@@ -156,7 +166,7 @@
       </div>
 
       <span id="activeCountBadge" class="bg-teal-50 text-teal-800 border border-teal-200 text-xs px-3 py-1.5 rounded-xl font-bold shrink-0">
-        Showing 7 Departments
+        Showing 6 Departments
       </span>
     </div>
 
@@ -164,31 +174,33 @@
     <main class="space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="officeGrid">
 
-        <!-- 1. BPLO Tracker (Live External Link) -->
-        <a href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
+        <!-- 1. RESTRICTED BPLO TRACKER CARD (HIDDEN BY DEFAULT, SHOWN ONLY WHEN LOGGED IN AS MAYOR / ADMIN) -->
+        <a id="bploRestrictedCard" 
+           href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
            target="_blank" 
            rel="noopener noreferrer"
            data-category="tax"
-           class="office-card group bg-white/95 hover:bg-white border-2 border-emerald-500/40 hover:border-emerald-500 p-6 rounded-3xl transition duration-300 shadow-md hover:shadow-xl flex flex-col justify-between relative overflow-hidden backdrop-blur-md">
-          <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-bl-xl shadow-xs">
-            ✨ LIVE ONLINE SYSTEM
+           style="display: none;"
+           class="office-card group bg-gradient-to-br from-emerald-500/10 via-white to-teal-500/10 hover:bg-white border-2 border-emerald-500 p-6 rounded-3xl transition duration-300 shadow-lg hover:shadow-2xl flex flex-col justify-between relative overflow-hidden backdrop-blur-md">
+          <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-wider px-3.5 py-1 rounded-bl-xl shadow-xs flex items-center gap-1">
+            <span>👑</span> AUTHORIZATION GRANTED
           </div>
           <div class="space-y-3">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition duration-300">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition duration-300">
               💼
             </div>
             <div>
-              <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Permits & Licensing</span>
+              <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md uppercase tracking-wider border border-emerald-300">Restricted Executive App</span>
               <h3 class="text-lg font-black text-slate-900 group-hover:text-emerald-700 transition mt-1">
-                BPLO Tracker & Permitting
+                BPLO Tracker & GIS Mapping
               </h3>
-              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
-                Business Permit & Licensing Office — Field inspection tracker, establishment GIS map, and permit status monitoring.
+              <p class="text-xs text-slate-600 font-medium mt-1 leading-relaxed">
+                Business Permit & Licensing Office — Confidential field inspection status, GIS mapping, and live establishment tracker.
               </p>
             </div>
           </div>
-          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
-            <span>Launch Live Tracker App</span>
+          <div class="mt-6 pt-4 border-t border-emerald-200 flex items-center justify-between text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition">
+            <span class="flex items-center gap-1">Launch Executive Tracker Portal</span>
             <span class="text-base">↗</span>
           </div>
         </a>
@@ -343,7 +355,7 @@
       <div id="noResultsMsg" style="display: none;" class="bg-white/90 backdrop-blur-md p-8 rounded-3xl border border-slate-200 text-center space-y-2 shadow-sm">
         <div class="text-3xl">🔍</div>
         <h4 class="text-base font-bold text-slate-800">No matching municipal office found</h4>
-        <p class="text-xs text-slate-500">Try searching for keywords like "BPLO", "Tax", "Mayor", "Birth Certificate", or "Fire".</p>
+        <p class="text-xs text-slate-500">Try searching for keywords like "Mayor", "Tax", "Assessor", "Birth Certificate", or "Fire".</p>
       </div>
     </main>
 
@@ -377,6 +389,39 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- AUTHENTICATION LOGIN MODAL -->
+  <div id="loginModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 space-y-5 my-auto border border-slate-200">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-govBlue-50 text-govBlue-700 flex items-center justify-center text-xl font-bold">🔐</div>
+          <div>
+            <h3 class="text-base font-black text-slate-900 leading-tight">Official Login</h3>
+            <span class="text-[10px] font-bold text-slate-500">Mayor & Executive Access</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeLoginModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold">✕</button>
+      </div>
+
+      <form id="portalLoginForm" class="space-y-4 text-xs">
+        <p class="text-slate-600 leading-relaxed">Enter your authorized official passcode to unlock access to restricted municipal apps (e.g. BPLO Tracker):</p>
+        
+        <div class="space-y-1">
+          <label for="passcodeInput" class="block font-bold text-slate-700 uppercase text-[10px]">Official Passcode *</label>
+          <input type="password" 
+                 id="passcodeInput" 
+                 required 
+                 placeholder="Enter Passcode" 
+                 class="w-full p-3 bg-slate-50 border border-slate-300 rounded-2xl text-center font-mono font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-teal-500/20 text-sm">
+        </div>
+
+        <button type="submit" class="w-full bg-govBlue-700 hover:bg-govBlue-800 text-white font-bold py-3 rounded-2xl shadow-md transition text-xs cursor-pointer">
+          Authorize Session
+        </button>
+      </form>
+    </div>
   </div>
 
   <!-- INTERACTIVE OFFICE DETAILS MODAL -->
@@ -416,10 +461,6 @@
             Contact Info...
           </div>
         </div>
-
-        <div id="modalActionContainer">
-          <!-- Dynamically populated CTA button -->
-        </div>
       </div>
     </div>
   </div>
@@ -431,9 +472,19 @@
     <div class="text-[10px] text-slate-400 font-mono">Powered by LGU Digital Public Infrastructure System</div>
   </footer>
 
-  <!-- Scripts: Search & Modal Management -->
+  <!-- Scripts: Authentication, Search & Modal Management -->
   <script>
     let activeCategory = 'all';
+
+    // PASSCODE AUTHENTICATION ACCOUNTS
+    const AUTH_PASSCODES = {
+      "Mayor2026": "Mayor's Office",
+      "Ashbel2026": "Admin Ashbel",
+      "IsabelLeyte": "System Admin",
+      "Juan2026": "Admin Juan",
+      "Maria2026": "Admin Maria",
+      "Pedro2026": "Admin Pedro"
+    };
 
     const OFFICE_DATA = {
       mayor: {
@@ -492,19 +543,81 @@
       }
     };
 
+    // AUTHENTICATION LOGIC
+    function checkAuthSession() {
+      const savedUser = localStorage.getItem('isabel_portal_logged_user');
+      const bploCard = document.getElementById('bploRestrictedCard');
+      const authContainer = document.getElementById('authStatusContainer');
+
+      if (savedUser) {
+        bploCard.style.display = 'flex';
+        authContainer.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] px-2.5 py-1 rounded-xl font-extrabold flex items-center gap-1">
+              <span>🟢</span> ${savedUser}
+            </span>
+            <button type="button" onclick="logoutSession()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs px-2.5 py-1 rounded-xl font-bold transition cursor-pointer">
+              Logout
+            </button>
+          </div>
+        `;
+      } else {
+        bploCard.style.display = 'none';
+        authContainer.innerHTML = `
+          <button type="button" onclick="openLoginModal()" id="loginBtn" class="bg-govBlue-700 hover:bg-govBlue-800 text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
+            <span>🔐</span> Official Login
+          </button>
+        `;
+      }
+      applyFilters();
+    }
+
+    function openLoginModal() {
+      document.getElementById('passcodeInput').value = '';
+      document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    document.getElementById('portalLoginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const code = document.getElementById('passcodeInput').value.trim();
+      const role = AUTH_PASSCODES[code];
+
+      if (role) {
+        localStorage.setItem('isabel_portal_logged_user', role);
+        closeLoginModal();
+        checkAuthSession();
+      } else {
+        alert("❌ Invalid Official Passcode! Access Denied.");
+      }
+    });
+
+    function logoutSession() {
+      localStorage.removeItem('isabel_portal_logged_user');
+      checkAuthSession();
+    }
+
+    // FILTERING LOGIC
     function applyFilters() {
       const q = document.getElementById('portalSearch').value.toLowerCase().trim();
       const cards = document.querySelectorAll('.office-card');
+      const isLoggedIn = !!localStorage.getItem('isabel_portal_logged_user');
       let visibleCount = 0;
 
       cards.forEach(card => {
         const text = card.textContent.toLowerCase();
         const category = card.getAttribute('data-category');
+        const isBplo = card.id === 'bploRestrictedCard';
         
         const matchesSearch = text.includes(q);
         const matchesCategory = (activeCategory === 'all') || (category === activeCategory);
 
-        if (matchesSearch && matchesCategory) {
+        if (isBplo && !isLoggedIn) {
+          card.style.display = 'none';
+        } else if (matchesSearch && matchesCategory) {
           card.style.display = 'flex';
           visibleCount++;
         } else {
@@ -553,10 +666,16 @@
       document.getElementById('officeModal').style.display = 'none';
     }
 
-    // Close modal on background click
+    // Modal background click listeners
     document.getElementById('officeModal').addEventListener('click', function(e) {
       if (e.target === this) closeOfficeModal();
     });
+    document.getElementById('loginModal').addEventListener('click', function(e) {
+      if (e.target === this) closeLoginModal();
+    });
+
+    // Initialize state on page load
+    checkAuthSession();
   </script>
 </body>
 </html>
