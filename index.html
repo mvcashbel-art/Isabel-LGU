@@ -54,7 +54,7 @@
 
       <!-- Emergency Contact & Login Trigger -->
       <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-800/80 sm:border-0 text-[11px] font-medium">
-        <span class="hidden md:inline text-slate-400">📞 Hotlines: <strong class="text-white">MDRRMO: 0917-XXX-XXXX</strong> | <strong class="text-white">BFP: 160</strong></span>
+        <span class="hidden md:inline text-slate-400">📞 Hotlines: <strong id="ribbonHotlinesText" class="text-white">MDRRMO: 0917-XXX-XXXX | BFP: 160</strong></span>
         <button id="navLoginBtn" onclick="toggleModal('loginModal', true)" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 sm:py-1 rounded-lg transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5 text-xs">
           🔐 Official Login
         </button>
@@ -65,18 +65,25 @@
   <!-- Main Content Wrapper -->
   <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 space-y-4 sm:space-y-5">
 
-    <!-- Header Banner (Cleaned - Cover Photo Container Removed) -->
-    <header class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- EDITABLE HEADER BANNER -->
+    <header class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4 relative group">
+      <!-- Officer Edit Header Trigger -->
+      <button type="button" onclick="openHeaderEditModal()" class="officer-only-btn hidden absolute top-3 right-3 md:top-4 md:right-4 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow transition flex items-center gap-1 cursor-pointer z-20">
+        <span>✏️</span> Edit Header Info
+      </button>
+
       <div class="flex items-center gap-3.5 sm:gap-4 w-full md:w-auto">
         <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-full shadow-sm border-2 border-slate-100 shrink-0">
         <div>
           <div class="text-[10px] sm:text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
             <span>🇵🇭 Republic of the Philippines</span>
           </div>
-          <h1 class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+          <h1 id="portalTitleText" class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Municipality of Isabel
           </h1>
-          <p class="text-[11px] sm:text-sm text-slate-500 font-medium">Local Government Unit • Public Information & Digital Services Gateway</p>
+          <p id="portalSubtitleText" class="text-[11px] sm:text-sm text-slate-500 font-medium">
+            Local Government Unit • Public Information & Digital Services Gateway
+          </p>
         </div>
       </div>
 
@@ -89,7 +96,7 @@
       </div>
     </header>
 
-    <!-- HORIZONTAL SERVICES BAR (Collapsible & Restricted BPLO) -->
+    <!-- HORIZONTAL SERVICES BAR (Collapsible & Restricted BPLO & Editable Services) -->
     <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-sm border border-slate-200/80 space-y-3">
       <div class="flex justify-between items-center px-1">
         <div class="flex items-center gap-2">
@@ -116,65 +123,8 @@
           <div class="mt-2 text-[11px] font-bold text-emerald-200 flex items-center gap-1">Launch System ↗</div>
         </a>
 
-        <!-- Mayor's Office Card -->
-        <div onclick="openOfficeModal('mayor')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-blue-700">
-            <span>👑 EXECUTIVE</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">Mayor's Office</div>
-          <div class="text-[11px] text-slate-500 truncate">Clearances & Appointments</div>
-        </div>
-
-        <!-- Local Civil Registrar Card -->
-        <div onclick="openOfficeModal('lcr')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-indigo-50/60 border border-slate-200 hover:border-indigo-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-indigo-700">
-            <span>📑 CIVIL REGISTRY</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">Civil Registrar</div>
-          <div class="text-[11px] text-slate-500 truncate">Birth, Marriage, Death</div>
-        </div>
-
-        <!-- Assessor's Office Card -->
-        <div onclick="openOfficeModal('assessor')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-amber-50/60 border border-slate-200 hover:border-amber-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-amber-700">
-            <span>📐 REAL PROPERTY</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">Assessor's Office</div>
-          <div class="text-[11px] text-slate-500 truncate">Land Assessment & RPTD</div>
-        </div>
-
-        <!-- Treasury & Accounting Card -->
-        <div onclick="openOfficeModal('treasury')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 hover:border-emerald-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-emerald-700">
-            <span>💰 FINANCE</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">Treasury & Tax</div>
-          <div class="text-[11px] text-slate-500 truncate">Local Taxes & Receipts</div>
-        </div>
-
-        <!-- BFP Card -->
-        <div onclick="openOfficeModal('bfp')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-rose-50/60 border border-slate-200 hover:border-rose-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-rose-700">
-            <span>🚒 PUBLIC SAFETY</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">BFP Station</div>
-          <div class="text-[11px] text-slate-500 truncate">FSIC Clearance & Safety</div>
-        </div>
-
-        <!-- BJMP Card -->
-        <div onclick="openOfficeModal('bjmp')" class="shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-cyan-50/60 border border-slate-200 hover:border-cyan-300 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1">
-          <div class="flex justify-between items-center text-xs font-bold text-cyan-700">
-            <span>🚓 CORRECTIONS</span>
-            <span>→</span>
-          </div>
-          <div class="font-bold text-xs text-slate-900">BJMP Isabel</div>
-          <div class="text-[11px] text-slate-500 truncate">Visitor Scheduling</div>
-        </div>
+        <!-- Dynamic Quick Service Cards HTML rendered via JS -->
+        <div id="dynamicServicesTrack" class="flex gap-3"></div>
 
       </div>
     </section>
@@ -193,7 +143,7 @@
           <span class="text-xs text-slate-400 font-medium">Public Stream</span>
         </div>
 
-        <!-- OFFICER POST CREATOR BOX (Visible when Mayor or Admin logged in) -->
+        <!-- OFFICER POST CREATOR BOX (Visible when Mayor, Ashbel, or Admin logged in) -->
         <div id="postCreatorBox" class="hidden bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-blue-200 space-y-3">
           <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
             <div class="w-9 h-9 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center text-xs shadow-sm">📢</div>
@@ -250,8 +200,13 @@
           </div>
         </div>
 
-        <!-- ENLARGED TOUCH-FRIENDLY EMERGENCY HOTLINES WIDGET -->
-        <div class="bg-gradient-to-br from-rose-600 via-red-600 to-red-700 text-white p-4 sm:p-5 rounded-2xl shadow-lg space-y-3.5 border border-rose-500/30">
+        <!-- EDITABLE EMERGENCY HOTLINES WIDGET -->
+        <div class="bg-gradient-to-br from-rose-600 via-red-600 to-red-700 text-white p-4 sm:p-5 rounded-2xl shadow-lg space-y-3.5 border border-rose-500/30 relative group">
+          <!-- Officer Hotlines Edit Trigger -->
+          <button type="button" onclick="openHotlinesEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
+            <span>✏️</span> Edit Numbers
+          </button>
+
           <div class="flex items-center justify-between border-b border-white/20 pb-2.5">
             <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider flex items-center gap-2">
               <span class="text-base sm:text-lg">🚨</span> Emergency Hotlines
@@ -259,83 +214,34 @@
             <span class="text-[9px] sm:text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-black tracking-wide border border-white/20">24/7 DISPATCH</span>
           </div>
 
-          <!-- Enlarged Quick-Dial Button Stack -->
-          <div class="space-y-2.5">
-            <!-- MDRRMO -->
-            <a href="tel:09170000000" class="group flex justify-between items-center py-3.5 px-3.5 sm:px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer">
-              <div class="flex items-center gap-2">
-                <span class="text-lg sm:text-xl">🛡️</span>
-                <div>
-                  <div class="font-bold text-xs sm:text-sm text-white leading-tight">MDRRMO Rescue</div>
-                  <div class="text-[10px] text-rose-200 font-medium">Disaster & Medical</div>
-                </div>
-              </div>
-              <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
-                0917-XXX-XXXX
-              </span>
-            </a>
-
-            <!-- BFP FIRE -->
-            <a href="tel:160" class="group flex justify-between items-center py-3.5 px-3.5 sm:px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer">
-              <div class="flex items-center gap-2">
-                <span class="text-lg sm:text-xl">🚒</span>
-                <div>
-                  <div class="font-bold text-xs sm:text-sm text-white leading-tight">BFP Fire Station</div>
-                  <div class="text-[10px] text-rose-200 font-medium">Fire Safety & Rescue</div>
-                </div>
-              </div>
-              <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
-                160 / 0918-XXX
-              </span>
-            </a>
-
-            <!-- PNP POLICE -->
-            <a href="tel:117" class="group flex justify-between items-center py-3.5 px-3.5 sm:px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer">
-              <div class="flex items-center gap-2">
-                <span class="text-lg sm:text-xl">🚓</span>
-                <div>
-                  <div class="font-bold text-xs sm:text-sm text-white leading-tight">Municipal Police</div>
-                  <div class="text-[10px] text-rose-200 font-medium">Police Assistance</div>
-                </div>
-              </div>
-              <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
-                117 / 0920-XXX
-              </span>
-            </a>
-
-            <!-- RHU HEALTH -->
-            <a href="tel:09190000000" class="group flex justify-between items-center py-3.5 px-3.5 sm:px-4 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer">
-              <div class="flex items-center gap-2">
-                <span class="text-lg sm:text-xl">🏥</span>
-                <div>
-                  <div class="font-bold text-xs sm:text-sm text-white leading-tight">Rural Health Unit</div>
-                  <div class="text-[10px] text-rose-200 font-medium">Health & Clinic</div>
-                </div>
-              </div>
-              <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
-                0919-XXX-XXXX
-              </span>
-            </a>
+          <!-- Quick-Dial Button Stack -->
+          <div id="hotlinesContainer" class="space-y-2.5">
+            <!-- Dynamic Hotlines rendered via JS -->
           </div>
         </div>
 
-        <!-- Municipal Operating Hours & Info Widget -->
-        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3 text-xs">
+        <!-- EDITABLE MUNICIPAL OPERATING HOURS WIDGET -->
+        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3 text-xs relative group">
+          <!-- Officer Schedule Edit Trigger -->
+          <button type="button" onclick="openScheduleEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
+            <span>✏️</span> Edit Schedule
+          </button>
+
           <h3 class="font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
             <span>🏢</span> Municipal Hall Schedule
           </h3>
           <div class="space-y-2 text-slate-600">
             <div class="flex justify-between">
-              <span>Monday – Friday:</span>
-              <span class="font-bold text-slate-800">8:00 AM – 5:00 PM</span>
+              <span>Weekdays:</span>
+              <span id="schedWeekdayText" class="font-bold text-slate-800">8:00 AM – 5:00 PM (Mon-Fri)</span>
             </div>
             <div class="flex justify-between">
-              <span>Saturday – Sunday:</span>
-              <span class="font-bold text-rose-600">Closed (Emergency Only)</span>
+              <span>Weekends:</span>
+              <span id="schedWeekendText" class="font-bold text-rose-600">Closed (Emergency Only)</span>
             </div>
             <div class="flex justify-between">
               <span>Location:</span>
-              <span class="font-semibold text-slate-800">Poblacion, Isabel, Leyte</span>
+              <span id="schedLocationText" class="font-semibold text-slate-800">Poblacion, Isabel, Leyte</span>
             </div>
           </div>
         </div>
@@ -361,14 +267,100 @@
       </div>
 
       <form id="loginForm" class="space-y-3 text-xs">
-        <p class="text-slate-500 leading-relaxed">Enter Mayor or Authorized Officer Passcode to access restricted LGU services:</p>
+        <p class="text-slate-500 leading-relaxed">Enter Officer Passcode to unlock admin editing rights:</p>
         <div>
           <label class="block font-bold text-slate-700 mb-1">Officer Passcode *</label>
-          <input type="password" id="passcodeInput" required placeholder="Enter Passcode" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center font-mono outline-none focus:ring-2 focus:ring-blue-600">
+          <input type="password" id="passcodeInput" required placeholder="Enter Passcode (e.g. Ashbel2026)" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center font-mono outline-none focus:ring-2 focus:ring-blue-600">
         </div>
         <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
           Authenticate Session
         </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT HEADER MODAL -->
+  <div id="editHeaderModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-3 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1">✏️ Edit Portal Header</h3>
+        <button type="button" onclick="toggleModal('editHeaderModal', false)" class="text-slate-400 text-lg">✕</button>
+      </div>
+      <form id="editHeaderForm" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Municipality / Portal Title *</label>
+          <input type="text" id="inputHeaderTitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Subtitle / Tagline *</label>
+          <input type="text" id="inputHeaderSubtitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Header Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT SERVICE CARD MODAL -->
+  <div id="editServiceModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-3 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1">✏️ Edit Quick Service Card</h3>
+        <button type="button" onclick="toggleModal('editServiceModal', false)" class="text-slate-400 text-lg">✕</button>
+      </div>
+      <form id="editServiceForm" class="space-y-3 text-xs">
+        <input type="hidden" id="editServiceKey">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Category Badge *</label>
+          <input type="text" id="inputServiceCategory" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Office / Card Title *</label>
+          <input type="text" id="inputServiceTitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Card Subtitle / Description *</label>
+          <input type="text" id="inputServiceSubtitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Card Details</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT HOTLINES MODAL -->
+  <div id="editHotlinesModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-3 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1">🚨 Edit Hotlines</h3>
+        <button type="button" onclick="toggleModal('editHotlinesModal', false)" class="text-slate-400 text-lg">✕</button>
+      </div>
+      <form id="editHotlinesForm" class="space-y-3 text-xs max-h-[70vh] overflow-y-auto pr-1">
+        <div id="hotlineFormFields" class="space-y-3"></div>
+        <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Emergency Numbers</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT SCHEDULE MODAL -->
+  <div id="editScheduleModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-3 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1">🏢 Edit Municipal Schedule</h3>
+        <button type="button" onclick="toggleModal('editScheduleModal', false)" class="text-slate-400 text-lg">✕</button>
+      </div>
+      <form id="editScheduleForm" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Weekday Hours *</label>
+          <input type="text" id="inputSchedWeekday" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Weekend Hours / Notice *</label>
+          <input type="text" id="inputSchedWeekend" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Location Address *</label>
+          <input type="text" id="inputSchedLocation" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+        </div>
+        <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Schedule Info</button>
       </form>
     </div>
   </div>
@@ -452,8 +444,36 @@
       "IsabelLeyte": "System Administrator"
     };
 
+    // EDITABLE PORTAL STATE DATA (Stored in localStorage)
+    let headerInfo = JSON.parse(localStorage.getItem('isabel_header_info')) || {
+      title: "Municipality of Isabel",
+      subtitle: "Local Government Unit • Public Information & Digital Services Gateway"
+    };
+
+    let scheduleInfo = JSON.parse(localStorage.getItem('isabel_sched_info')) || {
+      weekday: "8:00 AM – 5:00 PM (Mon-Fri)",
+      weekend: "Closed (Emergency Only)",
+      location: "Poblacion, Isabel, Leyte"
+    };
+
+    let hotlinesList = JSON.parse(localStorage.getItem('isabel_hotlines_list')) || [
+      { id: "h1", icon: "🛡️", title: "MDRRMO Rescue", desc: "Disaster & Medical", phone: "0917-XXX-XXXX", tel: "09170000000" },
+      { id: "h2", icon: "🚒", title: "BFP Fire Station", desc: "Fire Safety & Rescue", phone: "160 / 0918-XXX", tel: "160" },
+      { id: "h3", icon: "🚓", title: "Municipal Police", desc: "Police Assistance", phone: "117 / 0920-XXX", tel: "117" },
+      { id: "h4", icon: "🏥", title: "Rural Health Unit", desc: "Health & Clinic", phone: "0919-XXX-XXXX", tel: "09190000000" }
+    ];
+
+    let quickServicesList = JSON.parse(localStorage.getItem('isabel_services_list')) || [
+      { key: "mayor", category: "👑 EXECUTIVE", color: "blue", title: "Mayor's Office", subtitle: "Clearances & Appointments" },
+      { key: "lcr", category: "📑 CIVIL REGISTRY", color: "indigo", title: "Civil Registrar", subtitle: "Birth, Marriage, Death" },
+      { key: "assessor", category: "📐 REAL PROPERTY", color: "amber", title: "Assessor's Office", subtitle: "Land Assessment & RPTD" },
+      { key: "treasury", category: "💰 FINANCE", color: "emerald", title: "Treasury & Tax", subtitle: "Local Taxes & Receipts" },
+      { key: "bfp", category: "🚒 PUBLIC SAFETY", color: "rose", title: "BFP Station", subtitle: "FSIC Clearance & Safety" },
+      { key: "bjmp", category: "🚓 CORRECTIONS", color: "cyan", title: "BJMP Isabel", subtitle: "Visitor Scheduling" }
+    ];
+
     // SAMPLE INITIAL PUBLIC POSTS FEED DATA
-    let defaultPosts = [
+    let defaultPosts = JSON.parse(localStorage.getItem('isabel_portal_posts')) || [
       {
         id: "post_1",
         author: "Business Permit & Licensing Office (BPLO)",
@@ -501,8 +521,78 @@
     let servicesHidden = false;
 
     function initPortal() {
+      renderHeader();
+      renderSchedule();
+      renderHotlines();
+      renderServices();
       updateSessionUI();
       renderFeed();
+    }
+
+    function renderHeader() {
+      document.getElementById('portalTitleText').textContent = headerInfo.title;
+      document.getElementById('portalSubtitleText').textContent = headerInfo.subtitle;
+    }
+
+    function renderSchedule() {
+      document.getElementById('schedWeekdayText').textContent = scheduleInfo.weekday;
+      document.getElementById('schedWeekendText').textContent = scheduleInfo.weekend;
+      document.getElementById('schedLocationText').textContent = scheduleInfo.location;
+    }
+
+    function renderHotlines() {
+      const container = document.getElementById('hotlinesContainer');
+      container.innerHTML = '';
+      
+      hotlinesList.forEach(h => {
+        const item = document.createElement('a');
+        item.href = `tel:${h.tel}`;
+        item.className = "group flex justify-between items-center py-3 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer";
+        item.innerHTML = `
+          <div class="flex items-center gap-2">
+            <span class="text-lg sm:text-xl">${h.icon}</span>
+            <div>
+              <div class="font-bold text-xs sm:text-sm text-white leading-tight">${h.title}</div>
+              <div class="text-[10px] text-rose-200 font-medium">${h.desc}</div>
+            </div>
+          </div>
+          <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
+            ${h.phone}
+          </span>
+        `;
+        container.appendChild(item);
+      });
+
+      if (hotlinesList.length > 0) {
+        document.getElementById('ribbonHotlinesText').textContent = `${hotlinesList[0].title}: ${hotlinesList[0].phone} | ${hotlinesList[1] ? hotlinesList[1].title + ': ' + hotlinesList[1].phone : ''}`;
+      }
+    }
+
+    function renderServices() {
+      const container = document.getElementById('dynamicServicesTrack');
+      container.innerHTML = '';
+
+      quickServicesList.forEach(s => {
+        const card = document.createElement('div');
+        card.className = "shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1 relative group";
+        card.onclick = () => openOfficeModal(s.key);
+
+        card.innerHTML = `
+          <!-- Officer Card Edit Trigger -->
+          <button type="button" onclick="openServiceEditModal('${s.key}', event)" class="officer-only-btn hidden absolute top-2 right-2 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow z-10">
+            ✏️
+          </button>
+          <div class="flex justify-between items-center text-xs font-bold text-blue-700">
+            <span>${s.category}</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">${s.title}</div>
+          <div class="text-[11px] text-slate-500 truncate">${s.subtitle}</div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('serviceCountBadge').textContent = `${quickServicesList.length} Offices`;
     }
 
     function updateSessionUI() {
@@ -513,11 +603,14 @@
       const sessionRoleLabel = document.getElementById('sessionRoleLabel');
       const sidebarBtn = document.getElementById('sidebarLoginToggleBtn');
       const navBtn = document.getElementById('navLoginBtn');
+      const officerBtns = document.querySelectorAll('.officer-only-btn');
 
       if (activeUser) {
         if (bploCard) bploCard.classList.remove('hidden');
         if (creatorBox) creatorBox.classList.remove('hidden');
         document.getElementById('creatorOfficerLabel').textContent = "Publishing as: " + activeUser;
+
+        officerBtns.forEach(b => b.classList.remove('hidden'));
 
         sessionAvatar.textContent = "👑";
         sessionAvatar.className = "w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shadow-sm";
@@ -534,6 +627,8 @@
       } else {
         if (bploCard) bploCard.classList.add('hidden');
         if (creatorBox) creatorBox.classList.add('hidden');
+
+        officerBtns.forEach(b => b.classList.add('hidden'));
 
         sessionAvatar.textContent = "👤";
         sessionAvatar.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs";
@@ -555,7 +650,7 @@
       localStorage.removeItem('isabel_portal_user');
       updateSessionUI();
       renderFeed();
-      alert("Session logged out.");
+      alert("Officer session logged out.");
     }
 
     // LOGIN FORM SUBMISSION
@@ -569,10 +664,115 @@
         updateSessionUI();
         toggleModal('loginModal', false);
         document.getElementById('passcodeInput').value = '';
-        alert(`Welcome, ${activeUser}!\nAuthorized session active.`);
+        alert(`Authenticated as ${activeUser}!\nAll editing permissions enabled.`);
       } else {
         alert("❌ Invalid Officer Passcode!");
       }
+    });
+
+    // HEADER EDIT MODAL & FORM
+    window.openHeaderEditModal = function() {
+      if (!activeUser) return alert("Officer login required.");
+      document.getElementById('inputHeaderTitle').value = headerInfo.title;
+      document.getElementById('inputHeaderSubtitle').value = headerInfo.subtitle;
+      toggleModal('editHeaderModal', true);
+    };
+
+    document.getElementById('editHeaderForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      headerInfo.title = document.getElementById('inputHeaderTitle').value.trim();
+      headerInfo.subtitle = document.getElementById('inputHeaderSubtitle').value.trim();
+      localStorage.setItem('isabel_header_info', JSON.stringify(headerInfo));
+      renderHeader();
+      toggleModal('editHeaderModal', false);
+      alert("✅ Header portal text updated!");
+    });
+
+    // SERVICE CARD EDIT MODAL & FORM
+    window.openServiceEditModal = function(key, event) {
+      if (event) event.stopPropagation();
+      if (!activeUser) return alert("Officer login required.");
+      
+      const card = quickServicesList.find(s => s.key === key);
+      if (!card) return;
+
+      document.getElementById('editServiceKey').value = card.key;
+      document.getElementById('inputServiceCategory').value = card.category;
+      document.getElementById('inputServiceTitle').value = card.title;
+      document.getElementById('inputServiceSubtitle').value = card.subtitle;
+
+      toggleModal('editServiceModal', true);
+    };
+
+    document.getElementById('editServiceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const key = document.getElementById('editServiceKey').value;
+      const card = quickServicesList.find(s => s.key === key);
+
+      if (card) {
+        card.category = document.getElementById('inputServiceCategory').value.trim();
+        card.title = document.getElementById('inputServiceTitle').value.trim();
+        card.subtitle = document.getElementById('inputServiceSubtitle').value.trim();
+        localStorage.setItem('isabel_services_list', JSON.stringify(quickServicesList));
+        renderServices();
+        toggleModal('editServiceModal', false);
+        alert("✅ Quick Service card updated!");
+      }
+    });
+
+    // HOTLINES EDIT MODAL & FORM
+    window.openHotlinesEditModal = function() {
+      if (!activeUser) return alert("Officer login required.");
+      const fieldsContainer = document.getElementById('hotlineFormFields');
+      fieldsContainer.innerHTML = '';
+
+      hotlinesList.forEach((h, idx) => {
+        fieldsContainer.innerHTML += `
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-2">
+            <div class="font-bold text-slate-800 text-[11px]">Hotline #${idx + 1} (${h.icon})</div>
+            <input type="text" id="hTitle_${idx}" value="${h.title}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg font-bold">
+            <input type="text" id="hDesc_${idx}" value="${h.desc}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg">
+            <input type="text" id="hPhone_${idx}" value="${h.phone}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg font-mono">
+          </div>
+        `;
+      });
+
+      toggleModal('editHotlinesModal', true);
+    };
+
+    document.getElementById('editHotlinesForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      hotlinesList.forEach((h, idx) => {
+        h.title = document.getElementById(`hTitle_${idx}`).value.trim();
+        h.desc = document.getElementById(`hDesc_${idx}`).value.trim();
+        h.phone = document.getElementById(`hPhone_${idx}`).value.trim();
+      });
+
+      localStorage.setItem('isabel_hotlines_list', JSON.stringify(hotlinesList));
+      renderHotlines();
+      toggleModal('editHotlinesModal', false);
+      alert("✅ Emergency hotlines updated!");
+    });
+
+    // SCHEDULE EDIT MODAL & FORM
+    window.openScheduleEditModal = function() {
+      if (!activeUser) return alert("Officer login required.");
+      document.getElementById('inputSchedWeekday').value = scheduleInfo.weekday;
+      document.getElementById('inputSchedWeekend').value = scheduleInfo.weekend;
+      document.getElementById('inputSchedLocation').value = scheduleInfo.location;
+      toggleModal('editScheduleModal', true);
+    };
+
+    document.getElementById('editScheduleForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      scheduleInfo.weekday = document.getElementById('inputSchedWeekday').value.trim();
+      scheduleInfo.weekend = document.getElementById('inputSchedWeekend').value.trim();
+      scheduleInfo.location = document.getElementById('inputSchedLocation').value.trim();
+
+      localStorage.setItem('isabel_sched_info', JSON.stringify(scheduleInfo));
+      renderSchedule();
+      toggleModal('editScheduleModal', false);
+      alert("✅ Municipal Hall operating hours updated!");
     });
 
     // TOGGLE SERVICES STRIP
@@ -737,6 +937,11 @@
       });
     }
 
+    // SAVE POSTS HELPER
+    function savePosts() {
+      localStorage.setItem('isabel_portal_posts', JSON.stringify(defaultPosts));
+    }
+
     // TOGGLE 3-DOTS DROPDOWN
     window.togglePostDropdown = function(postId, event) {
       if (event) event.stopPropagation();
@@ -757,7 +962,7 @@
     // POST ACTIONS
     window.likePost = function(id) {
       const p = defaultPosts.find(x => x.id === id);
-      if (p) { p.likes++; renderFeed(); }
+      if (p) { p.likes++; savePosts(); renderFeed(); }
     };
 
     window.toggleComments = function(id) {
@@ -773,6 +978,7 @@
       const p = defaultPosts.find(x => x.id === id);
       if (p) {
         p.comments.push({ author: activeUser || "Isabel Citizen", text });
+        savePosts();
         renderFeed();
       }
     };
@@ -790,13 +996,14 @@
     window.togglePinPost = function(id) {
       if (!activeUser) return alert("Officer authentication required.");
       const p = defaultPosts.find(x => x.id === id);
-      if (p) { p.pinned = !p.pinned; renderFeed(); }
+      if (p) { p.pinned = !p.pinned; savePosts(); renderFeed(); }
     };
 
     window.deletePost = function(id) {
       if (!activeUser) return alert("Officer authentication required to delete announcements.");
       if (confirm("Are you sure you want to delete this announcement post?")) {
         defaultPosts = defaultPosts.filter(x => x.id !== id);
+        savePosts();
         renderFeed();
       }
     };
@@ -826,6 +1033,7 @@
         p.content = document.getElementById('editPostBody').value.trim();
         p.category = document.getElementById('editPostCategory').value;
         p.image = document.getElementById('editPostImage').value.trim();
+        savePosts();
         renderFeed();
         toggleModal('editPostModal', false);
         alert("✅ Announcement updated successfully!");
@@ -852,6 +1060,7 @@
       };
 
       defaultPosts.unshift(newPost);
+      savePosts();
       renderFeed();
       document.getElementById('createPostForm').reset();
       alert("✅ Announcement published to Isabel LGU feed!");
@@ -868,7 +1077,7 @@
       if (el) el.style.display = show ? 'flex' : 'none';
     };
 
-    // DEPARTMENT INFO MODAL
+    // DEPARTMENT INFO MODAL DATA
     const DEPARTMENT_DETAILS = {
       mayor: {
         title: "Office of the Municipal Mayor",
@@ -915,8 +1124,13 @@
     };
 
     window.openOfficeModal = function(key) {
-      const data = DEPARTMENT_DETAILS[key];
-      if (!data) return;
+      const data = DEPARTMENT_DETAILS[key] || {
+        title: quickServicesList.find(s => s.key === key)?.title || "LGU Department",
+        desc: "Official Municipal Department services & public assistance counter.",
+        loc: "Municipal Hall, Isabel, Leyte",
+        phone: "0917-XXX-XXXX",
+        services: ["General Public Services", "Office Clearances & Consultation"]
+      };
 
       document.getElementById('modalOfficeTitle').textContent = data.title;
       document.getElementById('modalOfficeDesc').textContent = data.desc;
