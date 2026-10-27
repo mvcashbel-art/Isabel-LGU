@@ -65,26 +65,41 @@
   <!-- Main Content Wrapper -->
   <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 space-y-4 sm:space-y-5">
 
-    <!-- Header Banner -->
-    <header class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-3.5 sm:gap-4 w-full md:w-auto">
-        <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-full shadow-sm border-2 border-slate-100 shrink-0">
-        <div>
-          <div class="text-[10px] sm:text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
-            <span>🇵🇭 Republic of the Philippines</span>
-          </div>
-          <h1 class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
-            Municipality of Isabel
-          </h1>
-          <p class="text-[11px] sm:text-sm text-slate-500 font-medium">Local Government Unit • Public Information & Digital Services Gateway</p>
-        </div>
-      </div>
+    <!-- EXPANDED LARGE HERO BANNER FOR OFFICIALS PICTURE -->
+    <header class="relative bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-md border border-slate-200/80 overflow-hidden group">
+      <!-- Banner Image (Replace 'download.jpg' with your image filename if different) -->
+      <div class="relative w-full h-52 sm:h-72 md:h-80 lg:h-96 bg-slate-900 flex items-center justify-center overflow-hidden">
+        <img 
+          src="download.jpg" 
+          onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1600&q=80'" 
+          alt="Municipality of Isabel Officials Banner" 
+          class="w-full h-full object-cover object-center group-hover:scale-102 transition duration-700"
+        />
+        <!-- Gradient Overlay for Contrast & Text Readability -->
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/30 to-slate-900/20"></div>
 
-      <!-- Live Search Box -->
-      <div class="w-full md:w-80">
-        <div class="relative">
-          <input type="text" id="portalSearch" placeholder="Search updates, announcements, services..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition shadow-inner">
-          <span class="absolute left-3 top-3 text-slate-400 text-xs">🔍</span>
+        <!-- Floating Search Input (Top-Right Overlay) -->
+        <div class="absolute top-3 right-3 sm:top-4 sm:right-4 left-3 sm:left-auto w-auto sm:w-80 z-20">
+          <div class="relative">
+            <input type="text" id="portalSearch" placeholder="Search updates, announcements, services..." class="w-full pl-9 pr-4 py-2 bg-white/90 backdrop-blur-md border border-white/40 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition shadow-lg">
+            <span class="absolute left-3 top-2.5 text-slate-500 text-xs">🔍</span>
+          </div>
+        </div>
+
+        <!-- Bottom Header Caption Overlay -->
+        <div class="absolute bottom-3 left-3 right-3 sm:bottom-5 sm:left-6 sm:right-6 z-20 text-white space-y-1">
+          <div class="flex items-center gap-2">
+            <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/40?text=LGU'" alt="Isabel Seal" class="w-9 h-9 sm:w-11 sm:h-11 object-contain rounded-full border border-white/40 shadow shrink-0">
+            <div>
+              <div class="text-[9px] sm:text-[10px] font-extrabold text-emerald-400 tracking-widest uppercase">🇵🇭 Republic of the Philippines</div>
+              <h1 class="text-base sm:text-2xl lg:text-3xl font-black text-white leading-tight drop-shadow-md">
+                Municipality of Isabel, Leyte
+              </h1>
+            </div>
+          </div>
+          <p class="text-[10px] sm:text-xs text-slate-200 font-medium pl-11 hidden sm:block drop-shadow">
+            Local Government Unit • Public Information & Digital Services Gateway
+          </p>
         </div>
       </div>
     </header>
