@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Municipality of Isabel — Official LGU Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      background-image: 
+        radial-gradient(circle at center, rgba(15, 23, 42, 0.90) 0%, rgba(15, 23, 42, 0.98) 100%),
+        url('isabel-seal.png');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 40rem;
+      background-attachment: fixed;
+    }
+  </style>
+</head>
+<body class="text-slate-100 font-sans min-h-screen p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+
+  <!-- Main Header Banner -->
+  <header class="bg-gradient-to-r from-slate-900/90 via-blue-950/90 to-slate-900/90 p-5 md:p-6 rounded-2xl shadow-2xl border border-slate-700/60 backdrop-blur-md flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-4">
+      <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Isabel Seal" class="w-14 h-14 object-contain rounded-full border border-emerald-400/40 shadow">
+      <div>
+        <h1 class="text-xl md:text-3xl font-black tracking-tight text-white">Municipality of Isabel</h1>
+        <p class="text-xs md:text-sm text-emerald-400 font-semibold">Local Government Unit • Province of Leyte</p>
+      </div>
+    </div>
+    <div class="w-full md:w-72">
+      <input type="text" placeholder="Search services, offices, permits..." class="w-full px-4 py-2 bg-slate-950/80 border border-slate-700 rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+    </div>
+  </header>
+
+  <!-- Department Services Grid -->
+  <section class="space-y-3">
+    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+      <span>🏛️</span> Municipal Offices & Digital Portals
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <!-- BPLO Card (Linked directly to your BPLO Tracker) -->
+      <a href="./bplo/index.html" class="group bg-slate-900/80 hover:bg-slate-800/90 border border-slate-700/70 hover:border-emerald-500/50 p-5 rounded-2xl transition shadow-lg backdrop-blur-md flex flex-col justify-between">
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-2xl">💼</span>
+            <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">ONLINE SYSTEM</span>
+          </div>
+          <h3 class="text-base font-bold text-white group-hover:text-emerald-400 transition">BPLO Tracker & Permitting</h3>
+          <p class="text-xs text-slate-400">Business Permit & Licensing Office inspection tracker, establishment map, and status lookup.</p>
+        </div>
+        <div class="mt-4 text-xs font-bold text-emerald-400 flex items-center gap-1">
+          Launch Portal →
+        </div>
+      </a>
+
+      <!-- Mayor's Office -->
+      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
+        <div class="text-2xl">👑</div>
+        <h3 class="text-base font-bold text-white">Office of the Municipal Mayor</h3>
+        <p class="text-xs text-slate-400">Executive issuances, public appointments, community assistance, and mayor's clearance services.</p>
+        <div class="pt-2">
+          <button class="text-xs text-blue-400 font-semibold hover:underline">View Office Information →</button>
+        </div>
+      </div>
+
+      <!-- Local Civil Registrar -->
+      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
+        <div class="text-2xl">📑</div>
+        <h3 class="text-base font-bold text-white">Local Civil Registrar (LCR)</h3>
+        <p class="text-xs text-slate-400">Registration of birth, marriage, and death certificates, timely/late registration guidance.</p>
+        <div class="pt-2">
+          <button class="text-xs text-blue-400 font-semibold hover:underline">View Requirements & Guides →</button>
+        </div>
+      </div>
+
+      <!-- Municipal Assessor -->
+      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
+        <div class="text-2xl">📐</div>
+        <h3 class="text-base font-bold text-white">Municipal Assessor's Office</h3>
+        <p class="text-xs text-slate-400">Real Property Tax Declarations, tax mapping, land assessments, and property transfer records.</p>
+        <div class="pt-2">
+          <button class="text-xs text-blue-400 font-semibold hover:underline">Inquire Assessment →</button>
+        </div>
+      </div>
+
+      <!-- Municipal Accounting & Treasury -->
+      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
+        <div class="text-2xl">💰</div>
+        <h3 class="text-base font-bold text-white">Accounting & Treasury Office</h3>
+        <p class="text-xs text-slate-400">Tax payments, official receipt verification, municipal financial statements, and clearance issuance.</p>
+        <div class="pt-2">
+          <button class="text-xs text-blue-400 font-semibold hover:underline">Payment Guidelines →</button>
+        </div>
+      </div>
+
+      <!-- Emergency Services (BFP & BJMP) -->
+      <div class="bg-slate-900/80 border border-slate-700/70 p-5 rounded-2xl shadow-lg backdrop-blur-md space-y-2">
+        <div class="text-2xl">🚒</div>
+        <h3 class="text-base font-bold text-white">BFP & BJMP Public Safety</h3>
+        <p class="text-xs text-slate-400">Bureau of Fire Protection clearance guidelines and BJMP jail management/visitation schedules.</p>
+        <div class="pt-2">
+          <button class="text-xs text-rose-400 font-semibold hover:underline">Emergency Contacts →</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-xs text-slate-500 pt-6 border-t border-slate-800">
+    © 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
