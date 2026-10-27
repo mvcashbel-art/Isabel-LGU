@@ -3,895 +3,890 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Municipality of Isabel — Official LGU Digital Portal</title>
+  <title>Municipality of Isabel — Official LGU Portal</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Inter Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            isabel: {
-              50: '#f0fdfa',
-              100: '#ccfbf1',
-              500: '#14b8a6',
-              600: '#0d9488',
-              700: '#0f766e',
-              800: '#115e59',
-              900: '#134e4a',
-            },
-            govBlue: {
-              50: '#f0f7ff',
-              100: '#e0effe',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-            }
-          }
-        }
-      }
-    }
-  </script>
-
   <style>
-    /* Blurred Background Layer */
+    /* Fixed Blurred Watermark Background */
+    body {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      position: relative;
+    }
+    
     .bg-watermark {
       position: fixed;
       inset: 0;
-      z-index: -10;
-      background-color: #f8fafc;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.12) 0%, rgba(248, 250, 252, 0.4) 70%),
-        url('isabel-seal.png');
+      background-image: radial-gradient(circle at center, rgba(248, 250, 252, 0.75) 0%, rgba(241, 245, 249, 0.96) 100%), url('isabel-seal.png');
       background-repeat: no-repeat;
-      background-position: center 220px;
+      background-position: center center;
       background-size: 38rem;
       filter: blur(10px);
-      opacity: 0.45;
-      transform: scale(1.03);
+      opacity: 0.55;
+      z-index: 0;
       pointer-events: none;
     }
 
-    /* Custom Smooth Scrollbar for Horizontally Scrolled Services */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    /* Hide scrollbars for quick services bar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-teal-500 selection:text-white relative">
+<body class="text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white pb-12">
 
-  <!-- Fixed Soft Blurred Seal Background -->
+  <!-- Background Layer -->
   <div class="bg-watermark"></div>
 
-  <!-- Top Emergency Ticker & Auth Bar -->
-  <div class="bg-gradient-to-r from-govBlue-900 via-sky-900 to-teal-900 text-white py-2 px-4 shadow-sm text-xs font-medium z-10">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-      <div class="flex items-center gap-2 truncate">
-        <span class="bg-emerald-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full animate-pulse">Official Portal</span>
-        <span class="text-slate-200 truncate">Welcome to the Official Web Gateway of LGU Isabel, Leyte</span>
+  <!-- Top Utility Ribbon -->
+  <nav class="relative z-20 bg-slate-900 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+      <div class="flex items-center gap-3">
+        <span class="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded text-[10px] uppercase border border-emerald-500/30">Official Portal</span>
+        <span class="truncate">Welcome to the Official Web Gateway of LGU Isabel, Leyte</span>
       </div>
-      <div class="flex items-center gap-3 text-[11px] shrink-0 font-semibold">
-        <span class="flex items-center gap-1 text-teal-300">📞 Emergency Hotlines:</span>
-        <a href="tel:09171234567" class="hover:underline text-white">MDRRMO: 0917-XXX-XXXX</a>
-        <span class="text-slate-500">•</span>
-        <a href="tel:160" class="hover:underline text-rose-300">BFP: 160</a>
+      <div class="flex items-center gap-4 text-[11px] font-medium">
+        <span class="hidden sm:inline">📞 Emergency Hotlines: <strong class="text-white">MDRRMO: 0917-XXX-XXXX</strong> | <strong class="text-white">BFP: 160</strong></span>
+        <button id="navLoginBtn" onclick="toggleModal('loginModal', true)" type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-lg transition shadow-sm cursor-pointer flex items-center gap-1">
+          🔐 Official Login
+        </button>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <div class="max-w-7xl mx-auto w-full p-4 md:p-6 space-y-5 flex-1 relative z-10">
+  <!-- Main Content Wrapper -->
+  <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 space-y-5">
 
-    <!-- Bright Hero Header with Seal & Login Controls -->
-    <header class="bg-white/95 rounded-3xl p-5 md:p-6 shadow-xl shadow-slate-200/60 border border-slate-200/80 backdrop-blur-md relative overflow-hidden">
-      <!-- Decorative Accent Glows -->
-      <div class="absolute -top-12 -right-12 w-48 h-48 bg-teal-200/40 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-sky-200/40 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-4">
-        
-        <!-- Seal & Title Group -->
-        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4">
-          <div class="relative group shrink-0">
-            <div class="absolute -inset-1 bg-gradient-to-r from-teal-500 to-sky-500 rounded-full blur-xs opacity-75 group-hover:opacity-100 transition duration-300"></div>
-            <img src="isabel-seal.png" 
-                 onerror="this.src='https://placehold.co/120x120/0d9488/ffffff?text=LGU+ISABEL'" 
-                 alt="Municipality of Isabel Seal" 
-                 class="relative w-16 h-16 md:w-20 md:h-20 object-contain rounded-full bg-white p-1 shadow-md">
+    <!-- Header Banner -->
+    <header class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-4">
+        <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-full shadow-sm border-2 border-slate-100 shrink-0">
+        <div>
+          <div class="text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
+            <span>🇵🇭 Republic of the Philippines</span>
           </div>
-          <div class="space-y-0.5">
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-[11px] font-bold uppercase tracking-wider">
-              <span>🇵🇭</span> Republic of the Philippines
-            </div>
-            <h1 class="text-xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
-              Municipality of Isabel
-            </h1>
-            <p class="text-xs md:text-sm text-govBlue-700 font-bold">
-              Local Government Unit • Public Information & Digital Services Gateway
-            </p>
-          </div>
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+            Municipality of Isabel
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 font-medium">Local Government Unit • Public Information & Digital Services Gateway</p>
         </div>
+      </div>
 
-        <!-- Search Bar & Login Control -->
-        <div class="w-full md:w-80 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-              🔎 Search Portal
-            </span>
-            
-            <!-- Auth Status Trigger -->
-            <div id="authStatusContainer">
-              <button type="button" onclick="openLoginModal()" id="loginBtn" class="bg-govBlue-700 hover:bg-govBlue-800 text-white text-xs px-3 py-1.5 rounded-xl font-bold shadow-sm transition flex items-center gap-1.5 cursor-pointer">
-                <span>🔐</span> Official Login
-              </button>
-            </div>
-          </div>
-
-          <div class="relative">
-            <input type="text" 
-                   id="portalSearch" 
-                   placeholder="Search updates, announcements, services..." 
-                   class="w-full px-4 py-2.5 pl-9 bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-teal-500 rounded-2xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-4 focus:ring-teal-500/15 shadow-inner transition">
-            <span class="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
-          </div>
+      <!-- Live Search Box -->
+      <div class="w-full md:w-80">
+        <div class="relative">
+          <input type="text" id="portalSearch" placeholder="Search updates, announcements, services..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition shadow-inner">
+          <span class="absolute left-3 top-3 text-slate-400 text-xs">🔍</span>
         </div>
-
       </div>
     </header>
 
-    <!-- HORIZONTAL SCROLLABLE & COLLAPSIBLE SERVICES BAR -->
-    <section class="bg-white/95 rounded-3xl p-4 shadow-md border border-slate-200/90 backdrop-blur-md space-y-3">
-      <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+    <!-- HORIZONTAL SERVICES BAR (Collapsible & Restricted BPLO) -->
+    <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex justify-between items-center px-1">
         <div class="flex items-center gap-2">
-          <span class="text-lg">🏛️</span>
-          <h2 class="text-xs md:text-sm font-black text-slate-900 uppercase tracking-wider">LGU Offices & Quick Services</h2>
-          <span id="serviceCountBadge" class="bg-teal-50 text-teal-800 border border-teal-200 text-[10px] px-2 py-0.5 rounded-md font-bold">
-            6 Offices
-          </span>
+          <span class="text-base">🏛️</span>
+          <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">LGU Offices & Quick Services</h2>
+          <span id="serviceCountBadge" class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full">6 Offices</span>
         </div>
-        
-        <button type="button" 
-                id="toggleServicesBtn" 
-                onclick="toggleServicesContainer()" 
-                class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1 cursor-pointer">
-          <span id="toggleServicesIcon">🙈</span>
-          <span id="toggleServicesText">Hide Services</span>
+        <button type="button" onclick="toggleServicesBar()" id="toggleServicesBtn" class="text-xs text-slate-500 hover:text-slate-800 font-semibold px-2.5 py-1 rounded-lg hover:bg-slate-100 transition flex items-center gap-1 cursor-pointer">
+          <span id="toggleServicesIcon">🙈</span> <span id="toggleServicesText">Hide Services</span>
         </button>
       </div>
 
-      <!-- Scrollable / Grid Services Wrapper -->
-      <div id="servicesWrapper" class="transition-all duration-300">
-        <!-- Horizontal Scrollable Track -->
-        <div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1 no-scrollbar" id="servicesTrack">
-
-          <!-- 1. RESTRICTED BPLO CARD (HIDDEN BY DEFAULT) -->
-          <a id="bploRestrictedCard" 
-             href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" 
-             target="_blank" 
-             rel="noopener noreferrer"
-             style="display: none;"
-             class="group min-w-[260px] max-w-[280px] bg-gradient-to-br from-emerald-500/10 via-white to-teal-500/10 hover:bg-white border-2 border-emerald-500 p-3.5 rounded-2xl transition shadow-md hover:shadow-xl flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-xl shrink-0 shadow-sm group-hover:scale-105 transition">
-              💼
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-black text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded uppercase">Restricted App</span>
-              <h3 class="text-xs font-black text-slate-900 truncate group-hover:text-emerald-700 transition">BPLO Field Tracker</h3>
-              <span class="text-[10px] text-emerald-700 font-bold block truncate">Launch App ↗</span>
-            </div>
-          </a>
-
-          <!-- 2. Mayor's Office -->
-          <div onclick="openOfficeModal('mayor')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-govBlue-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              👑
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-govBlue-600 bg-govBlue-50 px-1.5 py-0.5 rounded uppercase">Executive</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-govBlue-700">Mayor's Office</h3>
-              <span class="text-[10px] text-slate-500 truncate block">Clearances & Appointments</span>
-            </div>
+      <!-- Scrollable Quick Services Strip -->
+      <div id="servicesContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-1 pt-1 transition-all duration-300">
+        
+        <!-- RESTRICTED BPLO CARD (Hidden by default, shown when Mayor/Admin logs in) -->
+        <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="hidden shrink-0 w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-2xl">💼</span>
+            <span class="bg-white/20 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">RESTRICTED ACCESS</span>
           </div>
+          <h3 class="font-black text-sm text-white group-hover:underline">BPLO Field Tracker</h3>
+          <p class="text-[11px] text-emerald-100 mt-0.5 line-clamp-2">Business Permit & Licensing Office inspection tracker and GIS mapping.</p>
+          <div class="mt-2 text-[11px] font-bold text-emerald-200 flex items-center gap-1">Launch System ↗</div>
+        </a>
 
-          <!-- 3. Local Civil Registrar -->
-          <div onclick="openOfficeModal('lcr')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-indigo-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              📑
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-1.5 py-0.5 rounded uppercase">Civil Registry</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-indigo-700">Civil Registrar</h3>
-              <span class="text-[10px] text-slate-500 truncate block">Birth, Marriage, Death</span>
-            </div>
+        <!-- Mayor's Office Card -->
+        <div onclick="openOfficeModal('mayor')" class="shrink-0 w-56 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-blue-700">
+            <span>👑 EXECUTIVE</span>
+            <span>→</span>
           </div>
-
-          <!-- 4. Municipal Assessor -->
-          <div onclick="openOfficeModal('assessor')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-amber-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              📐
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded uppercase">Real Property</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-amber-800">Assessor's Office</h3>
-              <span class="text-[10px] text-slate-500 truncate block">Land Assessment & RPTD</span>
-            </div>
-          </div>
-
-          <!-- 5. Accounting & Treasury -->
-          <div onclick="openOfficeModal('treasury')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-teal-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              💰
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded uppercase">Finance</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-teal-800">Treasury & Tax</h3>
-              <span class="text-[10px] text-slate-500 truncate block">Local Taxes & Receipts</span>
-            </div>
-          </div>
-
-          <!-- 6. BFP Isabel -->
-          <div onclick="openOfficeModal('bfp')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-rose-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              🚒
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded uppercase">Public Safety</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-rose-700">BFP Station</h3>
-              <span class="text-[10px] text-slate-500 truncate block">FSIC Clearance & Safety</span>
-            </div>
-          </div>
-
-          <!-- 7. BJMP Isabel -->
-          <div onclick="openOfficeModal('bjmp')" class="group min-w-[220px] max-w-[260px] bg-slate-50 hover:bg-white border border-slate-200 hover:border-cyan-500 p-3 rounded-2xl transition shadow-xs hover:shadow-md flex items-center gap-3 shrink-0 cursor-pointer">
-            <div class="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-800 flex items-center justify-center text-lg shrink-0 group-hover:scale-105 transition">
-              🚓
-            </div>
-            <div class="min-w-0 flex-1">
-              <span class="text-[9px] font-bold text-cyan-700 bg-cyan-50 px-1.5 py-0.5 rounded uppercase">Corrections</span>
-              <h3 class="text-xs font-bold text-slate-900 truncate group-hover:text-cyan-800">BJMP Station</h3>
-              <span class="text-[10px] text-slate-500 truncate block">Visitation Rules & Info</span>
-            </div>
-          </div>
-
+          <div class="font-bold text-xs text-slate-900">Mayor's Office</div>
+          <div class="text-[11px] text-slate-500 truncate">Clearances & Appointments</div>
         </div>
+
+        <!-- Local Civil Registrar Card -->
+        <div onclick="openOfficeModal('lcr')" class="shrink-0 w-56 bg-slate-50 hover:bg-indigo-50/60 border border-slate-200 hover:border-indigo-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-indigo-700">
+            <span>📑 CIVIL REGISTRY</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">Civil Registrar</div>
+          <div class="text-[11px] text-slate-500 truncate">Birth, Marriage, Death</div>
+        </div>
+
+        <!-- Assessor's Office Card -->
+        <div onclick="openOfficeModal('assessor')" class="shrink-0 w-56 bg-slate-50 hover:bg-amber-50/60 border border-slate-200 hover:border-amber-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-amber-700">
+            <span>📐 REAL PROPERTY</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">Assessor's Office</div>
+          <div class="text-[11px] text-slate-500 truncate">Land Assessment & RPTD</div>
+        </div>
+
+        <!-- Treasury & Accounting Card -->
+        <div onclick="openOfficeModal('treasury')" class="shrink-0 w-56 bg-slate-50 hover:bg-emerald-50/60 border border-slate-200 hover:border-emerald-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-emerald-700">
+            <span>💰 FINANCE</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">Treasury & Tax</div>
+          <div class="text-[11px] text-slate-500 truncate">Local Taxes & Receipts</div>
+        </div>
+
+        <!-- BFP Card -->
+        <div onclick="openOfficeModal('bfp')" class="shrink-0 w-56 bg-slate-50 hover:bg-rose-50/60 border border-slate-200 hover:border-rose-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-rose-700">
+            <span>🚒 PUBLIC SAFETY</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">BFP Station</div>
+          <div class="text-[11px] text-slate-500 truncate">FSIC Clearance & Safety</div>
+        </div>
+
+        <!-- BJMP Card -->
+        <div onclick="openOfficeModal('bjmp')" class="shrink-0 w-56 bg-slate-50 hover:bg-cyan-50/60 border border-slate-200 hover:border-cyan-300 p-3.5 rounded-xl transition cursor-pointer space-y-1">
+          <div class="flex justify-between items-center text-xs font-bold text-cyan-700">
+            <span>🚓 CORRECTIONS</span>
+            <span>→</span>
+          </div>
+          <div class="font-bold text-xs text-slate-900">BJMP Isabel</div>
+          <div class="text-[11px] text-slate-500 truncate">Visitor Scheduling</div>
+        </div>
+
       </div>
     </section>
 
-    <!-- MAIN BODY GRID: FACEBOOK-STYLE FEED (LEFT) + SIDEBAR (RIGHT) -->
+    <!-- MAIN TWO-COLUMN FEED GRID -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-      <!-- LEFT COLUMN: FACEBOOK-STYLE ANNOUNCEMENTS FEED -->
+      <!-- LEFT COLUMN: FACEBOOK-STYLE NEWSFEED (8 cols) -->
       <main class="lg:col-span-8 space-y-4">
 
-        <!-- EXECUTIVE POST CREATOR (VISIBLE ONLY WHEN LOGGED IN AS MAYOR / ADMIN) -->
-        <div id="executivePostComposer" style="display: none;" class="bg-white/95 backdrop-blur-md rounded-3xl p-4 shadow-lg border-2 border-teal-500/80 space-y-3">
-          <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
-            <div class="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-bold">✍️</div>
+        <!-- Feed Stream Header -->
+        <div class="flex justify-between items-center px-1">
+          <h2 class="text-xs font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+            <span>📣</span> Official Isabel LGU Announcements & Feed
+          </h2>
+          <span class="text-xs text-slate-400 font-medium">Public Stream</span>
+        </div>
+
+        <!-- OFFICER POST CREATOR BOX (Visible when Mayor or Admin logged in) -->
+        <div id="postCreatorBox" class="hidden bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-blue-200 space-y-3">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <div class="w-9 h-9 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center text-xs shadow-sm">📢</div>
             <div>
-              <h3 class="text-xs font-black text-slate-900">Create Official Announcement</h3>
-              <p class="text-[10px] text-slate-500">Publish updates directly to the Municipal Feed</p>
+              <div class="text-xs font-bold text-slate-900">Create Official Announcement</div>
+              <div id="creatorOfficerLabel" class="text-[10px] text-blue-700 font-semibold">Publishing as: Authorized Officer</div>
             </div>
           </div>
 
           <form id="createPostForm" class="space-y-3 text-xs">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input type="text" 
-                     id="postTitleInput" 
-                     required 
-                     placeholder="Announcement Title *" 
-                     class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-bold text-slate-800">
-              
-              <select id="postCategoryInput" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 font-semibold text-slate-700">
-                <option value="Executive Advisory">📢 Executive Advisory</option>
-                <option value="Public Safety & Disaster">🚨 Public Safety & Disaster</option>
-                <option value="Health & Medical">🏥 Health & Community</option>
-                <option value="Permitting & Taxation">💼 Permitting & Taxes</option>
-                <option value="Public Notice">📋 General Public Notice</option>
+            <input type="text" id="postTitleInput" required placeholder="Announcement Title / Headline..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-600 font-bold text-slate-900">
+            <textarea id="postBodyInput" rows="3" required placeholder="Write official announcement details here..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-600 text-slate-800"></textarea>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <select id="postCategoryInput" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700 outline-none">
+                <option value="PERMITTING & TAXATION">💼 Permitting & Tax</option>
+                <option value="PUBLIC SAFETY">🚒 Public Safety</option>
+                <option value="HEALTH & COMMUNITY">🏥 Health & Community</option>
+                <option value="EXECUTIVE ISSUANCE">👑 Executive Issuance</option>
               </select>
+              <input type="url" id="postImageInput" placeholder="Optional Image URL (https://...)" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none">
             </div>
 
-            <textarea id="postContentInput" 
-                      rows="3" 
-                      required 
-                      placeholder="Write announcement details for Isabel citizens..." 
-                      class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-xs font-medium text-slate-800"></textarea>
-
-            <div class="flex flex-col sm:flex-row gap-2 justify-between items-center">
-              <input type="url" 
-                     id="postImageInput" 
-                     placeholder="Optional Photo URL (https://...)" 
-                     class="w-full sm:w-2/3 p-2 bg-slate-50 border border-slate-200 rounded-xl text-[11px] focus:outline-none focus:ring-2 focus:ring-teal-500">
-              
-              <button type="submit" class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-extrabold px-5 py-2 rounded-xl shadow-md transition cursor-pointer flex items-center justify-center gap-1 shrink-0">
-                <span>📣</span> Publish Post
-              </button>
-            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer text-xs">
+              Publish Announcement
+            </button>
           </form>
         </div>
 
-        <!-- Feed Header Title -->
-        <div class="flex items-center justify-between px-1">
-          <h2 class="text-sm font-black text-slate-900 flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 animate-ping"></span>
-            <span>📰 Official Isabel LGU Announcements & Feed</span>
-          </h2>
-          <span class="text-[11px] font-bold text-slate-400">Public Stream</span>
-        </div>
-
-        <!-- Dynamic Social Posts Container -->
-        <div id="postsFeedContainer" class="space-y-4">
-
-          <!-- POST 1: BPLO RENEWAL ANNOUNCEMENT -->
-          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg relative" data-keywords="bplo permit business renewal tax">
-            <!-- Post Header -->
-            <div class="flex justify-between items-start relative">
-              <div class="flex items-center gap-3">
-                <img src="isabel-seal.png" onerror="this.src='https://placehold.co/80x80/0d9488/ffffff?text=BPLO'" alt="BPLO Seal" class="w-10 h-10 rounded-full border border-teal-200 bg-white p-0.5 object-contain author-avatar">
-                <div>
-                  <div class="flex items-center gap-1.5">
-                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer author-name">Business Permit & Licensing Office (BPLO)</h3>
-                    <span class="text-teal-600 text-xs" title="Official Verified Page">✔</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                    <span class="post-timestamp">Oct 27, 2026 at 8:30 AM</span>
-                    <span>•</span>
-                    <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider category-tag">Permitting & Taxation</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 3-DOTS ACTION MENU BUTTON & DROPDOWN -->
-              <div class="relative">
-                <button type="button" onclick="togglePostMenu(event, this)" class="text-slate-400 hover:text-slate-700 font-bold p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer text-base leading-none">•••</button>
-                <div class="post-options-menu hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-semibold">
-                  <button type="button" onclick="openEditPostModal(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>✏️</span> Edit Post
-                  </button>
-                  <button type="button" onclick="togglePinPost(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>📌</span> <span class="pin-label">Pin Announcement</span>
-                  </button>
-                  <button type="button" onclick="sharePost('Annual Business Permit Drive')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>🔗</span> Copy Direct Link
-                  </button>
-                  <div class="border-t border-slate-100 my-1"></div>
-                  <button type="button" onclick="deletePost(this)" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer font-bold">
-                    <span>🗑️</span> Delete Post
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Post Text Content -->
-            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
-              <h4 class="text-sm font-black text-slate-900 post-title">💼 REMINDER: Annual Business Permit Inspection & Renewal Drive</h4>
-              <p class="post-body">
-                The Municipal Business Permit and Licensing Office (BPLO) reminds all business operators and commercial establishment owners across Isabel's 24 barangays to ensure compliance with field inspections and local tax clearances.
-              </p>
-              <ul class="list-disc list-inside bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1 font-medium text-slate-800 post-extra-list">
-                <li>Field Inspectors are currently active in Barangay Poblacion, Matlang, and Marvel.</li>
-                <li>Please prepare your Barangay Clearance, Fire Safety Inspection Certificate (FSIC), and Real Property Tax Clearance.</li>
-              </ul>
-            </div>
-
-            <!-- Post Image Attachment -->
-            <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-inner max-h-80 bg-slate-100 post-image-wrapper">
-              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80" alt="Isabel Business District" class="w-full h-full object-cover post-image">
-            </div>
-
-            <!-- Interactive Social Counter & Buttons -->
-            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
-              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
-                <span>👍 ❤️ <span class="like-count">48</span> Citizens Liked</span>
-                <span><span class="comment-count">1</span> Comments • 9 Shares</span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
-                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
-                </button>
-                <button type="button" onclick="toggleComments('commentBlock1')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>💬</span> Comment
-                </button>
-                <button type="button" onclick="sharePost('Annual Business Permit Drive')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>↗️</span> Share
-                </button>
-              </div>
-
-              <!-- Comment Input Section -->
-              <div id="commentBlock1" style="display: none;" class="pt-2 space-y-2">
-                <div class="flex gap-2">
-                  <input type="text" placeholder="Write a public inquiry..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
-                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
-                </div>
-                <div class="comments-list space-y-1.5 pt-1">
-                  <div class="p-2 bg-slate-50 rounded-xl border border-slate-200/80 text-[11px]">
-                    <span class="font-bold text-slate-900">Barangay Matlang Resident:</span> What are the Saturday operating hours for inspection counter?
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <!-- POST 2: MDRRMO WEATHER & SAFETY ADVISORY -->
-          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg relative" data-keywords="mdrrmo weather emergency safety disaster alert">
-            <div class="flex justify-between items-start relative">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center text-xl font-bold shadow-md author-avatar">🚨</div>
-                <div>
-                  <div class="flex items-center gap-1.5">
-                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer author-name">MDRRMO Isabel Operations</h3>
-                    <span class="text-rose-600 text-xs" title="Official Emergency Channel">✔</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                    <span class="post-timestamp">Oct 26, 2026 at 4:15 PM</span>
-                    <span>•</span>
-                    <span class="bg-rose-50 text-rose-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider category-tag">Public Safety</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative">
-                <button type="button" onclick="togglePostMenu(event, this)" class="text-slate-400 hover:text-slate-700 font-bold p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer text-base leading-none">•••</button>
-                <div class="post-options-menu hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-semibold">
-                  <button type="button" onclick="openEditPostModal(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>✏️</span> Edit Post
-                  </button>
-                  <button type="button" onclick="togglePinPost(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>📌</span> <span class="pin-label">Pin Announcement</span>
-                  </button>
-                  <button type="button" onclick="sharePost('MDRRMO Weather Advisory')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>🔗</span> Copy Direct Link
-                  </button>
-                  <div class="border-t border-slate-100 my-1"></div>
-                  <button type="button" onclick="deletePost(this)" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer font-bold">
-                    <span>🗑️</span> Delete Post
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
-              <h4 class="text-sm font-black text-rose-700 post-title">🌧️ WEATHER ADVISORY: Rainfall Preparedness & Coastal Monitoring</h4>
-              <p class="post-body">
-                The Municipal Disaster Risk Reduction and Management Office (MDRRMO) advises all coastal and low-lying barangays to monitor tidal water levels. Emergency response teams are on 24/7 standby mode.
-              </p>
-              <div class="p-3 bg-rose-50 rounded-2xl border border-rose-200 text-rose-900 font-bold text-[11px] flex justify-between items-center">
-                <span>Direct Emergency Assistance Line:</span>
-                <a href="tel:09171234567" class="underline">📞 0917-XXX-XXXX</a>
-              </div>
-            </div>
-
-            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
-              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
-                <span>👍 ❤️ 😮 <span class="like-count">92</span> Citizens Liked</span>
-                <span><span class="comment-count">0</span> Comments • 34 Shares</span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
-                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
-                </button>
-                <button type="button" onclick="toggleComments('commentBlock2')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>💬</span> Comment
-                </button>
-                <button type="button" onclick="sharePost('MDRRMO Weather Advisory')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>↗️</span> Share
-                </button>
-              </div>
-
-              <div id="commentBlock2" style="display: none;" class="pt-2 space-y-2">
-                <div class="flex gap-2">
-                  <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
-                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
-                </div>
-                <div class="comments-list space-y-1.5 pt-1"></div>
-              </div>
-            </div>
-          </article>
-
-          <!-- POST 3: RHU FREE MEDICAL CLINIC -->
-          <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg relative" data-keywords="rhu health medical clinic doctor mayor care">
-            <div class="flex justify-between items-start relative">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl font-bold shadow-inner author-avatar">🏥</div>
-                <div>
-                  <div class="flex items-center gap-1.5">
-                    <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer author-name">Rural Health Unit (RHU Isabel)</h3>
-                    <span class="text-emerald-600 text-xs">✔</span>
-                  </div>
-                  <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                    <span class="post-timestamp">Oct 24, 2026 at 10:00 AM</span>
-                    <span>•</span>
-                    <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider category-tag">Health & Community</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="relative">
-                <button type="button" onclick="togglePostMenu(event, this)" class="text-slate-400 hover:text-slate-700 font-bold p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer text-base leading-none">•••</button>
-                <div class="post-options-menu hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-semibold">
-                  <button type="button" onclick="openEditPostModal(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>✏️</span> Edit Post
-                  </button>
-                  <button type="button" onclick="togglePinPost(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>📌</span> <span class="pin-label">Pin Announcement</span>
-                  </button>
-                  <button type="button" onclick="sharePost('RHU Free Health Outreach')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                    <span>🔗</span> Copy Direct Link
-                  </button>
-                  <div class="border-t border-slate-100 my-1"></div>
-                  <button type="button" onclick="deletePost(this)" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer font-bold">
-                    <span>🗑️</span> Delete Post
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
-              <h4 class="text-sm font-black text-slate-900 post-title">🩺 Free Community Health Checkup & Dental Consultation Program</h4>
-              <p class="post-body">
-                In coordination with the Office of the Municipal Mayor, the Rural Health Unit will be hosting a comprehensive Medical & Dental Outreach Mission at the Municipal Gymnasium this coming Friday.
-              </p>
-            </div>
-
-            <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
-              <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
-                <span>👍 ❤️ <span class="like-count">64</span> Citizens Liked</span>
-                <span><span class="comment-count">0</span> Comments • 18 Shares</span>
-              </div>
-
-              <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
-                <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span class="like-icon">👍</span> <span class="like-text">Like</span>
-                </button>
-                <button type="button" onclick="toggleComments('commentBlock3')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>💬</span> Comment
-                </button>
-                <button type="button" onclick="sharePost('RHU Free Health Outreach')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>↗️</span> Share
-                </button>
-              </div>
-
-              <div id="commentBlock3" style="display: none;" class="pt-2 space-y-2">
-                <div class="flex gap-2">
-                  <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
-                  <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
-                </div>
-                <div class="comments-list space-y-1.5 pt-1"></div>
-              </div>
-            </div>
-          </article>
-
+        <!-- POSTS FEED CONTAINER -->
+        <div id="feedContainer" class="space-y-4">
+          <!-- Dynamically populated posts -->
         </div>
 
       </main>
 
-  <!-- EDIT POST MODAL -->
-  <div id="editPostModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 space-y-4 my-auto border border-slate-200">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">✏️</span>
-          <h3 class="text-base font-black text-slate-900">Edit Post Announcement</h3>
+      <!-- RIGHT SIDEBAR: WIDGETS & DIRECTORY (4 cols) -->
+      <aside class="lg:col-span-4 space-y-4 sticky top-4">
+
+        <!-- Active Officer Status Card -->
+        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2.5">
+          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Session Status</div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div id="sessionAvatar" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs">👤</div>
+              <div>
+                <div id="sessionNameLabel" class="text-xs font-bold text-slate-900">Public Guest View</div>
+                <div id="sessionRoleLabel" class="text-[10px] text-slate-500">Read-Only Access</div>
+              </div>
+            </div>
+            <button id="sidebarLoginToggleBtn" onclick="toggleModal('loginModal', true)" type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
+              Login
+            </button>
+          </div>
         </div>
-        <button type="button" onclick="closeEditPostModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">✕</button>
+
+        <!-- Emergency Quick-Dial Hotlines -->
+        <div class="bg-gradient-to-br from-rose-600 to-red-700 text-white p-4 rounded-2xl shadow-md space-y-3">
+          <div class="flex items-center justify-between border-b border-white/20 pb-2">
+            <h3 class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+              <span>🚨</span> Emergency Hotlines
+            </h3>
+            <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-bold">24/7 STANDBY</span>
+          </div>
+
+          <div class="space-y-2 text-xs font-semibold">
+            <a href="tel:09170000000" class="flex justify-between items-center p-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <span>🛡️ MDRRMO Rescue</span>
+              <span class="font-mono font-bold">0917-XXX-XXXX</span>
+            </a>
+            <a href="tel:160" class="flex justify-between items-center p-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <span>🚒 Fire Station (BFP)</span>
+              <span class="font-mono font-bold">160 / 0918-XXX</span>
+            </a>
+            <a href="tel:117" class="flex justify-between items-center p-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <span>🚓 Municipal Police (PNP)</span>
+              <span class="font-mono font-bold">117 / 0920-XXX</span>
+            </a>
+            <a href="tel:09190000000" class="flex justify-between items-center p-2 rounded-lg bg-white/10 hover:bg-white/20 transition">
+              <span>🏥 Rural Health Unit (RHU)</span>
+              <span class="font-mono font-bold">0919-XXX-XXXX</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Municipal Operating Hours & Info Widget -->
+        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3 text-xs">
+          <h3 class="font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
+            <span>🏢</span> Municipal Hall Schedule
+          </h3>
+          <div class="space-y-2 text-slate-600">
+            <div class="flex justify-between">
+              <span>Monday – Friday:</span>
+              <span class="font-bold text-slate-800">8:00 AM – 5:00 PM</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Saturday – Sunday:</span>
+              <span class="font-bold text-rose-600">Closed (Emergency Only)</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Location:</span>
+              <span class="font-semibold text-slate-800">Poblacion, Isabel, Leyte</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Copyright Widget -->
+        <div class="text-center text-[11px] text-slate-500 space-y-1 p-2">
+          <div>© 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.</div>
+          <div class="text-slate-400">Powered by LGU Digital Public Infrastructure System</div>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+  <!-- AUTHENTICATION MODAL -->
+  <div id="loginModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-5 space-y-4 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">🔑 Officer & Executive Login</h3>
+        <button type="button" onclick="toggleModal('loginModal', false)" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
       </div>
 
-      <form id="editPostForm" class="space-y-3 text-xs">
+      <form id="loginForm" class="space-y-3 text-xs">
+        <p class="text-slate-500 leading-relaxed">Enter Mayor or Authorized Officer Passcode to access restricted LGU services:</p>
         <div>
-          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Post Title *</label>
-          <input type="text" id="editPostTitle" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900 focus:ring-2 focus:ring-teal-500 outline-none">
+          <label class="block font-bold text-slate-700 mb-1">Officer Passcode *</label>
+          <input type="password" id="passcodeInput" required placeholder="Enter Passcode" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-center font-mono outline-none focus:ring-2 focus:ring-blue-600">
         </div>
-
-        <div>
-          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Category Tag *</label>
-          <input type="text" id="editPostCategory" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-teal-800 focus:ring-2 focus:ring-teal-500 outline-none">
-        </div>
-
-        <div>
-          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Announcement Body *</label>
-          <textarea id="editPostBody" rows="4" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:ring-2 focus:ring-teal-500 outline-none"></textarea>
-        </div>
-
-        <div>
-          <label class="block font-bold text-slate-700 uppercase text-[10px] mb-1">Image URL (Optional)</label>
-          <input type="url" id="editPostImage" placeholder="https://..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-teal-500 outline-none">
-        </div>
-
-        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
-          <button type="button" onclick="closeEditPostModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl">Cancel</button>
-          <button type="submit" class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-extrabold rounded-xl shadow-md">Save Changes</button>
-        </div>
+        <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
+          Authenticate Session
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- INTERACTIVE OFFICE DETAILS MODAL -->
-  <div id="officeModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-6 space-y-5 my-auto max-h-[90vh] overflow-y-auto border border-slate-200">
-      <div class="flex justify-between items-start border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-3">
-          <div id="modalIcon" class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center text-2xl font-bold shrink-0">🏛️</div>
-          <div>
-            <h3 id="modalTitle" class="text-lg font-black text-slate-900 leading-tight">Office Title</h3>
-            <span id="modalBadge" class="text-[10px] font-extrabold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md uppercase tracking-wider">Department</span>
-          </div>
-        </div>
-        <button type="button" onclick="closeOfficeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer">✕</button>
+  <!-- EDIT POST MODAL -->
+  <div id="editPostModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-3.5 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-1.5">✏️ Edit Announcement Post</h3>
+        <button type="button" onclick="toggleModal('editPostModal', false)" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
       </div>
 
-      <div class="space-y-4 text-xs">
+      <form id="editPostForm" class="space-y-3 text-xs">
+        <input type="hidden" id="editPostId">
         <div>
-          <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">📋 Overview & Services</h4>
-          <p id="modalDesc" class="text-slate-600 leading-relaxed">Description text...</p>
+          <label class="block font-bold text-slate-700 mb-1">Headline Title *</label>
+          <input type="text" id="editPostTitle" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-slate-900 focus:ring-2 focus:ring-blue-600">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Announcement Details *</label>
+          <textarea id="editPostBody" rows="4" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-800 focus:ring-2 focus:ring-blue-600"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Category</label>
+            <select id="editPostCategory" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
+              <option value="PERMITTING & TAXATION">💼 Permitting & Tax</option>
+              <option value="PUBLIC SAFETY">🚒 Public Safety</option>
+              <option value="HEALTH & COMMUNITY">🏥 Health & Community</option>
+              <option value="EXECUTIVE ISSUANCE">👑 Executive Issuance</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Image URL</label>
+            <input type="url" id="editPostImage" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none">
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-          <div>
-            <span class="block font-bold text-slate-500 uppercase text-[10px]">🕒 Office Hours</span>
-            <span id="modalHours" class="font-semibold text-slate-800">Mon - Fri: 8:00 AM - 5:00 PM</span>
-          </div>
-          <div>
-            <span class="block font-bold text-slate-500 uppercase text-[10px]">📍 Location</span>
-            <span id="modalLocation" class="font-semibold text-slate-800">Municipal Hall, Isabel</span>
-          </div>
+        <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
+          Update Announcement
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- DEPARTMENT INFO MODAL -->
+  <div id="officeModal" style="display: none;" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 space-y-4 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-2.5">
+        <h3 id="modalOfficeTitle" class="text-base font-bold text-slate-900 flex items-center gap-1.5">Office Title</h3>
+        <button type="button" onclick="toggleModal('officeModal', false)" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <p id="modalOfficeDesc" class="text-slate-600 leading-relaxed">Office description goes here...</p>
+        
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 font-medium text-slate-700">
+          <div><strong>📍 Office Location:</strong> <span id="modalOfficeLoc">Municipal Hall Ground Floor</span></div>
+          <div><strong>🕒 Service Hours:</strong> <span>8:00 AM – 5:00 PM (Mon-Fri)</span></div>
+          <div><strong>📞 Contact Number:</strong> <span id="modalOfficePhone" class="text-blue-700 font-bold">0917-XXX-XXXX</span></div>
         </div>
 
         <div>
-          <h4 class="font-bold text-slate-700 uppercase tracking-wider mb-1">📞 Contact & Assistance</h4>
-          <div id="modalContact" class="bg-slate-50 p-3 rounded-2xl border border-slate-200 font-mono font-bold text-teal-700">
-            Contact Info...
-          </div>
+          <h4 class="font-bold text-slate-800 mb-1">Core Services Provided:</h4>
+          <ul id="modalOfficeServices" class="list-disc list-inside space-y-1 text-slate-600">
+            <!-- Dynamic items -->
+          </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-white/95 border-t border-slate-200/90 py-6 px-4 mt-8 text-center text-xs text-slate-500 space-y-1 relative z-10 backdrop-blur-md">
-    <div class="font-bold text-slate-700">Municipality of Isabel, Leyte — Official LGU Web Portal</div>
-    <div>© 2026 Local Government Unit of Isabel. All Rights Reserved.</div>
-    <div class="text-[10px] text-slate-400 font-mono">Powered by LGU Digital Public Infrastructure System</div>
-  </footer>
-
-  <!-- Scripts: Authentication, Collapsible Bar, Social Interaction & Modals -->
   <script>
-    let currentEditingCard = null;
+    // PASSCODES FOR RESTRICTED ACCESS
+    const AUTHORIZED_ACCOUNTS = {
+      "Mayor2026": "Hon. Municipal Mayor",
+      "Ashbel2026": "Officer Ashbel Espenido",
+      "Juan2026": "Officer Juan Cruz",
+      "Maria2026": "Officer Maria Santos",
+      "Pedro2026": "Officer Pedro Reyes",
+      "IsabelLeyte": "System Administrator"
+    };
 
-    // TOGGLE 3-DOTS DROPDOWN MENU
-    function togglePostMenu(event, btn) {
-      event.stopPropagation();
-      const menu = btn.nextElementSibling;
-      const allMenus = document.querySelectorAll('.post-options-menu');
-      
-      allMenus.forEach(m => {
-        if (m !== menu) m.classList.add('hidden');
-      });
+    // SAMPLE INITIAL PUBLIC POSTS FEED DATA
+    let defaultPosts = [
+      {
+        id: "post_1",
+        author: "Business Permit & Licensing Office (BPLO)",
+        category: "PERMITTING & TAXATION",
+        timestamp: "Oct 27, 2026 at 8:30 AM",
+        title: "💼 REMINDER: Annual Business Permit Inspection & Renewal Drive",
+        content: "The Municipal Business Permit and Licensing Office (BPLO) reminds all business operators and commercial establishment owners across Isabel's 24 barangays to ensure compliance with field inspections and local tax clearances.\n\n• Field Inspectors are currently active in Barangay Poblacion, Matlang, and Marvel.\n• Please prepare your Barangay Clearance, Fire Safety Inspection Certificate (FSIC), and Real Property Tax Clearance.",
+        image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80",
+        likes: 48,
+        shares: 9,
+        pinned: true,
+        comments: [
+          { author: "Sari-Sari Store Owner", text: "Are inspectors coming to Brgy. Tubod this week?" }
+        ]
+      },
+      {
+        id: "post_2",
+        author: "MDRRMO Isabel Operations",
+        category: "PUBLIC SAFETY",
+        timestamp: "Oct 26, 2026 at 4:15 PM",
+        title: "🌊 WEATHER ADVISORY: Rainfall Preparedness & Coastal Monitoring",
+        content: "The Municipal Disaster Risk Reduction and Management Office (MDRRMO) advises all coastal and low-lying barangays to monitor tidal water levels. Emergency response teams are on 24/7 standby mode.\n\nDirect Emergency Assistance Line: 0917-XXX-XXXX",
+        image: "",
+        likes: 92,
+        shares: 34,
+        pinned: false,
+        comments: []
+      },
+      {
+        id: "post_3",
+        author: "Rural Health Unit (RHU Isabel)",
+        category: "HEALTH & COMMUNITY",
+        timestamp: "Oct 25, 2026 at 10:00 AM",
+        title: "🩺 Free Community Health Checkup & Dental Consultation Program",
+        content: "In coordination with the Office of the Municipal Mayor, the Rural Health Unit will be hosting a comprehensive Medical & Dental Outreach Mission at the Municipal Gymnasium this coming Friday.",
+        image: "",
+        likes: 64,
+        shares: 18,
+        pinned: false,
+        comments: []
+      }
+    ];
 
-      menu.classList.toggle('hidden');
+    let activeUser = localStorage.getItem('isabel_portal_user') || null;
+    let servicesHidden = false;
+    let activeDropdownId = null;
+
+    function initPortal() {
+      updateSessionUI();
+      renderFeed();
     }
 
-    // CLOSE ALL MENUS ON BODY CLICK
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.post-options-menu').forEach(m => m.classList.add('hidden'));
-    });
+    function updateSessionUI() {
+      const bploCard = document.getElementById('bploServiceCard');
+      const creatorBox = document.getElementById('postCreatorBox');
+      const sessionAvatar = document.getElementById('sessionAvatar');
+      const sessionNameLabel = document.getElementById('sessionNameLabel');
+      const sessionRoleLabel = document.getElementById('sessionRoleLabel');
+      const sidebarBtn = document.getElementById('sidebarLoginToggleBtn');
+      const navBtn = document.getElementById('navLoginBtn');
 
-    // OPEN EDIT POST MODAL
-    function openEditPostModal(btn) {
-      const loggedUser = localStorage.getItem('isabel_portal_logged_user');
-      if (!loggedUser) {
-        alert("🔒 Official Login required!\nPlease authenticate as Mayor or Admin to edit announcements.");
-        openLoginModal();
-        return;
-      }
+      if (activeUser) {
+        if (bploCard) bploCard.classList.remove('hidden');
+        if (creatorBox) creatorBox.classList.remove('hidden');
+        document.getElementById('creatorOfficerLabel').textContent = "Publishing as: " + activeUser;
 
-      currentEditingCard = btn.closest('.post-card');
-      const titleElem = currentEditingCard.querySelector('.post-title');
-      const bodyElem = currentEditingCard.querySelector('.post-body');
-      const categoryElem = currentEditingCard.querySelector('.category-tag');
-      const imgElem = currentEditingCard.querySelector('.post-image');
+        sessionAvatar.textContent = "👑";
+        sessionAvatar.className = "w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shadow-sm";
+        sessionNameLabel.textContent = activeUser;
+        sessionRoleLabel.textContent = "Authorized Officer Session";
 
-      document.getElementById('editPostTitle').value = titleElem ? titleElem.textContent.trim() : '';
-      document.getElementById('editPostCategory').value = categoryElem ? categoryElem.textContent.trim() : 'Public Notice';
-      document.getElementById('editPostBody').value = bodyElem ? bodyElem.textContent.trim() : '';
-      document.getElementById('editPostImage').value = imgElem ? imgElem.src : '';
+        sidebarBtn.textContent = "Logout";
+        sidebarBtn.className = "text-xs bg-rose-50 text-rose-700 font-bold px-3 py-1.5 rounded-lg border border-rose-200 cursor-pointer hover:bg-rose-100 transition";
+        sidebarBtn.onclick = logoutUser;
 
-      document.getElementById('editPostModal').style.display = 'flex';
-    }
-
-    function closeEditPostModal() {
-      document.getElementById('editPostModal').style.display = 'none';
-      currentEditingCard = null;
-    }
-
-    // SAVE EDITED POST
-    document.getElementById('editPostForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (!currentEditingCard) return;
-
-      const newTitle = document.getElementById('editPostTitle').value.trim();
-      const newCategory = document.getElementById('editPostCategory').value.trim();
-      const newBody = document.getElementById('editPostBody').value.trim();
-      const newImgUrl = document.getElementById('editPostImage').value.trim();
-
-      const titleElem = currentEditingCard.querySelector('.post-title');
-      const bodyElem = currentEditingCard.querySelector('.post-body');
-      const categoryElem = currentEditingCard.querySelector('.category-tag');
-      let imgWrapper = currentEditingCard.querySelector('.post-image-wrapper');
-
-      if (titleElem) titleElem.textContent = newTitle;
-      if (bodyElem) bodyElem.textContent = newBody;
-      if (categoryElem) categoryElem.textContent = newCategory;
-
-      if (newImgUrl) {
-        if (!imgWrapper) {
-          imgWrapper = document.createElement('div');
-          imgWrapper.className = 'rounded-2xl overflow-hidden border border-slate-200 shadow-inner max-h-80 bg-slate-100 post-image-wrapper';
-          imgWrapper.innerHTML = `<img src="${newImgUrl}" alt="Post Image" class="w-full h-full object-cover post-image">`;
-          const bodyContainer = currentEditingCard.querySelector('.space-y-2');
-          bodyContainer.after(imgWrapper);
-        } else {
-          const imgElem = imgWrapper.querySelector('.post-image');
-          if (imgElem) imgElem.src = newImgUrl;
-        }
-      } else if (imgWrapper) {
-        imgWrapper.remove();
-      }
-
-      closeEditPostModal();
-    });
-
-    // DELETE POST
-    function deletePost(btn) {
-      const loggedUser = localStorage.getItem('isabel_portal_logged_user');
-      if (!loggedUser) {
-        alert("🔒 Official Login required!\nPlease authenticate as Mayor or Admin to delete announcements.");
-        openLoginModal();
-        return;
-      }
-
-      if (confirm("⚠️ Are you sure you want to delete this announcement post?")) {
-        const card = btn.closest('.post-card');
-        if (card) card.remove();
-      }
-    }
-
-    // PIN ANNOUNCEMENT TO TOP
-    function togglePinPost(btn) {
-      const card = btn.closest('.post-card');
-      const container = document.getElementById('postsFeedContainer');
-      const pinLabel = btn.querySelector('.pin-label');
-
-      if (card.classList.contains('is-pinned')) {
-        card.classList.remove('is-pinned', 'border-2', 'border-amber-400');
-        const badge = card.querySelector('.pinned-badge');
-        if (badge) badge.remove();
-        if (pinLabel) pinLabel.textContent = 'Pin Announcement';
+        navBtn.textContent = "🔒 Logout Session";
+        navBtn.className = "bg-slate-800 hover:bg-slate-700 text-white font-bold px-3 py-1 rounded-lg transition text-xs shadow-sm cursor-pointer";
+        navBtn.onclick = logoutUser;
       } else {
-        card.classList.add('is-pinned', 'border-2', 'border-amber-400');
-        const header = card.querySelector('.flex.justify-between');
-        const badge = document.createElement('div');
-        badge.className = 'pinned-badge bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black px-2 py-0.5 rounded-md mb-2 inline-flex items-center gap-1';
-        badge.innerHTML = '<span>📌</span> PINNED ANNOUNCEMENT';
-        card.insertBefore(badge, card.firstChild);
-        if (pinLabel) pinLabel.textContent = 'Unpin Announcement';
-        container.insertBefore(card, container.firstChild);
+        if (bploCard) bploCard.classList.add('hidden');
+        if (creatorBox) creatorBox.classList.add('hidden');
+
+        sessionAvatar.textContent = "👤";
+        sessionAvatar.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs";
+        sessionNameLabel.textContent = "Public Guest View";
+        sessionRoleLabel.textContent = "Read-Only Access";
+
+        sidebarBtn.textContent = "Login";
+        sidebarBtn.className = "text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer";
+        sidebarBtn.onclick = () => toggleModal('loginModal', true);
+
+        navBtn.textContent = "🔐 Official Login";
+        navBtn.className = "bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-lg transition text-xs shadow-sm cursor-pointer";
+        navBtn.onclick = () => toggleModal('loginModal', true);
       }
     }
 
-    // CREATE POST FORM SUBMISSION (updated with 3-dots structure for new posts)
-    document.getElementById('createPostForm').addEventListener('submit', function(e) {
+    function logoutUser() {
+      activeUser = null;
+      localStorage.removeItem('isabel_portal_user');
+      updateSessionUI();
+      renderFeed();
+      alert("Session logged out.");
+    }
+
+    // LOGIN FORM SUBMISSION
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const title = document.getElementById('postTitleInput').value.trim();
-      const category = document.getElementById('postCategoryInput').value;
-      const content = document.getElementById('postContentInput').value.trim();
-      const imageUrl = document.getElementById('postImageInput').value.trim();
-      const loggedUser = localStorage.getItem('isabel_portal_logged_user') || 'Executive Office';
+      const code = document.getElementById('passcodeInput').value.trim();
 
-      const now = new Date();
-      const timeString = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      if (AUTHORIZED_ACCOUNTS[code]) {
+        activeUser = AUTHORIZED_ACCOUNTS[code];
+        localStorage.setItem('isabel_portal_user', activeUser);
+        updateSessionUI();
+        toggleModal('loginModal', false);
+        document.getElementById('passcodeInput').value = '';
+        alert(`Welcome, ${activeUser}!\nAuthorized session active.`);
+      } else {
+        alert("❌ Invalid Officer Passcode!");
+      }
+    });
 
-      const newPostHtml = `
-        <article class="post-card bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-slate-200/90 space-y-3.5 transition hover:shadow-lg relative">
-          <div class="flex justify-between items-start relative">
+    // TOGGLE SERVICES STRIP
+    window.toggleServicesBar = function() {
+      const container = document.getElementById('servicesContainer');
+      const icon = document.getElementById('toggleServicesIcon');
+      const text = document.getElementById('toggleServicesText');
+      
+      servicesHidden = !servicesHidden;
+      if (servicesHidden) {
+        container.style.display = 'none';
+        icon.textContent = "👁️";
+        text.textContent = "Show Services";
+      } else {
+        container.style.display = 'flex';
+        icon.textContent = "🙈";
+        text.textContent = "Hide Services";
+      }
+    };
+
+    // RENDER NEWSFEED
+    function renderFeed(filterQuery = '') {
+      const feed = document.getElementById('feedContainer');
+      feed.innerHTML = '';
+
+      let list = [...defaultPosts];
+
+      if (filterQuery) {
+        const q = filterQuery.toLowerCase();
+        list = list.filter(p => 
+          p.title.toLowerCase().includes(q) || 
+          p.content.toLowerCase().includes(q) || 
+          p.author.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+        );
+      }
+
+      // Sort pinned posts first
+      list.sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
+
+      if (list.length === 0) {
+        feed.innerHTML = `
+          <div class="bg-white/90 p-8 rounded-2xl text-center text-slate-400 space-y-2 border border-slate-200">
+            <div class="text-3xl">🔍</div>
+            <div class="font-bold text-sm text-slate-700">No matching announcements found</div>
+            <div class="text-xs">Try searching for different keywords or clear the search filter.</div>
+          </div>
+        `;
+        return;
+      }
+
+      list.forEach((post) => {
+        const postCard = document.createElement('article');
+        postCard.className = "bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 overflow-visible transition space-y-3 relative p-4 sm:p-5";
+
+        const formattedContent = post.content.replace(/\n/g, '<br>');
+
+        postCard.innerHTML = `
+          <!-- Header info -->
+          <div class="flex justify-between items-start gap-2 relative">
             <div class="flex items-center gap-3">
-              <img src="isabel-seal.png" onerror="this.src='https://placehold.co/80x80/0d9488/ffffff?text=LGU'" alt="LGU Seal" class="w-10 h-10 rounded-full border border-teal-200 bg-white p-0.5 object-contain author-avatar">
+              <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm shrink-0 border border-blue-200">
+                🏛️
+              </div>
               <div>
-                <div class="flex items-center gap-1.5">
-                  <h3 class="text-xs font-black text-slate-900 hover:underline cursor-pointer author-name">${loggedUser}</h3>
-                  <span class="text-teal-600 text-xs">✔</span>
+                <div class="font-bold text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
+                  <span>${post.author}</span>
+                  <span class="text-blue-600 text-xs">✓</span>
+                  ${post.pinned ? '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300">📌 PINNED</span>' : ''}
                 </div>
-                <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
-                  <span class="post-timestamp">${timeString}</span>
+                <div class="text-[10px] text-slate-400 font-medium flex items-center gap-2">
+                  <span>${post.timestamp}</span>
                   <span>•</span>
-                  <span class="bg-teal-50 text-teal-800 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider category-tag">${category}</span>
+                  <span class="text-emerald-700 font-bold uppercase">${post.category}</span>
                 </div>
               </div>
             </div>
 
+            <!-- 3-DOTS CONTEXT MENU CONTAINER -->
             <div class="relative">
-              <button type="button" onclick="togglePostMenu(event, this)" class="text-slate-400 hover:text-slate-700 font-bold p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer text-base leading-none">•••</button>
-              <div class="post-options-menu hidden absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl shadow-xl border border-slate-200 py-1.5 z-30 text-xs font-semibold">
-                <button type="button" onclick="openEditPostModal(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
+              <button type="button" onclick="togglePostDropdown('${post.id}', event)" class="text-slate-400 hover:text-slate-700 font-bold px-2 py-1 rounded-lg hover:bg-slate-100 transition cursor-pointer text-base leading-none">
+                •••
+              </button>
+
+              <!-- Dropdown Menu Box (Fixed High Z-Index Stack) -->
+              <div id="dropdown_${post.id}" style="display: none;" class="absolute right-0 top-8 w-48 bg-white rounded-xl shadow-xl border border-slate-200 z-50 py-1.5 text-xs font-semibold text-slate-700 space-y-0.5">
+                <button type="button" onclick="editPost('${post.id}')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center gap-2">
                   <span>✏️</span> Edit Post
                 </button>
-                <button type="button" onclick="togglePinPost(this)" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
-                  <span>📌</span> <span class="pin-label">Pin Announcement</span>
+                <button type="button" onclick="togglePinPost('${post.id}')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center gap-2">
+                  <span>📌</span> ${post.pinned ? 'Unpin Announcement' : 'Pin Announcement'}
                 </button>
-                <button type="button" onclick="sharePost('${title}')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2 cursor-pointer">
+                <button type="button" onclick="copyPostLink('${post.id}')" class="w-full text-left px-3.5 py-2 hover:bg-slate-50 flex items-center gap-2">
                   <span>🔗</span> Copy Direct Link
                 </button>
                 <div class="border-t border-slate-100 my-1"></div>
-                <button type="button" onclick="deletePost(this)" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2 cursor-pointer font-bold">
+                <button type="button" onclick="deletePost('${post.id}')" class="w-full text-left px-3.5 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2">
                   <span>🗑️</span> Delete Post
                 </button>
               </div>
             </div>
           </div>
 
-          <div class="space-y-2 text-xs text-slate-700 leading-relaxed font-normal">
-            <h4 class="text-sm font-black text-slate-900 post-title">${title}</h4>
-            <p class="post-body">${content}</p>
+          <!-- Body Content -->
+          <div class="space-y-2">
+            <h3 class="font-black text-slate-900 text-sm sm:text-base leading-snug">${post.title}</h3>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed font-normal">${formattedContent}</div>
           </div>
 
-          ${imageUrl ? `
-            <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-inner max-h-80 bg-slate-100 post-image-wrapper">
-              <img src="${imageUrl}" onerror="this.style.display='none'" alt="Post Attachment" class="w-full h-full object-cover post-image">
+          <!-- Optional Attachment Image -->
+          ${post.image ? `
+            <div class="pt-1">
+              <img src="${post.image}" alt="Attachment" class="w-full max-h-80 object-cover rounded-xl border border-slate-200 shadow-xs">
             </div>
           ` : ''}
 
-          <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
-            <div class="flex justify-between items-center text-[11px] text-slate-400 font-semibold px-1">
-              <span>👍 <span class="like-count">1</span> Citizen Liked</span>
-              <span><span class="comment-count">0</span> Comments • 0 Shares</span>
+          <!-- Social Engagement Stats -->
+          <div class="flex justify-between items-center pt-2 text-[11px] text-slate-500 border-t border-slate-100 font-medium">
+            <div class="flex items-center gap-1">
+              <span>👍 ❤️ 😮</span>
+              <span>${post.likes} Citizens Liked</span>
             </div>
-
-            <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 font-bold text-slate-600">
-              <button type="button" onclick="toggleLike(this)" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <span class="like-icon">👍</span> <span class="like-text">Like</span>
-              </button>
-              <button type="button" onclick="toggleComments('commentNew${Date.now()}')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <span>💬</span> Comment
-              </button>
-              <button type="button" onclick="sharePost('${title}')" class="py-2 rounded-xl hover:bg-slate-100 transition flex items-center justify-center gap-1.5 cursor-pointer">
-                <span>↗️</span> Share
-              </button>
-            </div>
-
-            <div id="commentNew${Date.now()}" style="display: none;" class="pt-2 space-y-2">
-              <div class="flex gap-2">
-                <input type="text" placeholder="Write a comment..." class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <button type="button" onclick="addComment(this)" class="bg-teal-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs">Send</button>
-              </div>
-              <div class="comments-list space-y-1.5 pt-1"></div>
+            <div>
+              <span>${post.comments.length} Comments</span>
+              <span class="mx-1">•</span>
+              <span>${post.shares} Shares</span>
             </div>
           </div>
-        </article>
-      `;
 
-      const feedContainer = document.getElementById('postsFeedContainer');
-      feedContainer.insertAdjacentHTML('afterbegin', newPostHtml);
+          <!-- Interactive Social Buttons -->
+          <div class="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 text-xs font-bold text-slate-600">
+            <button type="button" onclick="likePost('${post.id}')" class="py-2 rounded-xl hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
+              <span>👍</span> Like
+            </button>
+            <button type="button" onclick="toggleComments('${post.id}')" class="py-2 rounded-xl hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
+              <span>💬</span> Comment
+            </button>
+            <button type="button" onclick="sharePost('${post.id}')" class="py-2 rounded-xl hover:bg-slate-100 flex items-center justify-center gap-1.5 transition">
+              <span>↗️</span> Share
+            </button>
+          </div>
+
+          <!-- Inline Comment Section -->
+          <div id="comments_box_${post.id}" class="hidden pt-2 border-t border-slate-100 space-y-2.5">
+            <div class="space-y-1.5">
+              ${post.comments.map(c => `
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-xs">
+                  <span class="font-bold text-slate-900">${c.author}:</span>
+                  <span class="text-slate-700 ml-1">${c.text}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="flex gap-2">
+              <input type="text" id="comment_input_${post.id}" placeholder="Write a public comment..." class="flex-1 p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-1 focus:ring-blue-600">
+              <button type="button" onclick="submitComment('${post.id}')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition">Post</button>
+            </div>
+          </div>
+        `;
+
+        feed.appendChild(postCard);
+      });
+    }
+
+    // TOGGLE 3-DOTS DROPDOWN
+    window.togglePostDropdown = function(postId, event) {
+      if (event) event.stopPropagation();
+      const targetId = `dropdown_${postId}`;
+      
+      // Close all open dropdowns first
+      document.querySelectorAll('[id^="dropdown_"]').forEach(el => {
+        if (el.id !== targetId) el.style.display = 'none';
+      });
+
+      const el = document.getElementById(targetId);
+      if (el) el.style.display = (el.style.display === 'none' || !el.style.display) ? 'block' : 'none';
+    };
+
+    // CLOSE DROPDOWNS ON OUTSIDE CLICK
+    document.addEventListener('click', function() {
+      document.querySelectorAll('[id^="dropdown_"]').forEach(el => el.style.display = 'none');
+    });
+
+    // POST ACTIONS
+    window.likePost = function(id) {
+      const p = defaultPosts.find(x => x.id === id);
+      if (p) { p.likes++; renderFeed(); }
+    };
+
+    window.toggleComments = function(id) {
+      const box = document.getElementById(`comments_box_${id}`);
+      if (box) box.classList.toggle('hidden');
+    };
+
+    window.submitComment = function(id) {
+      const input = document.getElementById(`comment_input_${id}`);
+      const text = input ? input.value.trim() : '';
+      if (!text) return;
+
+      const p = defaultPosts.find(x => x.id === id);
+      if (p) {
+        p.comments.push({ author: activeUser || "Isabel Citizen", text });
+        renderFeed();
+      }
+    };
+
+    window.sharePost = function(id) {
+      navigator.clipboard.writeText(window.location.href);
+      alert("📋 Announcement link copied to clipboard!");
+    };
+
+    window.copyPostLink = function(id) {
+      navigator.clipboard.writeText(window.location.href + `#${id}`);
+      alert("📋 Post link copied to clipboard!");
+    };
+
+    window.togglePinPost = function(id) {
+      if (!activeUser) return alert("Officer authentication required.");
+      const p = defaultPosts.find(x => x.id === id);
+      if (p) { p.pinned = !p.pinned; renderFeed(); }
+    };
+
+    window.deletePost = function(id) {
+      if (!activeUser) return alert("Officer authentication required to delete announcements.");
+      if (confirm("Are you sure you want to delete this announcement post?")) {
+        defaultPosts = defaultPosts.filter(x => x.id !== id);
+        renderFeed();
+      }
+    };
+
+    window.editPost = function(id) {
+      if (!activeUser) return alert("Officer authentication required to edit posts.");
+      const p = defaultPosts.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById('editPostId').value = p.id;
+      document.getElementById('editPostTitle').value = p.title;
+      document.getElementById('editPostBody').value = p.content;
+      document.getElementById('editPostCategory').value = p.category;
+      document.getElementById('editPostImage').value = p.image || '';
+
+      toggleModal('editPostModal', true);
+    };
+
+    // SUBMIT EDIT POST FORM
+    document.getElementById('editPostForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const id = document.getElementById('editPostId').value;
+      const p = defaultPosts.find(x => x.id === id);
+
+      if (p) {
+        p.title = document.getElementById('editPostTitle').value.trim();
+        p.content = document.getElementById('editPostBody').value.trim();
+        p.category = document.getElementById('editPostCategory').value;
+        p.image = document.getElementById('editPostImage').value.trim();
+        renderFeed();
+        toggleModal('editPostModal', false);
+        alert("✅ Announcement updated successfully!");
+      }
+    });
+
+    // SUBMIT NEW POST FORM
+    document.getElementById('createPostForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!activeUser) return alert("Officer login required.");
+
+      const newPost = {
+        id: "post_" + Date.now(),
+        author: activeUser,
+        category: document.getElementById('postCategoryInput').value,
+        timestamp: "Just Now",
+        title: document.getElementById('postTitleInput').value.trim(),
+        content: document.getElementById('postBodyInput').value.trim(),
+        image: document.getElementById('postImageInput').value.trim(),
+        likes: 1,
+        shares: 0,
+        pinned: false,
+        comments: []
+      };
+
+      defaultPosts.unshift(newPost);
+      renderFeed();
       document.getElementById('createPostForm').reset();
+      alert("✅ Announcement published to Isabel LGU feed!");
     });
 
-    // Close edit post modal on backdrop click
-    document.getElementById('editPostModal').addEventListener('click', function(e) {
-      if (e.target === this) closeEditPostModal();
+    // SEARCH FILTER LISTENER
+    document.getElementById('portalSearch').addEventListener('input', function(e) {
+      renderFeed(e.target.value.trim());
     });
+
+    // MODAL TOGGLE HELPER
+    window.toggleModal = function(id, show) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'flex' : 'none';
+    };
+
+    // DEPARTMENT INFO MODAL
+    const DEPARTMENT_DETAILS = {
+      mayor: {
+        title: "Office of the Municipal Mayor",
+        desc: "The executive arm of the Isabel Local Government Unit, responsible for municipal policies, public appointments, executive clearances, and community assistance programs.",
+        loc: "Executive Wing, 2nd Floor, Municipal Hall",
+        phone: "0917-111-2222",
+        services: ["Mayor's Clearance & Recommendations", "Public Appointments & Consultations", "Executive Orders & Issuances", "Community Financial & Medical Assistance"]
+      },
+      lcr: {
+        title: "Local Civil Registrar (LCR)",
+        desc: "Mandated to maintain civil registration records for all residents of Isabel, Leyte.",
+        loc: "Ground Floor, Right Wing, Municipal Hall",
+        phone: "0917-222-3333",
+        services: ["Birth, Marriage, & Death Certificate Registration", "Certified True Copies of Civil Records", "Late Registration Processing", "Correction of Clerical Errors (RA 9048/10172)"]
+      },
+      assessor: {
+        title: "Municipal Assessor's Office",
+        desc: "Manages real property valuation, land assessments, and tax mapping records for Isabel.",
+        loc: "Ground Floor, Left Wing, Municipal Hall",
+        phone: "0917-333-4444",
+        services: ["Real Property Tax Declaration (RPTD)", "Tax Mapping & Property Verification", "Assessment Roll Updates", "Transfer of Land Ownership Records"]
+      },
+      treasury: {
+        title: "Municipal Treasury & Accounting Office",
+        desc: "Handles revenue collection, local tax payments, official receipt issuance, and municipal financial disbursements.",
+        loc: "Main Treasury Counter, Ground Floor",
+        phone: "0917-444-5555",
+        services: ["Local Tax & Fee Collections", "Official Receipt (OR) Issuance", "Community Tax Certificate (Cedula)", "Treasury & Tax Clearances"]
+      },
+      bfp: {
+        title: "Bureau of Fire Protection (BFP Isabel)",
+        desc: "Ensures public fire safety, conducts building safety inspections, and leads emergency fire response.",
+        loc: "Isabel Fire Station, Municipal Compound",
+        phone: "160 / 0918-555-6666",
+        services: ["Fire Safety Inspection Certificate (FSIC)", "Commercial Building Inspection Clearance", "Fire Safety & Prevention Seminars", "24/7 Emergency Fire Dispatch"]
+      },
+      bjmp: {
+        title: "Bureau of Jail Management and Penology (BJMP)",
+        desc: "Manages facility security, inmate rehabilitation programs, and visitor scheduling for Isabel Municipal Jail.",
+        loc: "BJMP Isabel Station, Brgy. Matlang",
+        phone: "0920-666-7777",
+        services: ["Inmate Visitation Scheduling", "Visitor Clearance & Registration", "PDL Welfare & Rehabilitation Services"]
+      }
+    };
+
+    window.openOfficeModal = function(key) {
+      const data = DEPARTMENT_DETAILS[key];
+      if (!data) return;
+
+      document.getElementById('modalOfficeTitle').textContent = data.title;
+      document.getElementById('modalOfficeDesc').textContent = data.desc;
+      document.getElementById('modalOfficeLoc').textContent = data.loc;
+      document.getElementById('modalOfficePhone').textContent = data.phone;
+
+      const servicesUl = document.getElementById('modalOfficeServices');
+      servicesUl.innerHTML = data.services.map(s => `<li>${s}</li>`).join('');
+
+      toggleModal('officeModal', true);
+    };
+
+    // Initialize application
+    initPortal();
   </script>
 </body>
 </html>
