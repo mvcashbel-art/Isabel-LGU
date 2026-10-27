@@ -65,7 +65,7 @@
   <!-- Main Content Wrapper -->
   <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 space-y-4 sm:space-y-5">
 
-    <!-- HERO BANNER WITH DYNAMIC COVER UPLOAD -->
+    <!-- HERO BANNER FOR OFFICIALS PICTURE (CLEANED) -->
     <header class="relative bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl shadow-md border border-slate-200/80 overflow-hidden group">
       <!-- Banner Image -->
       <div class="relative w-full h-52 sm:h-72 md:h-80 lg:h-96 bg-slate-900 flex items-center justify-center overflow-hidden">
@@ -78,14 +78,6 @@
         />
         <!-- Gradient Overlay for Contrast & Text Readability -->
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/30 to-slate-900/20"></div>
-
-        <!-- OFFICER COVER PHOTO CHANGE BUTTON (Hidden by default, shown when logged in) -->
-        <div id="coverUploadBtnContainer" class="hidden absolute top-3 left-3 sm:top-4 sm:left-4 z-30">
-          <label for="coverImageFileInput" class="bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-xs px-3 py-2 rounded-xl backdrop-blur-md border border-white/30 shadow-lg cursor-pointer flex items-center gap-1.5 transition">
-            <span>📷</span> Change Cover Banner
-          </label>
-          <input type="file" id="coverImageFileInput" accept="image/*" class="hidden" onchange="handleCoverImageUpload(event)">
-        </div>
 
         <!-- Floating Search Input (Top-Right Overlay) -->
         <div class="absolute top-3 right-3 sm:top-4 sm:right-4 left-auto w-48 sm:w-80 z-20">
@@ -525,12 +517,6 @@
     let servicesHidden = false;
 
     function initPortal() {
-      // Restore uploaded cover image if saved
-      const savedCover = localStorage.getItem('isabel_custom_cover');
-      if (savedCover) {
-        document.getElementById('heroBannerImage').src = savedCover;
-      }
-
       updateSessionUI();
       renderFeed();
     }
@@ -538,7 +524,6 @@
     function updateSessionUI() {
       const bploCard = document.getElementById('bploServiceCard');
       const creatorBox = document.getElementById('postCreatorBox');
-      const coverBtnContainer = document.getElementById('coverUploadBtnContainer');
       const sessionAvatar = document.getElementById('sessionAvatar');
       const sessionNameLabel = document.getElementById('sessionNameLabel');
       const sessionRoleLabel = document.getElementById('sessionRoleLabel');
@@ -548,7 +533,6 @@
       if (activeUser) {
         if (bploCard) bploCard.classList.remove('hidden');
         if (creatorBox) creatorBox.classList.remove('hidden');
-        if (coverBtnContainer) coverBtnContainer.classList.remove('hidden');
         document.getElementById('creatorOfficerLabel').textContent = "Publishing as: " + activeUser;
 
         sessionAvatar.textContent = "👑";
@@ -566,7 +550,6 @@
       } else {
         if (bploCard) bploCard.classList.add('hidden');
         if (creatorBox) creatorBox.classList.add('hidden');
-        if (coverBtnContainer) coverBtnContainer.classList.add('hidden');
 
         sessionAvatar.textContent = "👤";
         sessionAvatar.className = "w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs";
@@ -582,25 +565,6 @@
         navBtn.onclick = () => toggleModal('loginModal', true);
       }
     }
-
-    // HANDLE COVER PHOTO UPLOAD
-    window.handleCoverImageUpload = function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const dataUrl = e.target.result;
-        document.getElementById('heroBannerImage').src = dataUrl;
-        try {
-          localStorage.setItem('isabel_custom_cover', dataUrl);
-          alert("📷 Cover photo updated successfully!");
-        } catch (err) {
-          alert("Cover photo updated for this session! (File size too large to persist offline)");
-        }
-      };
-      reader.readAsDataURL(file);
-    };
 
     function logoutUser() {
       activeUser = null;
