@@ -110,10 +110,15 @@
       </div>
 
       <!-- Scrollable Quick Services Strip -->
-      <div id="servicesContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-1 pt-1 transition-all duration-300">
+      <div id="servicesWrap" class="relative">
+      <!-- Prev / Next arrows (desktop; phones use swipe) -->
+      <button type="button" id="svcPrevBtn" onclick="scrollServices(-1)" aria-label="Previous offices" class="hidden md:flex absolute left-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white/95 border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">◀</button>
+      <button type="button" id="svcNextBtn" onclick="scrollServices(1)" aria-label="Next offices" class="hidden md:flex absolute right-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white/95 border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">▶</button>
+
+      <div id="servicesContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-1 pt-1 transition-all duration-300 snap-x snap-mandatory scroll-smooth">
         
         <!-- RESTRICTED BPLO CARD (Hidden by default, shown when Mayor/Admin logs in) -->
-        <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="hidden shrink-0 w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
+        <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="hidden shrink-0 snap-start w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
           <div class="flex justify-between items-start mb-2">
             <span class="text-2xl">💼</span>
             <span class="bg-white/20 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">RESTRICTED ACCESS</span>
@@ -126,6 +131,7 @@
         <!-- Dynamic Quick Service Cards HTML rendered via JS -->
         <div id="dynamicServicesTrack" class="flex gap-3"></div>
 
+      </div>
       </div>
     </section>
 
@@ -320,6 +326,13 @@
         <div>
           <label class="block font-bold text-slate-700 mb-1">Card Subtitle / Description *</label>
           <input type="text" id="inputServiceSubtitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-700">Office Photo</label>
+          <img id="servicePhotoPreview" src="" alt="" class="hidden w-full h-28 object-cover rounded-xl border border-slate-200">
+          <input type="file" id="inputServiceFile" accept="image/*" class="w-full text-[11px] text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-bold">
+          <input type="url" id="inputServiceImage" placeholder="…or paste image URL (https://...)" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+          <button type="button" onclick="clearServicePhoto()" class="text-[11px] text-rose-600 font-bold hover:underline">Remove photo</button>
         </div>
         <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Card Details</button>
       </form>
@@ -572,28 +585,111 @@
       const container = document.getElementById('dynamicServicesTrack');
       container.innerHTML = '';
 
+      const GRADIENTS = {
+        blue: "from-blue-500 to-blue-800",
+        indigo: "from-indigo-500 to-indigo-800",
+        amber: "from-amber-400 to-orange-600",
+        emerald: "from-emerald-500 to-teal-700",
+        rose: "from-rose-500 to-red-700",
+        cyan: "from-cyan-500 to-sky-700"
+      };
+
       quickServicesList.forEach(s => {
         const card = document.createElement('div');
-        card.className = "shrink-0 w-52 sm:w-56 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 p-3 sm:p-3.5 rounded-xl transition cursor-pointer space-y-1 relative group";
+        card.className = "shrink-0 snap-start w-56 sm:w-60 bg-slate-50 hover:bg-white border border-slate-200 hover:shadow-md rounded-xl transition cursor-pointer relative group overflow-hidden";
         card.onclick = () => openOfficeModal(s.key);
+
+        const icon = (s.category || '').trim().split(' ')[0] || '🏛️';
+        const grad = GRADIENTS[s.color] || GRADIENTS.blue;
+        const photo = s.image
+          ? `<img src="${s.image}" alt="${s.title}" loading="lazy" class="w-full h-24 sm:h-28 object-cover group-hover:scale-105 transition duration-300" onerror="this.outerHTML='<div class=&quot;w-full h-24 sm:h-28 bg-gradient-to-br ${grad} flex items-center justify-center text-4xl&quot;>${icon}</div>'">`
+          : `<div class="w-full h-24 sm:h-28 bg-gradient-to-br ${grad} flex items-center justify-center text-4xl">${icon}</div>`;
 
         card.innerHTML = `
           <!-- Officer Card Edit Trigger -->
           <button type="button" onclick="openServiceEditModal('${s.key}', event)" class="officer-only-btn hidden absolute top-2 right-2 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow z-10">
             ✏️
           </button>
-          <div class="flex justify-between items-center text-xs font-bold text-blue-700">
-            <span>${s.category}</span>
-            <span>→</span>
+          <div class="overflow-hidden">${photo}</div>
+          <div class="p-3 space-y-1">
+            <div class="flex justify-between items-center text-[11px] font-bold text-blue-700">
+              <span>${s.category}</span>
+              <span>→</span>
+            </div>
+            <div class="font-bold text-xs sm:text-sm text-slate-900">${s.title}</div>
+            <div class="text-[11px] text-slate-500 truncate">${s.subtitle}</div>
           </div>
-          <div class="font-bold text-xs text-slate-900">${s.title}</div>
-          <div class="text-[11px] text-slate-500 truncate">${s.subtitle}</div>
         `;
         container.appendChild(card);
       });
 
       document.getElementById('serviceCountBadge').textContent = `${quickServicesList.length} Offices`;
+      updateServiceArrows();
     }
+
+    // PREV / NEXT ARROWS FOR SERVICES STRIP
+    window.scrollServices = function(dir) {
+      const c = document.getElementById('servicesContainer');
+      c.scrollBy({ left: dir * Math.max(240, c.clientWidth * 0.8), behavior: 'smooth' });
+    };
+
+    function updateServiceArrows() {
+      const c = document.getElementById('servicesContainer');
+      const prev = document.getElementById('svcPrevBtn');
+      const next = document.getElementById('svcNextBtn');
+      if (!c || !prev || !next) return;
+      const atStart = c.scrollLeft <= 4;
+      const atEnd = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4;
+      prev.style.opacity = atStart ? '0' : '1';
+      prev.style.pointerEvents = atStart ? 'none' : 'auto';
+      next.style.opacity = atEnd ? '0' : '1';
+      next.style.pointerEvents = atEnd ? 'none' : 'auto';
+    }
+    document.getElementById('servicesContainer').addEventListener('scroll', updateServiceArrows, { passive: true });
+    window.addEventListener('resize', updateServiceArrows);
+
+    // SERVICE PHOTO HELPERS (upload is resized & stored as a small data URL)
+    let pendingServiceImage = '';
+
+    function showServicePreview(src) {
+      const p = document.getElementById('servicePhotoPreview');
+      if (src) { p.src = src; p.classList.remove('hidden'); }
+      else { p.removeAttribute('src'); p.classList.add('hidden'); }
+    }
+
+    window.clearServicePhoto = function() {
+      pendingServiceImage = '';
+      document.getElementById('inputServiceImage').value = '';
+      document.getElementById('inputServiceFile').value = '';
+      showServicePreview('');
+    };
+
+    document.getElementById('inputServiceFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const img = new Image();
+        img.onload = () => {
+          const maxW = 600;
+          const scale = Math.min(1, maxW / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          pendingServiceImage = canvas.toDataURL('image/jpeg', 0.75);
+          document.getElementById('inputServiceImage').value = '';
+          showServicePreview(pendingServiceImage);
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('inputServiceImage').addEventListener('input', function(e) {
+      pendingServiceImage = '';
+      showServicePreview(e.target.value.trim());
+    });
 
     function updateSessionUI() {
       const bploCard = document.getElementById('bploServiceCard');
@@ -643,6 +739,7 @@
         navBtn.className = "bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-lg transition text-xs shadow-sm cursor-pointer";
         navBtn.onclick = () => toggleModal('loginModal', true);
       }
+      if (typeof updateServiceArrows === 'function') updateServiceArrows();
     }
 
     function logoutUser() {
@@ -701,6 +798,12 @@
       document.getElementById('inputServiceTitle').value = card.title;
       document.getElementById('inputServiceSubtitle').value = card.subtitle;
 
+      pendingServiceImage = '';
+      document.getElementById('inputServiceFile').value = '';
+      const isData = (card.image || '').startsWith('data:');
+      document.getElementById('inputServiceImage').value = isData ? '' : (card.image || '');
+      showServicePreview(card.image || '');
+
       toggleModal('editServiceModal', true);
     };
 
@@ -713,7 +816,14 @@
         card.category = document.getElementById('inputServiceCategory').value.trim();
         card.title = document.getElementById('inputServiceTitle').value.trim();
         card.subtitle = document.getElementById('inputServiceSubtitle').value.trim();
-        localStorage.setItem('isabel_services_list', JSON.stringify(quickServicesList));
+        card.image = pendingServiceImage || document.getElementById('inputServiceImage').value.trim()
+          || (document.getElementById('servicePhotoPreview').classList.contains('hidden') ? '' : (card.image || ''));
+        try {
+          localStorage.setItem('isabel_services_list', JSON.stringify(quickServicesList));
+        } catch (err) {
+          alert("⚠️ Photo is too large to save on this device. Try a smaller image or paste an image URL instead.");
+          return;
+        }
         renderServices();
         toggleModal('editServiceModal', false);
         alert("✅ Quick Service card updated!");
@@ -777,7 +887,7 @@
 
     // TOGGLE SERVICES STRIP
     window.toggleServicesBar = function() {
-      const container = document.getElementById('servicesContainer');
+      const container = document.getElementById('servicesWrap');
       const icon = document.getElementById('toggleServicesIcon');
       const text = document.getElementById('toggleServicesText');
       
@@ -787,7 +897,8 @@
         icon.textContent = "👁️";
         text.textContent = "Show Services";
       } else {
-        container.style.display = 'flex';
+        container.style.display = 'block';
+        updateServiceArrows();
         icon.textContent = "🙈";
         text.textContent = "Hide Services";
       }
