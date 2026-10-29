@@ -1095,7 +1095,10 @@
           alert(`Authenticated as ${activeUser}!\nAll editing permissions enabled.`);
           if (sharedEmpty) ensureInitialized();
         } else {
-          alert("❌ " + ((res && res.error) || "Login failed."));
+          const msg = (res && res.error) || "Login failed.";
+          alert("❌ " + (msg === 'Unknown action'
+            ? "The online service is still running an OLD version of the backend. In Apps Script use Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy, then try again."
+            : msg));
         }
       }).catch(() => alert("No connection. Please try again."))
         .then(() => { btn.disabled = false; btn.textContent = 'Authenticate Session'; });
