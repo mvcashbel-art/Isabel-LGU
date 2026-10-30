@@ -19,12 +19,14 @@
     .bg-watermark {
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(circle at center, rgba(248, 250, 252, 0.75) 0%, rgba(241, 245, 249, 0.96) 100%), url('isabel-seal.png');
+      /* Layer 1 = soft white wash over the whole screen, layer 2 = the seal. Lower the wash numbers or raise
+         opacity to make the seal clearer; do the opposite to make it fainter. */
+      background-image: radial-gradient(circle at center, rgba(248, 250, 252, 0.56) 0%, rgba(241, 245, 249, 0.90) 100%), url('isabel-seal.png');
       background-repeat: no-repeat;
       background-position: center center;
-      background-size: 38rem;
-      filter: blur(10px);
-      opacity: 0.55;
+      background-size: 100% 100%, 38rem;
+      filter: blur(1px);
+      opacity: 0.7;
       z-index: 0;
       pointer-events: none;
     }
