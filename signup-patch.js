@@ -169,7 +169,7 @@
 
   function unsubSay(text, ok) {
     unsubMessage.classList.remove('hidden');
-    unsubMessage.className = 'mt-2 text-[11px] font-semibold ' + (ok ? 'text-emerald-700' : 'text-rose-700');
+    unsubMessage.className = 'mt-2 text-xs font-semibold ' + (ok ? 'text-emerald-700' : 'text-rose-700');
     unsubMessage.textContent = text;
   }
 
