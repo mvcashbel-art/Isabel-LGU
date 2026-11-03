@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Municipality of Isabel — Official LGU Portal</title>
   
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS (pre-built file: tailwind.css must sit next to this page) -->
+  <link rel="stylesheet" href="tailwind.css">
   
   <style>
     /* Fixed Blurred Watermark Background */
@@ -20,12 +20,12 @@
       position: fixed;
       inset: 0;
       /* Layer 1 = soft white wash over the whole screen, layer 2 = the seal. Lower the wash numbers or raise
-         opacity to make the seal clearer; do the opposite to make it fainter. */
+         opacity to make the seal clearer; do the opposite to make it fainter. Every piece of text sits on a solid
+         white panel, so the seal can be as visible as you like without hurting readability. */
       background-image: radial-gradient(circle at center, rgba(248, 250, 252, 0.56) 0%, rgba(241, 245, 249, 0.90) 100%), url('isabel-seal.png');
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 100% 100%, 38rem;
-      filter: blur(1px);
       opacity: 0.7;
       z-index: 0;
       pointer-events: none;
@@ -52,16 +52,16 @@
       <!-- Title & Tagline -->
       <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
         <div class="flex items-center gap-2 truncate">
-          <span class="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded text-[9px] sm:text-[10px] uppercase border border-emerald-500/30 shrink-0">Official Portal</span>
-          <span class="truncate text-[11px] sm:text-xs">LGU Isabel, Leyte</span>
+          <span class="bg-emerald-500/20 text-emerald-400 font-bold px-2 py-0.5 rounded text-[11px] sm:text-xs uppercase border border-emerald-500/30 shrink-0">Official Portal</span>
+          <span class="truncate text-xs sm:text-xs">LGU Isabel, Leyte</span>
         </div>
         <!-- Mobile Emergency Indicator -->
-        <span class="text-[10px] text-slate-400 sm:hidden shrink-0 font-medium">Hotline 24/7</span>
+        <span class="text-xs text-slate-400 sm:hidden shrink-0 font-medium">Hotline 24/7</span>
       </div>
 
       <!-- Emergency Contact & Login Trigger -->
-      <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-800/80 sm:border-0 text-[11px] font-medium">
-        <span class="hidden md:inline text-slate-400">📞 Hotlines: <strong id="ribbonHotlinesText" class="text-white">MDRRMO: 0917-XXX-XXXX | BFP: 160</strong></span>
+      <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-1 sm:pt-0 border-t border-slate-800/80 sm:border-0 text-xs font-medium">
+        <span class="hidden md:inline text-slate-400">📞 Hotlines: <strong id="ribbonHotlinesText" class="text-white">See Emergency Hotlines</strong></span>
         <button type="button" onclick="openSubscribeModal()" class="shrink-0 bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 sm:py-1 rounded-lg transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5 text-xs">
           🔔 Get Alerts
         </button>
@@ -79,22 +79,22 @@
   <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 space-y-4 sm:space-y-5">
 
     <!-- EDITABLE HEADER BANNER -->
-    <header class="bg-white/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4 relative group">
+    <header class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4 relative group">
       <!-- Officer Edit Header Trigger -->
-      <button type="button" onclick="openHeaderEditModal()" class="officer-only-btn hidden absolute top-3 right-3 md:top-4 md:right-4 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow transition flex items-center gap-1 cursor-pointer z-20">
+      <button type="button" onclick="openHeaderEditModal()" class="officer-only-btn hidden absolute top-3 right-3 md:top-4 md:right-4 bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg shadow transition flex items-center gap-1 cursor-pointer z-20">
         <span>✏️</span> Edit Header Info
       </button>
 
       <div class="flex items-center gap-3.5 sm:gap-4 w-full md:w-auto">
         <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-full shadow-sm border-2 border-slate-100 shrink-0">
         <div>
-          <div class="text-[10px] sm:text-[11px] font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
+          <div class="text-xs sm:text-xs font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
             <span>🇵🇭 Republic of the Philippines</span>
           </div>
           <h1 id="portalTitleText" class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Municipality of Isabel
           </h1>
-          <p id="portalSubtitleText" class="text-[11px] sm:text-sm text-slate-500 font-medium">
+          <p id="portalSubtitleText" class="text-xs sm:text-sm text-slate-500 font-medium">
             Local Government Unit • Public Information & Digital Services Gateway
           </p>
         </div>
@@ -110,12 +110,12 @@
     </header>
 
     <!-- HORIZONTAL SERVICES BAR (Collapsible & Restricted BPLO & Editable Services) -->
-    <section class="bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-sm border border-slate-200/80 space-y-3">
+    <section class="bg-white rounded-2xl p-3 sm:p-3.5 shadow-sm border border-slate-200/80 space-y-3">
       <div class="flex justify-between items-center px-1">
         <div class="flex items-center gap-2">
           <span class="text-base">🏛️</span>
           <h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">LGU Offices & Quick Services</h2>
-          <span id="serviceCountBadge" class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full">6 Offices</span>
+          <span id="serviceCountBadge" class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full">6 Offices</span>
         </div>
         <button type="button" onclick="toggleServicesBar()" id="toggleServicesBtn" class="text-xs text-slate-500 hover:text-slate-800 font-semibold px-2 py-1 rounded-lg hover:bg-slate-100 transition flex items-center gap-1 cursor-pointer">
           <span id="toggleServicesIcon">🙈</span> <span id="toggleServicesText" class="hidden sm:inline">Hide Services</span>
@@ -125,8 +125,8 @@
       <!-- Scrollable Quick Services Strip -->
       <div id="servicesWrap" class="relative">
       <!-- Prev / Next arrows (desktop; phones use swipe) -->
-      <button type="button" id="svcPrevBtn" onclick="scrollServices(-1)" aria-label="Previous offices" class="hidden md:flex absolute left-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white/95 border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">◀</button>
-      <button type="button" id="svcNextBtn" onclick="scrollServices(1)" aria-label="Next offices" class="hidden md:flex absolute right-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white/95 border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">▶</button>
+      <button type="button" id="svcPrevBtn" onclick="scrollServices(-1)" aria-label="Previous offices" class="hidden md:flex absolute left-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">◀</button>
+      <button type="button" id="svcNextBtn" onclick="scrollServices(1)" aria-label="Next offices" class="hidden md:flex absolute right-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 items-center justify-center rounded-full bg-white border border-slate-200 shadow-md text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition cursor-pointer font-black text-sm">▶</button>
 
       <div id="servicesContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-1 pt-1 transition-all duration-300 snap-x snap-mandatory scroll-smooth">
         
@@ -134,11 +134,11 @@
         <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="hidden shrink-0 snap-start w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
           <div class="flex justify-between items-start mb-2">
             <span class="text-2xl">💼</span>
-            <span class="bg-white/20 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">RESTRICTED ACCESS</span>
+            <span class="bg-white/20 text-white text-[11px] font-black px-2 py-0.5 rounded uppercase tracking-wider">RESTRICTED ACCESS</span>
           </div>
           <h3 class="font-black text-sm text-white group-hover:underline">BPLO Field Tracker</h3>
-          <p class="text-[11px] text-emerald-100 mt-0.5 line-clamp-2">Business Permit & Licensing Office inspection tracker and GIS mapping.</p>
-          <div class="mt-2 text-[11px] font-bold text-emerald-200 flex items-center gap-1">Launch System ↗</div>
+          <p class="text-xs text-emerald-100 mt-0.5 line-clamp-2">Business Permit & Licensing Office inspection tracker and GIS mapping.</p>
+          <div class="mt-2 text-xs font-bold text-emerald-200 flex items-center gap-1">Launch System ↗</div>
         </a>
 
         <!-- Dynamic Quick Service Cards HTML rendered via JS -->
@@ -155,20 +155,20 @@
       <main class="lg:col-span-8 space-y-4">
 
         <!-- Feed Stream Header -->
-        <div class="flex justify-between items-center px-1">
-          <h2 class="text-[11px] sm:text-xs font-extrabold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+        <div class="flex justify-between items-center gap-2 bg-white rounded-xl shadow-sm border border-slate-200 px-3 py-2.5">
+          <h2 class="text-xs sm:text-xs font-extrabold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
             <span>📣</span> Official Isabel LGU Announcements & Feed
           </h2>
-          <span class="text-xs text-slate-400 font-medium">Public Stream</span>
+          <span class="text-xs text-slate-500 font-medium shrink-0">Public Stream</span>
         </div>
 
         <!-- OFFICER POST CREATOR BOX (Visible when Mayor, Ashbel, or Admin logged in) -->
-        <div id="postCreatorBox" class="hidden bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-blue-200 space-y-3">
+        <div id="postCreatorBox" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-blue-200 space-y-3">
           <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
             <div class="w-9 h-9 rounded-full bg-blue-700 text-white font-bold flex items-center justify-center text-xs shadow-sm">📢</div>
             <div>
               <div class="text-xs font-bold text-slate-900">Create Official Announcement</div>
-              <div id="creatorOfficerLabel" class="text-[10px] text-blue-700 font-semibold">Publishing as: Authorized Officer</div>
+              <div id="creatorOfficerLabel" class="text-xs text-blue-700 font-semibold">Publishing as: Authorized Officer</div>
             </div>
           </div>
 
@@ -192,7 +192,7 @@
                 <input type="checkbox" id="alertToggle" class="mt-0.5 w-4 h-4 accent-rose-600">
                 <span>
                   <span class="font-extrabold text-rose-700">🚨 Send as Emergency Alert</span>
-                  <span class="block text-[11px] text-slate-500 font-normal">Shows a red banner to every visitor and can text subscribers.</span>
+                  <span class="block text-xs text-slate-500 font-normal">Shows a red banner to every visitor and can text subscribers.</span>
                 </span>
               </label>
 
@@ -220,7 +220,7 @@
                 <div>
                   <label class="block font-bold text-slate-700 mb-1">Affected barangays</label>
                   <input type="text" id="alertBarangays" value="ALL" list="barangayList" placeholder="ALL, or e.g. Matlang, Tubod" class="w-full p-2 bg-white border border-slate-200 rounded-lg">
-                  <span class="block text-[10px] text-slate-400 mt-0.5">Type ALL, or pick barangays from the list and separate them with commas. Marvel and Santo Niño are the two Poblacion barangays.</span>
+                  <span class="block text-xs text-slate-500 mt-0.5">Type ALL, or pick barangays from the list and separate them with commas. Marvel and Santo Niño are the two Poblacion barangays.</span>
                 </div>
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" id="alertSms" checked class="w-4 h-4 accent-rose-600">
@@ -250,14 +250,14 @@
       <aside class="lg:col-span-4 space-y-4 lg:sticky lg:top-4">
 
         <!-- Active Officer Status Card -->
-        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2.5">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Session Status</div>
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-2.5">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Session Status</div>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2.5">
               <div id="sessionAvatar" class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-bold flex items-center justify-center text-xs">👤</div>
               <div>
                 <div id="sessionNameLabel" class="text-xs font-bold text-slate-900">Public Guest View</div>
-                <div id="sessionRoleLabel" class="text-[10px] text-slate-500">Read-Only Access</div>
+                <div id="sessionRoleLabel" class="text-xs text-slate-500">Read-Only Access</div>
               </div>
             </div>
             <button id="sidebarLoginToggleBtn" onclick="toggleModal('loginModal', true)" type="button" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-lg transition cursor-pointer">
@@ -267,12 +267,12 @@
         </div>
 
         <!-- EMERGENCY ALERT SIGN-UP WIDGET -->
-        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-rose-200 space-y-2.5">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-rose-200 space-y-2.5">
           <div class="flex items-center gap-2">
             <span class="text-xl">🔔</span>
             <div>
               <div class="text-xs sm:text-sm font-extrabold text-slate-900">Get Emergency Alerts by SMS</div>
-              <div class="text-[11px] text-slate-500">Typhoon, flood, fire and other calamity warnings sent straight to your phone.</div>
+              <div class="text-xs text-slate-500">Typhoon, flood, fire and other calamity warnings sent straight to your phone.</div>
             </div>
           </div>
           <button type="button" onclick="openSubscribeModal()" class="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2.5 rounded-xl transition shadow cursor-pointer">
@@ -283,7 +283,7 @@
         <!-- EDITABLE EMERGENCY HOTLINES WIDGET -->
         <div class="bg-gradient-to-br from-rose-600 via-red-600 to-red-700 text-white p-4 sm:p-5 rounded-2xl shadow-lg space-y-3.5 border border-rose-500/30 relative group">
           <!-- Officer Hotlines Edit Trigger -->
-          <button type="button" onclick="openHotlinesEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
+          <button type="button" onclick="openHotlinesEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
             <span>✏️</span> Edit Numbers
           </button>
 
@@ -291,7 +291,7 @@
             <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider flex items-center gap-2">
               <span class="text-base sm:text-lg">🚨</span> Emergency Hotlines
             </h3>
-            <span class="text-[9px] sm:text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-black tracking-wide border border-white/20">24/7 DISPATCH</span>
+            <span class="text-[11px] sm:text-xs bg-white/20 px-2 py-0.5 rounded-full font-black tracking-wide border border-white/20">24/7 DISPATCH</span>
           </div>
 
           <!-- Quick-Dial Button Stack -->
@@ -301,9 +301,9 @@
         </div>
 
         <!-- EDITABLE MUNICIPAL OPERATING HOURS WIDGET -->
-        <div class="bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3 text-xs relative group">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 space-y-3 text-xs relative group">
           <!-- Officer Schedule Edit Trigger -->
-          <button type="button" onclick="openScheduleEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
+          <button type="button" onclick="openScheduleEditModal()" class="officer-only-btn hidden absolute top-3 right-3 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-extrabold px-2 py-0.5 rounded shadow transition flex items-center gap-1 cursor-pointer">
             <span>✏️</span> Edit Schedule
           </button>
 
@@ -327,9 +327,9 @@
         </div>
 
         <!-- Footer Copyright Widget -->
-        <div class="text-center text-[11px] text-slate-500 space-y-1 p-2">
+        <div class="text-center text-xs text-slate-600 space-y-1 p-3 bg-white rounded-2xl shadow-sm border border-slate-200">
           <div>© 2026 Local Government Unit of Isabel, Leyte. All Rights Reserved.</div>
-          <div class="text-slate-400">Powered by LGU Digital Public Infrastructure System</div>
+          <div class="text-slate-500">Powered by LGU Digital Public Infrastructure System</div>
         </div>
 
       </aside>
@@ -375,7 +375,7 @@
         <button type="button" onclick="toggleModal('subscribeModal', false)" class="text-slate-400 hover:text-slate-600 text-lg" aria-label="Close">✕</button>
       </div>
 
-      <div id="demoModeNotice" class="hidden text-[11px] bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-2 leading-snug">
+      <div id="demoModeNotice" class="hidden text-xs bg-amber-50 border border-amber-200 text-amber-800 rounded-lg p-2 leading-snug">
         Demo mode: the alert service is not connected yet, so sign-ups are only saved in this browser.
       </div>
 
@@ -425,7 +425,7 @@
           <input type="checkbox" id="subConsent" required class="mt-0.5 w-4 h-4 accent-rose-600">
           <span>I agree that the LGU of Isabel may store my name, barangay and mobile number and send me emergency SMS alerts, as allowed by the Data Privacy Act of 2012. I can unsubscribe at any time.</span>
         </label>
-        <div id="subMessage" class="hidden text-[11px] font-semibold rounded-lg p-2"></div>
+        <div id="subMessage" class="hidden text-xs font-semibold rounded-lg p-2"></div>
         <button type="submit" id="subSubmitBtn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl transition shadow cursor-pointer">Subscribe to Alerts</button>
       </form>
 
@@ -435,7 +435,7 @@
           <input type="tel" id="unsubMobile" inputmode="tel" placeholder="Your mobile number" class="flex-1 p-2 bg-slate-50 border border-slate-200 rounded-xl font-mono">
           <button type="button" onclick="submitUnsubscribe()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-3 rounded-xl">Unsubscribe</button>
         </div>
-        <div id="unsubMessage" class="hidden mt-2 text-[11px] font-semibold"></div>
+        <div id="unsubMessage" class="hidden mt-2 text-xs font-semibold"></div>
       </div>
     </div>
   </div>
@@ -527,9 +527,9 @@
         <div class="space-y-2">
           <label class="block font-bold text-slate-700">Office Photo</label>
           <img id="servicePhotoPreview" src="" alt="" class="hidden w-full h-28 object-cover rounded-xl border border-slate-200">
-          <input type="file" id="inputServiceFile" accept="image/*" class="w-full text-[11px] text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-bold">
+          <input type="file" id="inputServiceFile" accept="image/*" class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:font-bold">
           <input type="url" id="inputServiceImage" placeholder="…or paste image URL (https://...)" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
-          <button type="button" onclick="clearServicePhoto()" class="text-[11px] text-rose-600 font-bold hover:underline">Remove photo</button>
+          <button type="button" onclick="clearServicePhoto()" class="text-xs text-rose-600 font-bold hover:underline">Remove photo</button>
         </div>
         <button type="submit" class="w-full bg-blue-700 text-white font-bold py-2 rounded-xl">Save Card Details</button>
       </form>
@@ -625,13 +625,13 @@
       </div>
 
       <div class="space-y-3 text-xs">
-        <p id="modalOfficeSub" class="text-[11px] font-bold text-blue-700 uppercase tracking-wide"></p>
+        <p id="modalOfficeSub" class="text-xs font-bold text-blue-700 uppercase tracking-wide"></p>
         <p id="modalOfficeDesc" class="text-slate-600 leading-relaxed">Office description goes here...</p>
         
         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 font-medium text-slate-700">
           <div><strong>📍 Office Location:</strong> <span id="modalOfficeLoc">Municipal Hall Ground Floor</span></div>
           <div><strong>🕒 Service Hours:</strong> <span>8:00 AM – 5:00 PM (Mon-Fri)</span></div>
-          <div><strong>📞 Contact Number:</strong> <span id="modalOfficePhone" class="text-blue-700 font-bold">0917-XXX-XXXX</span></div>
+          <div><strong>📞 Contact Number:</strong> <span id="modalOfficePhone" class="text-blue-700 font-bold">To be announced</span></div>
         </div>
 
         <div>
@@ -706,7 +706,7 @@
         category: "PUBLIC SAFETY",
         timestamp: "Oct 26, 2026 at 4:15 PM",
         title: "🌊 WEATHER ADVISORY: Rainfall Preparedness & Coastal Monitoring",
-        content: "The Municipal Disaster Risk Reduction and Management Office (MDRRMO) advises all coastal and low-lying barangays to monitor tidal water levels. Emergency response teams are on 24/7 standby mode.\n\nDirect Emergency Assistance Line: 0917-XXX-XXXX",
+        content: "The Municipal Disaster Risk Reduction and Management Office (MDRRMO) advises all coastal and low-lying barangays to monitor tidal water levels. Emergency response teams are on 24/7 standby mode.\n\nEmergency hotlines are listed on this page.",
         image: "",
         likes: 92,
         shares: 34,
@@ -810,12 +810,12 @@
     }
 
     function renderLoading() {
-      document.getElementById('feedContainer').innerHTML = '<div class="bg-white/90 p-6 rounded-2xl text-center text-slate-400 text-xs border border-slate-200">Loading announcements…</div>';
+      document.getElementById('feedContainer').innerHTML = '<div class="bg-white p-6 rounded-2xl text-center text-slate-500 text-xs border border-slate-200">Loading announcements…</div>';
       document.getElementById('hotlinesContainer').innerHTML = '<div class="text-rose-100 text-xs">Loading hotlines…</div>';
     }
 
     function showLoadError() {
-      document.getElementById('feedContainer').innerHTML = '<div class="bg-white/90 p-6 rounded-2xl text-center space-y-2 border border-slate-200"><div class="font-bold text-sm text-slate-700">Could not load announcements</div><div class="text-xs text-slate-500">Please check your internet connection.</div><button type="button" onclick="fetchState()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl">Try again</button></div>';
+      document.getElementById('feedContainer').innerHTML = '<div class="bg-white p-6 rounded-2xl text-center space-y-2 border border-slate-200"><div class="font-bold text-sm text-slate-700">Could not load announcements</div><div class="text-xs text-slate-500">Please check your internet connection.</div><button type="button" onclick="fetchState()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl">Try again</button></div>';
       renderHotlines(); renderServices(); updateSessionUI();
     }
 
@@ -914,31 +914,40 @@
       document.getElementById('schedLocationText').textContent = scheduleInfo.location;
     }
 
+    // Hides unfinished placeholders (e.g. 0917-XXX-XXXX) so nobody sees or dials a fake number during an emergency.
+    function cleanPhone(p) {
+      return String(p || '').split('/').map(function(x) { return x.trim(); })
+        .filter(function(x) { return x && !/x{2,}/i.test(x); }).join(' / ');
+    }
+
     function renderHotlines() {
       const container = document.getElementById('hotlinesContainer');
       container.innerHTML = '';
       
       hotlinesList.forEach(h => {
         const item = document.createElement('a');
-        item.href = 'tel:' + String(h.tel || '').replace(/[^0-9+]/g, '');
+        const shownPhone = cleanPhone(h.phone);
+        if (shownPhone) item.href = 'tel:' + String(h.tel || '').replace(/[^0-9+]/g, '');
+        else item.setAttribute('aria-disabled', 'true');
         item.className = "group flex justify-between items-center py-3 px-3.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 transition border border-white/15 shadow-sm cursor-pointer";
         item.innerHTML = `
           <div class="flex items-center gap-2">
             <span class="text-lg sm:text-xl">${escHtml(h.icon)}</span>
             <div>
               <div class="font-bold text-xs sm:text-sm text-white leading-tight">${escHtml(h.title)}</div>
-              <div class="text-[10px] text-rose-200 font-medium">${escHtml(h.desc)}</div>
+              <div class="text-xs text-rose-200 font-medium">${escHtml(h.desc)}</div>
             </div>
           </div>
           <span class="font-mono font-black text-xs sm:text-sm bg-black/25 px-2 sm:px-2.5 py-1 rounded-lg border border-white/10 text-rose-100 group-hover:bg-white group-hover:text-rose-700 transition">
-            ${escHtml(h.phone)}
+            ${escHtml(shownPhone || 'Coming soon')}
           </span>
         `;
         container.appendChild(item);
       });
 
       if (hotlinesList.length > 0) {
-        document.getElementById('ribbonHotlinesText').textContent = `${hotlinesList[0].title}: ${hotlinesList[0].phone} | ${hotlinesList[1] ? hotlinesList[1].title + ': ' + hotlinesList[1].phone : ''}`;
+        document.getElementById('ribbonHotlinesText').textContent = hotlinesList
+          .filter(h => cleanPhone(h.phone)).slice(0, 2).map(h => `${h.title}: ${cleanPhone(h.phone)}`).join(' | ') || 'See Emergency Hotlines';
       }
     }
 
@@ -968,12 +977,12 @@
 
         card.innerHTML = `
           <!-- Officer Card Edit Trigger -->
-          <button type="button" onclick="openServiceEditModal('${escHtml(s.key)}', event)" class="officer-only-btn hidden absolute top-2 right-2 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow z-10">
+          <button type="button" onclick="openServiceEditModal('${escHtml(s.key)}', event)" class="officer-only-btn hidden absolute top-2 right-2 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-extrabold px-1.5 py-0.5 rounded shadow z-10">
             ✏️
           </button>
           <div class="overflow-hidden">${photo}</div>
           <div class="p-3 space-y-1">
-            <div class="flex justify-between items-center text-[11px] font-bold text-blue-700">
+            <div class="flex justify-between items-center text-xs font-bold text-blue-700">
               <span>${escHtml(s.category)}</span>
               <span>→</span>
             </div>
@@ -1227,11 +1236,11 @@
       hotlinesList.forEach((h, idx) => {
         fieldsContainer.innerHTML += `
           <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-2">
-            <div class="font-bold text-slate-800 text-[11px]">Hotline #${idx + 1} (${escHtml(h.icon)})</div>
+            <div class="font-bold text-slate-800 text-xs">Hotline #${idx + 1} (${escHtml(h.icon)})</div>
             <input type="text" id="hTitle_${idx}" value="${escHtml(h.title)}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg font-bold">
             <input type="text" id="hDesc_${idx}" value="${escHtml(h.desc)}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg">
             <input type="text" id="hPhone_${idx}" value="${escHtml(h.phone)}" required class="w-full p-2 bg-white border border-slate-200 rounded-lg font-mono">
-            <div class="text-[10px] text-slate-400">The call button dials the first number written above.</div>
+            <div class="text-xs text-slate-500">The call button dials the first number written above.</div>
           </div>
         `;
       });
@@ -1326,7 +1335,7 @@
 
       if (list.length === 0) {
         feed.innerHTML = `
-          <div class="bg-white/90 p-8 rounded-2xl text-center text-slate-400 space-y-2 border border-slate-200">
+          <div class="bg-white p-8 rounded-2xl text-center text-slate-500 space-y-2 border border-slate-200">
             <div class="text-3xl">🔍</div>
             <div class="font-bold text-sm text-slate-700">No matching announcements found</div>
             <div class="text-xs">Try searching for different keywords or clear the search filter.</div>
@@ -1337,7 +1346,7 @@
 
       list.forEach((post) => {
         const postCard = document.createElement('article');
-        postCard.className = "bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border border-slate-200/80 overflow-visible transition space-y-3 relative p-4 sm:p-5";
+        postCard.className = "bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-visible transition space-y-3 relative p-4 sm:p-5";
 
         const formattedContent = escHtml(post.content).replace(/\n/g, '<br>');
 
@@ -1352,9 +1361,9 @@
                 <div class="font-bold text-xs sm:text-sm text-slate-900 flex items-center gap-1.5 flex-wrap">
                   <span>${escHtml(post.author)}</span>
                   <span class="text-blue-600 text-xs">✓</span>
-                  ${post.pinned ? '<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-amber-300">📌 PINNED</span>' : ''}
+                  ${post.pinned ? '<span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-0.5 rounded-full border border-amber-300">📌 PINNED</span>' : ''}
                 </div>
-                <div class="text-[10px] text-slate-400 font-medium flex items-center gap-2">
+                <div class="text-xs text-slate-500 font-medium flex items-center gap-2">
                   <span>${escHtml(post.timestamp)}</span>
                   <span>•</span>
                   <span class="text-emerald-700 font-bold uppercase">${escHtml(post.category)}</span>
@@ -1403,7 +1412,7 @@
           ` : ''}
 
           <!-- Social Engagement Stats -->
-          <div class="flex justify-between items-center pt-2 text-[11px] text-slate-500 border-t border-slate-100 font-medium">
+          <div class="flex justify-between items-center pt-2 text-xs text-slate-500 border-t border-slate-100 font-medium">
             <div class="flex items-center gap-1">
               <span>👍 ❤️ 😮</span>
               <span>${Number(post.likes) || 0} Citizens Liked</span>
@@ -1592,42 +1601,42 @@
         title: "Office of the Municipal Mayor",
         desc: "The executive arm of the Isabel Local Government Unit, responsible for municipal policies, public appointments, executive clearances, and community assistance programs.",
         loc: "Executive Wing, 2nd Floor, Municipal Hall",
-        phone: "0917-111-2222",
+        phone: "",
         services: ["Mayor's Clearance & Recommendations", "Public Appointments & Consultations", "Executive Orders & Issuances", "Community Financial & Medical Assistance"]
       },
       lcr: {
         title: "Local Civil Registrar (LCR)",
         desc: "Mandated to maintain civil registration records for all residents of Isabel, Leyte.",
         loc: "Ground Floor, Right Wing, Municipal Hall",
-        phone: "0917-222-3333",
+        phone: "",
         services: ["Birth, Marriage, & Death Certificate Registration", "Certified True Copies of Civil Records", "Late Registration Processing", "Correction of Clerical Errors (RA 9048/10172)"]
       },
       assessor: {
         title: "Municipal Assessor's Office",
         desc: "Manages real property valuation, land assessments, and tax mapping records for Isabel.",
         loc: "Ground Floor, Left Wing, Municipal Hall",
-        phone: "0917-333-4444",
+        phone: "",
         services: ["Real Property Tax Declaration (RPTD)", "Tax Mapping & Property Verification", "Assessment Roll Updates", "Transfer of Land Ownership Records"]
       },
       treasury: {
         title: "Municipal Treasury & Accounting Office",
         desc: "Handles revenue collection, local tax payments, official receipt issuance, and municipal financial disbursements.",
         loc: "Main Treasury Counter, Ground Floor",
-        phone: "0917-444-5555",
+        phone: "",
         services: ["Local Tax & Fee Collections", "Official Receipt (OR) Issuance", "Community Tax Certificate (Cedula)", "Treasury & Tax Clearances"]
       },
       bfp: {
         title: "Bureau of Fire Protection (BFP Isabel)",
         desc: "Ensures public fire safety, conducts building safety inspections, and leads emergency fire response.",
         loc: "Isabel Fire Station, Municipal Compound",
-        phone: "160 / 0918-555-6666",
+        phone: "160",
         services: ["Fire Safety Inspection Certificate (FSIC)", "Commercial Building Inspection Clearance", "Fire Safety & Prevention Seminars", "24/7 Emergency Fire Dispatch"]
       },
       bjmp: {
         title: "Bureau of Jail Management and Penology (BJMP)",
         desc: "Manages facility security, inmate rehabilitation programs, and visitor scheduling for Isabel Municipal Jail.",
         loc: "BJMP Isabel Station, Brgy. Matlang",
-        phone: "0920-666-7777",
+        phone: "",
         services: ["Inmate Visitation Scheduling", "Visitor Clearance & Registration", "PDL Welfare & Rehabilitation Services"]
       }
     };
@@ -1637,7 +1646,7 @@
         title: quickServicesList.find(s => s.key === key)?.title || "LGU Department",
         desc: "Official Municipal Department services & public assistance counter.",
         loc: "Municipal Hall, Isabel, Leyte",
-        phone: "0917-XXX-XXXX",
+        phone: "",
         services: ["General Public Services", "Office Clearances & Consultation"]
       };
 
@@ -1646,7 +1655,7 @@
       document.getElementById('modalOfficeSub').textContent = card ? card.subtitle : '';
       document.getElementById('modalOfficeDesc').textContent = data.desc;
       document.getElementById('modalOfficeLoc').textContent = data.loc;
-      document.getElementById('modalOfficePhone').textContent = data.phone;
+      document.getElementById('modalOfficePhone').textContent = cleanPhone(data.phone) || 'To be announced';
 
       const servicesUl = document.getElementById('modalOfficeServices');
       servicesUl.innerHTML = data.services.map(s => `<li>${s}</li>`).join('');
@@ -1719,12 +1728,12 @@
             '<div class="flex items-start gap-2 flex-1 min-w-0">' +
               '<span class="alert-dot text-lg leading-none mt-0.5">' + s.icon + '</span>' +
               '<div class="min-w-0">' +
-                '<div class="text-[10px] font-black uppercase tracking-wider opacity-90">' + escHtml(a.severity) + ' ALERT · ' + escHtml(where) + (when ? ' · ' + escHtml(when) : '') + '</div>' +
+                '<div class="text-xs font-black uppercase tracking-wider opacity-90">' + escHtml(a.severity) + ' ALERT · ' + escHtml(where) + (when ? ' · ' + escHtml(when) : '') + '</div>' +
                 '<div class="font-extrabold text-sm sm:text-base leading-snug">' + escHtml(a.title) + '</div>' +
                 '<div class="text-xs sm:text-sm leading-snug whitespace-pre-line">' + escHtml(a.message) + '</div>' +
               '</div>' +
             '</div>' +
-            '<div class="flex flex-wrap gap-2 shrink-0 text-[11px] pl-7 sm:pl-0">' +
+            '<div class="flex flex-wrap gap-2 shrink-0 text-xs pl-7 sm:pl-0">' +
               '<button type="button" data-act="subscribe" class="' + btnBase + s.btn + '">🔔 Get SMS alerts</button>' +
               (activeUser ? '<button type="button" data-act="sms" data-id="' + escHtml(a.id) + '" class="' + btnBase + 'bg-black/30 hover:bg-black/50 text-white">📲 SMS list</button>' : '') +
               (activeUser ? '<button type="button" data-act="end" data-id="' + escHtml(a.id) + '" class="' + btnBase + 'bg-black/30 hover:bg-black/50 text-white">End alert</button>' : '') +
@@ -1783,7 +1792,7 @@
 
     function showInline(el, text, ok) {
       el.textContent = text;
-      el.className = 'text-[11px] font-semibold rounded-lg p-2 ' + (ok ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200');
+      el.className = 'text-xs font-semibold rounded-lg p-2 ' + (ok ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200');
     }
 
     document.getElementById('subscribeForm').addEventListener('submit', function(e) {
@@ -1826,9 +1835,9 @@
       var out = document.getElementById('unsubMessage');
       out.classList.remove('hidden');
       var mobile = normMobile(document.getElementById('unsubMobile').value);
-      if (!mobile) { out.className = 'mt-2 text-[11px] font-semibold text-rose-700'; out.textContent = 'Enter a valid mobile number.'; return; }
+      if (!mobile) { out.className = 'mt-2 text-xs font-semibold text-rose-700'; out.textContent = 'Enter a valid mobile number.'; return; }
       var ok = function() {
-        out.className = 'mt-2 text-[11px] font-semibold text-emerald-700';
+        out.className = 'mt-2 text-xs font-semibold text-emerald-700';
         out.textContent = '✅ If that number was subscribed, it will no longer receive alerts.';
       };
       if (DEMO_MODE) {
@@ -1838,7 +1847,7 @@
         ok();
       } else {
         backendPost({ action: 'unsubscribe', mobile: mobile }).then(ok).catch(function() {
-          out.className = 'mt-2 text-[11px] font-semibold text-rose-700';
+          out.className = 'mt-2 text-xs font-semibold text-rose-700';
           out.textContent = 'No connection. Please try again.';
         });
       }
