@@ -219,8 +219,8 @@
                 </div>
                 <div>
                   <label class="block font-bold text-slate-700 mb-1">Affected barangays</label>
-                  <input type="text" id="alertBarangays" value="ALL" list="barangayList" placeholder="ALL, or e.g. Poblacion, Matlang" class="w-full p-2 bg-white border border-slate-200 rounded-lg">
-                  <span class="block text-[10px] text-slate-400 mt-0.5">Type ALL, or separate barangays with commas (spelled the same as residents entered them).</span>
+                  <input type="text" id="alertBarangays" value="ALL" list="barangayList" placeholder="ALL, or e.g. Matlang, Tubod" class="w-full p-2 bg-white border border-slate-200 rounded-lg">
+                  <span class="block text-[10px] text-slate-400 mt-0.5">Type ALL, or pick barangays from the list and separate them with commas. Marvel and Santo Niño are the two Poblacion barangays.</span>
                 </div>
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" id="alertSms" checked class="w-4 h-4 accent-rose-600">
@@ -338,12 +338,32 @@
 
   </div>
 
-  <!-- BARANGAY SUGGESTIONS: add the rest of Isabel's barangays here -->
+  <!-- BARANGAY SUGGESTIONS: the 24 official barangays of Isabel (alert form) -->
   <datalist id="barangayList">
     <option value="ALL"></option>
-    <option value="Poblacion"></option>
-    <option value="Matlang"></option>
+    <option value="Anislag"></option>
+    <option value="Antipolo"></option>
+    <option value="Apale"></option>
+    <option value="Bantigue"></option>
+    <option value="Benog"></option>
+    <option value="Bilwang"></option>
+    <option value="Can-andan"></option>
+    <option value="Cangag"></option>
+    <option value="Consolacion"></option>
+    <option value="Honan"></option>
+    <option value="Libertad"></option>
+    <option value="Mahayag"></option>
     <option value="Marvel"></option>
+    <option value="Matlang"></option>
+    <option value="Monte Alegre"></option>
+    <option value="Puting Bato"></option>
+    <option value="San Francisco"></option>
+    <option value="San Roque"></option>
+    <option value="Santa Cruz"></option>
+    <option value="Santo Niño"></option>
+    <option value="Santo Rosario"></option>
+    <option value="Tabunok"></option>
+    <option value="Tolingon"></option>
     <option value="Tubod"></option>
   </datalist>
 
@@ -367,7 +387,33 @@
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">Barangay *</label>
-          <input type="text" id="subBarangay" required maxlength="60" list="barangayList" placeholder="e.g. Tubod" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500">
+          <select id="subBarangay" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500">
+            <option value="">Choose your barangay…</option>
+            <option value="Anislag">Anislag</option>
+            <option value="Antipolo">Antipolo</option>
+            <option value="Apale">Apale</option>
+            <option value="Bantigue">Bantigue</option>
+            <option value="Benog">Benog</option>
+            <option value="Bilwang">Bilwang</option>
+            <option value="Can-andan">Can-andan</option>
+            <option value="Cangag">Cangag</option>
+            <option value="Consolacion">Consolacion</option>
+            <option value="Honan">Honan</option>
+            <option value="Libertad">Libertad</option>
+            <option value="Mahayag">Mahayag</option>
+            <option value="Marvel">Marvel (Poblacion)</option>
+            <option value="Matlang">Matlang</option>
+            <option value="Monte Alegre">Monte Alegre</option>
+            <option value="Puting Bato">Puting Bato</option>
+            <option value="San Francisco">San Francisco</option>
+            <option value="San Roque">San Roque</option>
+            <option value="Santa Cruz">Santa Cruz</option>
+            <option value="Santo Niño">Santo Niño (Poblacion)</option>
+            <option value="Santo Rosario">Santo Rosario</option>
+            <option value="Tabunok">Tabunok</option>
+            <option value="Tolingon">Tolingon</option>
+            <option value="Tubod">Tubod</option>
+          </select>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">Mobile number *</label>
@@ -2002,5 +2048,7 @@
     initPortal();
     initAlerts();
   </script>
+  <!-- Text-message code step for sign-up / unsubscribe. Must stay AFTER the main script above. -->
+  <script src="signup-patch.js"></script>
 </body>
 </html>
