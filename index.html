@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Municipality of Isabel — Official LGU Portal</title>
+  <!-- Security: the page may only load its own files, plus the Google Apps Script backend. No plugins, no outside forms. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <!-- Tab / bookmark / home-screen icon (the municipal seal) -->
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -136,7 +139,7 @@
       <div id="servicesContainer" class="flex gap-3 overflow-x-auto no-scrollbar pb-1 pt-1 transition-all duration-300 snap-x snap-mandatory scroll-smooth">
         
         <!-- RESTRICTED BPLO CARD (Hidden by default, shown when Mayor/Admin logs in) -->
-        <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" class="hidden shrink-0 snap-start w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
+        <a id="bploServiceCard" href="https://mvcashbel-art.github.io/isabel-bplo-tracker/" target="_blank" rel="noopener noreferrer" class="hidden shrink-0 snap-start w-60 bg-gradient-to-br from-emerald-500 to-teal-700 text-white p-3.5 rounded-xl shadow-md hover:shadow-lg transition relative overflow-hidden group">
           <div class="flex justify-between items-start mb-2">
             <span class="text-2xl">💼</span>
             <span class="bg-white/20 text-white text-[11px] font-black px-2 py-0.5 rounded uppercase tracking-wider">RESTRICTED ACCESS</span>
@@ -528,6 +531,14 @@
         <div>
           <label class="block font-bold text-slate-700 mb-1">Short Description (shown inside the office popup) *</label>
           <input type="text" id="inputServiceSubtitle" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Contact Number</label>
+          <input type="text" id="inputServicePhone" maxlength="60" placeholder="e.g. 0917 123 4567 or (053) 123-4567" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Office Location</label>
+          <input type="text" id="inputServiceLoc" maxlength="120" placeholder="e.g. Ground Floor, Municipal Hall" class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl">
         </div>
         <div class="space-y-2">
           <label class="block font-bold text-slate-700">Office Photo</label>
@@ -1199,6 +1210,9 @@
       document.getElementById('inputServiceCategory').value = card.category;
       document.getElementById('inputServiceTitle').value = card.title;
       document.getElementById('inputServiceSubtitle').value = card.subtitle;
+      const dd = DEPARTMENT_DETAILS[key] || {};
+      document.getElementById('inputServicePhone').value = card.phone != null ? card.phone : (dd.phone || '');
+      document.getElementById('inputServiceLoc').value = card.loc != null && card.loc !== '' ? card.loc : (dd.loc || '');
 
       pendingServiceImage = '';
       document.getElementById('inputServiceFile').value = '';
@@ -1222,6 +1236,8 @@
         category: document.getElementById('inputServiceCategory').value.trim(),
         title: document.getElementById('inputServiceTitle').value.trim(),
         subtitle: document.getElementById('inputServiceSubtitle').value.trim(),
+        phone: document.getElementById('inputServicePhone').value.trim(),
+        loc: document.getElementById('inputServiceLoc').value.trim(),
         image: image
       } }).then(res => {
         if (!res) return;
@@ -1659,8 +1675,10 @@
       const card = quickServicesList.find(s => s.key === key);
       document.getElementById('modalOfficeSub').textContent = card ? card.subtitle : '';
       document.getElementById('modalOfficeDesc').textContent = data.desc;
-      document.getElementById('modalOfficeLoc').textContent = data.loc;
-      document.getElementById('modalOfficePhone').textContent = cleanPhone(data.phone) || 'To be announced';
+      const ownPhone = card && card.phone != null ? card.phone : data.phone;
+      const ownLoc = card && card.loc ? card.loc : data.loc;
+      document.getElementById('modalOfficeLoc').textContent = ownLoc;
+      document.getElementById('modalOfficePhone').textContent = cleanPhone(ownPhone) || 'To be announced';
 
       const servicesUl = document.getElementById('modalOfficeServices');
       servicesUl.innerHTML = data.services.map(s => `<li>${s}</li>`).join('');
