@@ -33,17 +33,15 @@
       header.hdr .hdr-left { width: 100%; }
     }
     @media (min-width: 1024px) {
-      /* Navy and gold header (laptops and computers) */
-      header.hdr { --h: clamp(190px, 17vw, 260px); min-height: var(--h);
-        background: linear-gradient(100deg, #101c3d 0%, #1b2b5a 60%, #243a73 100%);
-        border-color: #101c3d; border-bottom: 4px solid #c9a24a; }
-      header.hdr .hdr-left { max-width: calc(100% - var(--h) * 2.705 - 24px); position: relative; z-index: 1; padding-left: 10px; gap: 18px; }
-      header.hdr .hdr-left > img { width: 92px; height: 92px; border: 3px solid #c9a24a; background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
-      header.hdr .hdr-kicker { color: #e6c46f; }
-      header.hdr .hdr-title { color: #fff; font-size: clamp(1.6rem, 2.1vw, 2.2rem); }
-      header.hdr .hdr-sub { color: #cbd5e8; }
-      header.hdr .hdr-banner { position: absolute; top: 0; right: 0; bottom: 0; width: auto; max-width: none; border: 0; border-left: 4px solid #c9a24a; border-radius: 0; }
-      header.hdr .hdr-photo { height: 100%; width: auto; max-width: none; }
+      /* Wide screens: the officials picture fills the header and the seal + title sit on it, where the old wording was */
+      header.hdr { container-type: inline-size; display: block; padding: 0; background: #fff; border: 0; border-bottom: 4px solid #c9a24a; }
+      header.hdr .hdr-banner { position: static; width: 100%; max-width: none; border: 0; border-radius: 0; }
+      header.hdr .hdr-photo { width: 100%; height: auto; max-width: none; }
+      header.hdr .hdr-left { position: absolute; left: 21%; top: 10.5%; width: 33.5%; height: 37.5%; max-width: none; padding: 0; gap: 1.5cqw; align-items: center; z-index: 1; }
+      header.hdr .hdr-left > img { width: 8.6cqw; height: 8.6cqw; border: .28cqw solid #c9a24a; background: #fff; box-shadow: 0 .3cqw 1cqw rgba(15,23,42,.30); }
+      header.hdr .hdr-kicker { color: #8a6a1c; font-size: max(10px, .95cqw); }
+      header.hdr .hdr-title { color: #1b2b5a; font-size: 2.7cqw; line-height: 1.05; }
+      header.hdr .hdr-sub { color: #475569; font-size: max(10px, 1.1cqw); line-height: 1.3; margin-top: .3cqw; }
     }
     .bg-watermark {
       position: fixed;
@@ -130,7 +128,7 @@
       </div>
 
       <!-- Officials banner: sits on the right of the header on wide screens, below it on phones and tablets -->
-      <div class="hdr-banner"><img class="hdr-photo" src="isabel-banner.jpg" alt="Sidlak Isabel: Municipality of Isabel, Leyte officials" width="1120" height="414"></div>
+      <div class="hdr-banner"><picture><source media="(min-width: 1024px)" srcset="isabel-banner-wide.jpg"><img class="hdr-photo" src="isabel-banner.jpg" alt="Municipality of Isabel, Leyte officials" width="1120" height="414"></picture></div>
 
       <!-- Live Search Box (hidden for now: delete the word "hidden" below to bring it back) -->
       <div class="hidden w-full md:w-80">
