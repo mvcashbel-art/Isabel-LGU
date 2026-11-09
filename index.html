@@ -27,17 +27,18 @@
     /* Header with the officials banner */
     header.hdr { overflow: hidden; }
     header.hdr .hdr-banner { width: 100%; max-width: 640px; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; line-height: 0; }
-    header.hdr .hdr-banner img { width: 100%; height: auto; display: block; }
+    header.hdr .hdr-photo { width: 100%; height: auto; display: block; }
+    header.hdr .hdr-banner-seal { display: none; }
     @media (min-width: 768px) and (max-width: 1023px) {
       header.hdr { flex-direction: column; align-items: center; }
       header.hdr .hdr-left { width: 100%; }
     }
     @media (min-width: 1024px) {
-      header.hdr { min-height: 190px; }
-      header.hdr .hdr-left { max-width: 54%; position: relative; z-index: 1; }
-      header.hdr .hdr-banner { position: absolute; top: 0; right: 0; bottom: 0; width: auto; max-width: none; border: 0; border-radius: 0; }
-      header.hdr .hdr-banner img { height: 100%; width: auto; max-width: none;
-        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16%); mask-image: linear-gradient(to right, transparent 0, #000 16%); }
+      header.hdr { --h: clamp(190px, 17vw, 260px); min-height: var(--h); }
+      header.hdr .hdr-left { max-width: calc(100% - var(--h) * 2.705 - 24px); position: relative; z-index: 1; }
+      header.hdr .hdr-banner { position: absolute; top: 0; right: 0; bottom: 0; width: auto; max-width: none; border: 0; border-left: 1px solid #e2e8f0; border-radius: 0; }
+      header.hdr .hdr-photo { height: 100%; width: auto; max-width: none; }
+      header.hdr .hdr-banner-seal { display: block; position: absolute; top: 12px; left: 12px; width: 62px; height: 62px; object-fit: contain; border-radius: 50%; background: #fff; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(15,23,42,.35); }
     }
     .bg-watermark {
       position: fixed;
@@ -124,7 +125,7 @@
       </div>
 
       <!-- Officials banner: sits on the right of the header on wide screens, below it on phones and tablets -->
-      <div class="hdr-banner"><img src="isabel-banner.jpg" alt="Sidlak Isabel: Municipality of Isabel, Leyte officials" width="1120" height="414"></div>
+      <div class="hdr-banner"><img class="hdr-photo" src="isabel-banner.jpg" alt="Sidlak Isabel: Municipality of Isabel, Leyte officials" width="1120" height="414"><img class="hdr-banner-seal" src="isabel-seal.png" alt="" aria-hidden="true"></div>
 
       <!-- Live Search Box (hidden for now: delete the word "hidden" below to bring it back) -->
       <div class="hidden w-full md:w-80">
