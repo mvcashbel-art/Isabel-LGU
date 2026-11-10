@@ -67,36 +67,6 @@
 </head>
 <body class="text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white pb-12">
 
-  <!-- Opening splash screen: shows while the page loads (about 1.5 to 3 seconds), then fades away -->
-  <div id="splash" role="status" aria-live="polite" aria-label="Loading the Municipality of Isabel portal">
-    <img class="splash-seal" src="isabel-seal.png" alt="">
-    <div>
-      <div class="splash-kicker">Republic of the Philippines</div>
-      <div class="splash-title">Municipality of Isabel</div>
-    </div>
-    <div class="splash-bar"><i></i></div>
-    <div class="splash-note">Loading, please wait…</div>
-  </div>
-  <noscript><style>#splash { display: none !important; }</style></noscript>
-  <script>
-    (function () {
-      var el = document.getElementById('splash');
-      if (!el) return;
-      var seen = false;
-      try { seen = sessionStorage.getItem('isabelSplash') === '1'; } catch (e) {}
-      if (seen) { el.parentNode.removeChild(el); return; }   // already shown in this visit
-      var start = Date.now(), MIN = 1500, MAX = 3000, done = false;
-      function hide() {
-        if (done) return; done = true;
-        try { sessionStorage.setItem('isabelSplash', '1'); } catch (e) {}
-        el.classList.add('splash-out');
-        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 600);
-      }
-      function whenReady() { setTimeout(hide, Math.max(0, MIN - (Date.now() - start))); }
-      if (document.readyState === 'complete') whenReady(); else window.addEventListener('load', whenReady);
-      setTimeout(hide, MAX);   // never keep anyone waiting more than 3 seconds
-    })();
-  </script>
 
   <!-- Background Layer -->
   <div class="bg-watermark"></div>
