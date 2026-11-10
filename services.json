@@ -1,10 +1,9 @@
 {
-  "_how_to_edit": "Edit this file on GitHub (open it, click the pencil icon). Keep the quote marks, commas and square brackets exactly as they are. Each service is one block between { and }. Put each requirement on its own line inside \"requirements\", between quote marks and separated by commas. Leave \"fee\", \"time\", \"note\" and \"form\" as \"\" if you do not need them. To offer a downloadable form, upload the file into a folder named forms on GitHub and write for example \"form\": \"forms/business-permit-application.pdf\". Only the office in charge should confirm the requirements before you publish them.",
+  "_how_to_edit": "Edit this file on GitHub (open it, click the pencil icon). Keep the quote marks, commas and square brackets exactly as they are. Each service is one block between { and }. \"office\" decides which office pop-up shows it, and must be exactly one of: mayor, lcr, assessor, treasury, bfp, bjmp (mayor = Mayor's Office, lcr = Civil Registrar, assessor = Assessor's Office, treasury = Treasury & Tax, bfp = BFP Station, bjmp = BJMP Isabel). Put each requirement on its own line inside \"requirements\", between quote marks and separated by commas. Leave \"fee\", \"time\", \"note\" and \"form\" as \"\" if you do not need them. To offer a downloadable form, upload the file into a folder named forms on GitHub and write for example \"form\": \"forms/business-permit-application.pdf\". To add another service, copy one block and change it. Only the office in charge should confirm the requirements before you publish them.",
   "services": [
     {
+      "office": "mayor",
       "title": "Business Permit (new and renewal)",
-      "office": "Business Permit & Licensing Office (BPLO)",
-      "category": "Permits & licenses",
       "requirements": [],
       "fee": "",
       "time": "",
@@ -12,9 +11,8 @@
       "form": ""
     },
     {
-      "title": "Community Tax Certificate (Cedula)",
-      "office": "Municipal Treasurer's Office",
-      "category": "Taxes & payments",
+      "office": "mayor",
+      "title": "Mayor's Clearance",
       "requirements": [],
       "fee": "",
       "time": "",
@@ -22,9 +20,8 @@
       "form": ""
     },
     {
+      "office": "lcr",
       "title": "Birth, marriage and death certificates",
-      "office": "Local Civil Registrar",
-      "category": "Civil registry",
       "requirements": [],
       "fee": "",
       "time": "",
@@ -32,9 +29,44 @@
       "form": ""
     },
     {
-      "title": "Real property tax and tax declaration",
-      "office": "Municipal Assessor's / Treasurer's Office",
-      "category": "Taxes & payments",
+      "office": "assessor",
+      "title": "Tax declaration and certified true copy",
+      "requirements": [],
+      "fee": "",
+      "time": "",
+      "note": "",
+      "form": ""
+    },
+    {
+      "office": "treasury",
+      "title": "Community Tax Certificate (Cedula)",
+      "requirements": [],
+      "fee": "",
+      "time": "",
+      "note": "",
+      "form": ""
+    },
+    {
+      "office": "treasury",
+      "title": "Real property tax payment",
+      "requirements": [],
+      "fee": "",
+      "time": "",
+      "note": "",
+      "form": ""
+    },
+    {
+      "office": "bfp",
+      "title": "Fire Safety Inspection Certificate (FSIC)",
+      "requirements": [],
+      "fee": "",
+      "time": "",
+      "note": "",
+      "form": ""
+    },
+    {
+      "office": "bjmp",
+      "title": "Inmate visit scheduling",
       "requirements": [],
       "fee": "",
       "time": "",
