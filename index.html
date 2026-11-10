@@ -24,6 +24,21 @@
       position: relative;
     }
     
+    /* Opening splash screen */
+    #splash { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      background: linear-gradient(160deg, #101c3d 0%, #1b2b5a 70%, #243a73 100%); color: #fff; text-align: center; padding: 24px;
+      transition: opacity .45s ease, visibility .45s ease; }
+    #splash.splash-out { opacity: 0; visibility: hidden; }
+    #splash .splash-seal { width: clamp(110px, 30vw, 170px); height: clamp(110px, 30vw, 170px); border-radius: 50%; background: #fff; border: 4px solid #c9a24a;
+      box-shadow: 0 10px 40px rgba(0,0,0,.45); animation: splashPulse 1.8s ease-in-out infinite; }
+    #splash .splash-kicker { font-size: 12px; letter-spacing: .18em; font-weight: 800; color: #e6c46f; text-transform: uppercase; }
+    #splash .splash-title { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; line-height: 1.1; }
+    #splash .splash-bar { width: min(240px, 60vw); height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); overflow: hidden; margin-top: 6px; }
+    #splash .splash-bar i { display: block; height: 100%; width: 0; border-radius: 4px; background: #c9a24a; animation: splashFill 3s linear forwards; }
+    #splash .splash-note { font-size: 12px; color: #aab6d3; }
+    @keyframes splashPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes splashFill { from { width: 0; } to { width: 100%; } }
+    @media (prefers-reduced-motion: reduce) { #splash .splash-seal { animation: none; } #splash { transition: none; } }
     .bg-watermark {
       position: fixed;
       inset: 0;
@@ -50,6 +65,35 @@
   </style>
 </head>
 <body class="text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white pb-12">
+
+  <!-- Opening splash screen: shows for 3 seconds while the page loads behind it, then fades away -->
+  <div id="splash" role="status" aria-live="polite" aria-label="Loading the Municipality of Isabel portal">
+    <img class="splash-seal" src="isabel-seal.png" alt="">
+    <div>
+      <div class="splash-kicker">Republic of the Philippines</div>
+      <div class="splash-title">Municipality of Isabel</div>
+    </div>
+    <div class="splash-bar"><i></i></div>
+    <div class="splash-note">Loading, please wait…</div>
+  </div>
+  <noscript><style>#splash { display: none !important; }</style></noscript>
+  <script>
+    (function () {
+      var el = document.getElementById('splash');
+      if (!el) return;
+      var seen = false;
+      try { seen = sessionStorage.getItem('isabelSplash') === '1'; } catch (e) {}
+      if (seen) { el.parentNode.removeChild(el); return; }   // already shown during this visit
+      var SHOW_MS = 3000, done = false;
+      function hide() {
+        if (done) return; done = true;
+        try { sessionStorage.setItem('isabelSplash', '1'); } catch (e) {}
+        el.classList.add('splash-out');
+        setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 600);
+      }
+      setTimeout(hide, SHOW_MS);
+    })();
+  </script>
 
   <!-- Background Layer -->
   <div class="bg-watermark"></div>
