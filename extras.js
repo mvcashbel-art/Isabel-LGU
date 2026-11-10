@@ -181,15 +181,15 @@
           '<div><label for="rpContact" class="block text-xs font-bold text-slate-700 mb-1">Mobile number (optional)</label><input id="rpContact" type="tel" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="09XX XXX XXXX" class="' + INPUT + '"></div>' +
         '</div>' +
         '<div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Website <input id="rpWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>' +
-        '<label class="flex items-start gap-2 text-xs text-slate-700"><input id="rpConsent" type="checkbox" class="mt-0.5"><span>I agree that the Municipality may use this report, my photo and my name or number (if given) only to respond to it (Data Privacy Act).</span></label>' +
+        '<label class="flex items-start gap-2 text-xs text-slate-700"><input id="rpConsent" type="checkbox" class="mt-0.5"><span>I agree that the Municipality may use this report, my photo (with where and when it was taken) and my name or number (if given) only to respond to it (Data Privacy Act).</span></label>' +
         '<div id="rpMessage" class="hidden" role="status"></div>' +
         '<button type="submit" id="rpSubmit" class="w-full ' + BTN + 'justify-center bg-amber-500 hover:bg-amber-600 text-white border-amber-600 !text-sm">Send Report</button>' +
       '</form>' +
     '</div>';
   document.body.appendChild(rm);
 
-  var photoData = '', locVal = '', photoBusy = false;
-  function resetPhoto() { photoData = ''; $('rpPhoto').value = ''; $('rpPhotoPrev').classList.add('hidden'); $('rpPhotoBtn').classList.remove('hidden'); $('rpPhotoMsg').textContent = ''; }
+  var photoData = '', photoGps = '', photoTaken = '', locVal = '', photoBusy = false;
+  function resetPhoto() { photoData = ''; photoGps = ''; photoTaken = ''; $('rpPhoto').value = ''; $('rpPhotoPrev').classList.add('hidden'); $('rpPhotoBtn').classList.remove('hidden'); $('rpPhotoMsg').textContent = ''; }
   function resetLoc() { locVal = ''; $('rpLocBtn').textContent = '\ud83d\udccd Add my location (helps us find the place)'; $('rpLocBtn').classList.remove('!bg-emerald-50'); }
   function openReport() {
     $('rpMessage').className = 'hidden';
@@ -202,6 +202,58 @@
   $('rpClose').addEventListener('click', closeReport);
   rm.addEventListener('click', function (e) { if (e.target === rm) closeReport(); });
   $('rpDetails').addEventListener('input', function () { $('rpCount').textContent = $('rpDetails').value.length + ' / 300'; });
+
+  // Reads where and when a photo was taken from its own hidden camera data (EXIF), before the photo is shrunk.
+  // Only the place and the time are kept; nothing else from the file is sent.
+  function readExif(file) {
+    return new Promise(function (resolve) {
+      var none = { gps: '', taken: '' };
+      try {
+        var fr = new FileReader();
+        fr.onerror = function () { resolve(none); };
+        fr.onload = function () {
+          try {
+            var dv = new DataView(fr.result), n = dv.byteLength;
+            if (n < 12 || dv.getUint16(0) !== 0xFFD8) return resolve(none);
+            var o = 2, tiff = -1;
+            while (o + 4 < n) {
+              var mk = dv.getUint16(o), len = dv.getUint16(o + 2);
+              if (mk === 0xFFE1 && dv.getUint32(o + 4) === 0x45786966) { tiff = o + 10; break; }
+              if ((mk & 0xFF00) !== 0xFF00 || mk === 0xFFDA) break;
+              o += 2 + len;
+            }
+            if (tiff < 0) return resolve(none);
+            var le = dv.getUint16(tiff) === 0x4949;
+            var u16 = function (p) { return dv.getUint16(p, le); }, u32 = function (p) { return dv.getUint32(p, le); };
+            var ifd = function (start) {
+              var out = {}, cnt = u16(start);
+              for (var i = 0; i < cnt && i < 200; i++) { var e = start + 2 + i * 12; out[u16(e)] = { type: u16(e + 2), count: u32(e + 4), at: e + 8 }; }
+              return out;
+            };
+            var asc = function (ent) { var p = ent.count > 4 ? tiff + u32(ent.at) : ent.at, t = ''; for (var i = 0; i < ent.count - 1 && i < 40; i++) t += String.fromCharCode(dv.getUint8(p + i)); return t; };
+            var rat3 = function (ent) { var p = tiff + u32(ent.at), v = []; for (var i = 0; i < 3; i++) { var d = u32(p + i * 8 + 4); v.push(d ? u32(p + i * 8) / d : 0); } return v[0] + v[1] / 60 + v[2] / 3600; };
+            var i0 = ifd(tiff + u32(tiff + 4)), res = { gps: '', taken: '' };
+            if (i0[0x8769]) {
+              var ex = ifd(tiff + u32(i0[0x8769].at)), dt = ex[0x9003] || ex[0x9004];
+              var m = dt && /^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2})/.exec(asc(dt));
+              if (m) res.taken = m[1] + '-' + m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5];
+            }
+            if (i0[0x8825]) {
+              var g = ifd(tiff + u32(i0[0x8825].at));
+              if (g[1] && g[2] && g[3] && g[4]) {
+                var lat = rat3(g[2]), lng = rat3(g[4]);
+                if (asc(g[1]).charAt(0) === 'S') lat = -lat;
+                if (asc(g[3]).charAt(0) === 'W') lng = -lng;
+                if (isFinite(lat) && isFinite(lng) && (lat || lng)) res.gps = lat.toFixed(5) + ',' + lng.toFixed(5);
+              }
+            }
+            resolve(res);
+          } catch (e) { resolve(none); }
+        };
+        fr.readAsArrayBuffer(file.slice(0, 262144));
+      } catch (e) { resolve(none); }
+    });
+  }
 
   // Shrinks a phone photo (often 3-8 MB) to a small JPEG. Re-drawing it on a canvas also removes hidden data such as the camera's GPS tags.
   function shrinkPhoto(file) {
@@ -231,10 +283,12 @@
     if (!f) return;
     if (!/^image\//.test(f.type || '')) { $('rpPhotoMsg').textContent = 'Please choose a photo.'; $('rpPhoto').value = ''; return; }
     photoBusy = true; $('rpPhotoMsg').textContent = 'Preparing your photo...';
-    shrinkPhoto(f).then(function (d) {
-      photoData = d; photoBusy = false;
+    Promise.all([shrinkPhoto(f), readExif(f)]).then(function (both) {
+      var d = both[0], ex = both[1];
+      photoData = d; photoGps = ex.gps; photoTaken = ex.taken; photoBusy = false;
       $('rpPhotoImg').src = d; $('rpPhotoPrev').classList.remove('hidden'); $('rpPhotoBtn').classList.add('hidden');
-      $('rpPhotoMsg').textContent = 'Photo ready (' + Math.round(d.length * 0.75 / 1024) + ' KB).';
+      $('rpPhotoMsg').textContent = 'Photo ready (' + Math.round(d.length * 0.75 / 1024) + ' KB). ' +
+        (ex.gps ? '\u2705 The photo shows where it was taken.' : '\u26a0\ufe0f This photo has no location. Please tap "Add my location" so we can find the place.');
     }).catch(function () {
       photoBusy = false; photoData = ''; $('rpPhoto').value = '';
       $('rpPhotoMsg').textContent = 'That photo could not be used. Please try another one.';
@@ -260,7 +314,7 @@
       action: 'report', v: 2,
       barangay: $('rpBarangay').value, category: $('rpCategory').value, details: $('rpDetails').value.trim(),
       name: $('rpName').value.trim(), contact: $('rpContact').value.trim(),
-      photo: photoData, loc: locVal,
+      photo: photoData, photoGps: photoGps, photoTaken: photoTaken, loc: locVal,
       consent: $('rpConsent').checked, website: $('rpWebsite').value
     };
     if (photoBusy) return showInline(msg, 'Your photo is still being prepared. Please wait a moment.', false);
@@ -320,6 +374,28 @@
 
   function telOf(c) { var t = String(c || '').replace(/[^0-9+]/g, ''); return t.replace(/\D/g, '').length >= 7 ? t : ''; }
 
+  function meters(a, b) {
+    var p = String(a).split(',').map(Number), q = String(b).split(',').map(Number), R = 6371000, r = Math.PI / 180;
+    var dLat = (q[0] - p[0]) * r, dLng = (q[1] - p[1]) * r;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(p[0] * r) * Math.cos(q[0] * r) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return Math.round(2 * R * Math.asin(Math.sqrt(h)));
+  }
+  var GPS_RE = /^-?\d{1,2}\.\d+,-?\d{1,3}\.\d+$/;
+  // One short line that helps an officer judge whether a photo is genuine.
+  function checkLine(r) {
+    var bits = [], warn = false;
+    if (GPS_RE.test(r.photoGps || '')) {
+      bits.push('\ud83d\udccd Photo GPS: <a href="https://www.google.com/maps?q=' + esc(r.photoGps) + '" target="_blank" rel="noopener noreferrer" class="underline text-blue-700">open map</a>');
+      if (GPS_RE.test(r.loc || '')) { var m = meters(r.photoGps, r.loc); bits.push(m <= 300 ? '\u2705 ' + m + ' m from where the resident was' : '\u26a0\ufe0f ' + m + ' m away from where the resident was'); if (m > 300) warn = true; }
+    } else { bits.push('\u26a0\ufe0f No GPS inside the photo'); warn = true; }
+    var t = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/.exec(r.photoTaken || '');
+    if (t) {
+      var when = new Date(+t[1], +t[2] - 1, +t[3], +t[4], +t[5]), days = r.createdMs ? (r.createdMs - when.getTime()) / 86400000 : 0;
+      bits.push('\ud83d\udd52 Taken ' + when.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }));
+      if (days > 2) { bits.push('\u26a0\ufe0f ' + Math.floor(days) + ' days before the report'); warn = true; }
+    } else { bits.push('\u26a0\ufe0f No date inside the photo'); warn = true; }
+    return '<p class="text-xs rounded-lg px-2 py-1 ' + (warn ? 'bg-amber-50 text-amber-900' : 'bg-emerald-50 text-emerald-900') + '">' + bits.join(' \u00b7 ') + '</p>';
+  }
   function renderInbox() {
     var f = $('inboxFilter').value;
     var list = inbox.filter(function (r) {
@@ -339,6 +415,7 @@
           '<div class="text-xs text-slate-500">' + esc(r.created) + ' • ' + esc(r.id) + '</div></div>' +
           '<span class="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full ' + (STATUS_STYLE[r.status] || STATUS_STYLE.SEEN) + '">' + esc(r.status) + '</span></div>' +
         (r.details ? '<p class="text-slate-800 whitespace-pre-line">' + esc(r.details) + '</p>' : '<p class="text-slate-500 italic">No note. See the photo.</p>') +
+        (r.hasPhoto ? checkLine(r) : '') +
         (r.hasPhoto ? '<div data-photo-box="' + esc(r.id) + '"><button type="button" data-photo="' + esc(r.id) + '" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-300 bg-white hover:bg-slate-100">\ud83d\udcf7 View photo</button></div>' : '') +
         (/^-?\d{1,2}\.\d+,-?\d{1,3}\.\d+$/.test(r.loc || '') ? '<a href="https://www.google.com/maps?q=' + esc(r.loc) + '" target="_blank" rel="noopener noreferrer" class="inline-block text-xs font-bold text-blue-700 underline">\ud83d\udccd Open the location on the map</a>' : '') +
         '<div class="text-xs text-slate-700">' + (r.name ? 'From: <strong>' + esc(r.name) + '</strong> ' : 'Name not given. ') +

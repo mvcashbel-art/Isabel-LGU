@@ -721,6 +721,15 @@ function cleanLoc_(v) {
   return (lat >= 4 && lat <= 22 && lng >= 116 && lng <= 128) ? m[1] + ',' + m[2] : '';
 }
 
+/** Camera time from the photo, "YYYY-MM-DD HH:MM" within the last 2 years, or '' */
+function cleanTaken_(v) {
+  var m = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})$/.exec(String(v || '').trim());
+  if (!m) return '';
+  var y = Number(m[1]), now = new Date().getFullYear();
+  if (y < now - 2 || y > now + 1 || Number(m[2]) < 1 || Number(m[2]) > 12 || Number(m[3]) < 1 || Number(m[3]) > 31 || Number(m[4]) > 23 || Number(m[5]) > 59) return '';
+  return m[0];
+}
+
 /** Public: a resident reports a problem. No SMS is sent, so nothing here costs credits. */
 function report_(b) {
   if (b.website) return { ok: true }; // honeypot
@@ -738,6 +747,8 @@ function report_(b) {
   var name = cleanName_(b.name, 60);
   var contact = clean_(b.contact, 40).replace(/[^0-9+\-() ]/g, '').trim();
   var loc = cleanLoc_(b.loc);
+  // where and when the photo was taken, read from the photo itself by the page (only kept when a photo is sent)
+  var photoGps = photo.bytes ? cleanLoc_(b.photoGps) : '', photoTaken = photo.bytes ? cleanTaken_(b.photoTaken) : '';
   if (!hit_('rep-hr', REPORT_MAX_PER_HOUR, 3600)) return busy_();
   if (photo.bytes && !hit_('rep-photo-hr', REPORT_PHOTOS_PER_HOUR, 3600)) return busy_();
   // the same report sent twice within an hour is counted once (double taps, bots)
@@ -756,14 +767,17 @@ function report_(b) {
   return withLock_(function () {
     var sh = sheet_(SHEET_REPORTS);
     ensureReportColumns_(sh);
-    sh.appendRow([id, new Date(), barangay, category, cellSafe_(details), cellSafe_(name), cellSafe_(contact), 'NEW', '', new Date(), fileId, loc]);
+    sh.appendRow([id, new Date(), barangay, category, cellSafe_(details), cellSafe_(name), cellSafe_(contact), 'NEW', '', new Date(), fileId, loc, photoGps, photoTaken]);
     return { ok: true, ref: id };
   });
 }
 
-/** Reports sheets made before photos existed have no Photo ID / Location columns yet. */
+/** Reports sheets made before photos existed lack the Photo ID / Location / Photo GPS / Photo Taken columns. */
 function ensureReportColumns_(sh) {
-  if (String(sh.getRange(1, 11).getValue()) !== 'Photo ID') sh.getRange(1, 11, 1, 2).setValues([['Photo ID', 'Location']]);
+  if (String(sh.getRange(1, 11).getValue()) !== 'Photo ID') sh.getRange(1, 11, 1, 4).setValues([['Photo ID', 'Location', 'Photo GPS', 'Photo Taken']]);
+  else if (String(sh.getRange(1, 13).getValue()) !== 'Photo GPS') sh.getRange(1, 13, 1, 2).setValues([['Photo GPS', 'Photo Taken']]);
+  // keep the camera time as plain text so Sheets does not turn it into a date
+  try { if (typeof sh.getRange(1, 14).setNumberFormat === 'function') sh.getRange(2, 14, Math.max(1, sh.getMaxRows() - 1), 1).setNumberFormat('@'); } catch (e) {}
 }
 
 /** Officers: the newest reports first (at most 200). */
@@ -772,13 +786,16 @@ function listReports_(b) {
   var sh = sheet_(SHEET_REPORTS), last = sh.getLastRow();
   if (last < 2) return { ok: true, reports: [] };
   var from = Math.max(2, last - 199);
-  var rows = sh.getRange(from, 1, last - from + 1, 12).getValues(), out = [];
+  var rows = sh.getRange(from, 1, last - from + 1, 14).getValues(), out = [];
   for (var i = rows.length - 1; i >= 0; i--) {
     var r = rows[i];
     out.push({
       id: String(r[0]), created: r[1] instanceof Date ? Utilities.formatDate(r[1], 'Asia/Manila', "MMM d, yyyy 'at' h:mm a") : String(r[1]),
       barangay: String(r[2]), category: String(r[3]), details: uncell_(r[4]), name: uncell_(r[5]), contact: uncell_(r[6]),
-      status: String(r[7] || 'NEW'), by: String(r[8] || ''), hasPhoto: !!r[10], loc: cleanLoc_(r[11])
+      status: String(r[7] || 'NEW'), by: String(r[8] || ''), hasPhoto: !!r[10], loc: cleanLoc_(r[11]),
+      photoGps: cleanLoc_(r[12]),
+      photoTaken: r[13] instanceof Date ? Utilities.formatDate(r[13], 'Asia/Manila', 'yyyy-MM-dd HH:mm') : cleanTaken_(r[13]),
+      createdMs: r[1] instanceof Date ? r[1].getTime() : 0
     });
   }
   return { ok: true, reports: out };
@@ -1151,7 +1168,7 @@ function sheet_(name) {
   headers[SHEET_POSTS] = ['ID', 'Created', 'Updated', 'Status', 'JSON'];
   headers[SHEET_SETTINGS] = ['Key', 'Order', 'Updated', 'JSON'];
   headers[SHEET_AUDIT] = ['Time', 'Officer', 'Action', 'Target', 'Detail'];
-  headers[SHEET_REPORTS] = ['ID', 'Created', 'Barangay', 'Category', 'Details', 'Name', 'Contact', 'Status', 'Handled By', 'Updated', 'Photo ID', 'Location'];
+  headers[SHEET_REPORTS] = ['ID', 'Created', 'Barangay', 'Category', 'Details', 'Name', 'Contact', 'Status', 'Handled By', 'Updated', 'Photo ID', 'Location', 'Photo GPS', 'Photo Taken'];
   sh.appendRow(headers[name]);
   sh.setFrozenRows(1);
   if (name === SHEET_SUBS) sh.getRange('D:D').setNumberFormat('@'); // keep numbers as text
