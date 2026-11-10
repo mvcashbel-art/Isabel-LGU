@@ -1,0 +1,17 @@
+{
+  "name": "Municipality of Isabel, Leyte - Official Portal",
+  "short_name": "Isabel LGU",
+  "description": "Official announcements, emergency alerts, hotlines and services of the Municipality of Isabel, Leyte.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101c3d",
+  "theme_color": "#101c3d",
+  "lang": "en-PH",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

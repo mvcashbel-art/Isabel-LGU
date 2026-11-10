@@ -5,8 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Municipality of Isabel — Official LGU Portal</title>
   <!-- Security: the page may only load its own files, plus the Google Apps Script backend. No plugins, no outside forms. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src https://script.google.com https://script.googleusercontent.com; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="Official portal of the Municipality of Isabel, Leyte: announcements, emergency alerts, hotlines and public services.">
+  <meta name="theme-color" content="#101c3d">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="canonical" href="https://mvcashbel-art.github.io/Isabel-LGU/">
+  <!-- When the link is shared on Facebook or Messenger, this is the picture and text people see -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Municipality of Isabel, Leyte">
+  <meta property="og:title" content="Municipality of Isabel, Leyte - Official Portal">
+  <meta property="og:description" content="Announcements, emergency alerts, hotlines and public services of the Municipality of Isabel, Leyte.">
+  <meta property="og:url" content="https://mvcashbel-art.github.io/Isabel-LGU/">
+  <meta property="og:image" content="https://mvcashbel-art.github.io/Isabel-LGU/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Seal of the Municipality of Isabel, Leyte">
+  <meta property="og:locale" content="en_PH">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Municipality of Isabel, Leyte - Official Portal">
+  <meta name="twitter:description" content="Announcements, emergency alerts, hotlines and public services.">
+  <meta name="twitter:image" content="https://mvcashbel-art.github.io/Isabel-LGU/og-image.jpg">
   <!-- Tab / bookmark / home-screen icon (the municipal seal) -->
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -2126,5 +2145,6 @@
   </script>
   <!-- Text-message code step for sign-up / unsubscribe. Must stay AFTER the main script above. -->
   <script src="signup-patch.js"></script>
+  <script src="extras.js"></script>
 </body>
 </html>
