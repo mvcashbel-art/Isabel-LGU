@@ -372,6 +372,57 @@
     h.classList.toggle('hidden');
   });
 
+  /* ----- Friendly "add to your home screen" banner for first-time visitors on phones ----- */
+  var ua = navigator.userAgent || '';
+  var inApp = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|Line\/|MicroMessenger/i.test(ua);   // Facebook, Messenger and similar built-in browsers
+  var isAndroid = /android/i.test(ua);
+  var isMobile = isIos || isAndroid || /Mobile/i.test(ua);
+  var DISMISS_KEY = 'isabel_install_dismissed', DISMISS_DAYS = 14;
+  function dismissedRecently() { var t = Number(load(DISMISS_KEY) || 0); return !!t && Date.now() - t < DISMISS_DAYS * 86400000; }
+
+  var ib = document.createElement('div');
+  ib.id = 'installBanner';
+  ib.setAttribute('role', 'region');
+  ib.setAttribute('aria-label', 'Add this site to your home screen');
+  ib.style.cssText = 'display:none;position:fixed;left:12px;right:12px;bottom:12px;max-width:460px;margin:0 auto;z-index:45';
+  document.body.appendChild(ib);
+
+  function bannerText() {
+    if (inApp) return 'You are viewing this inside Facebook or Messenger. To add the site to your home screen, tap the <strong>\u22ef</strong> or <strong>\u22ee</strong> menu at the top corner, choose <strong>Open in browser</strong> (or <strong>Open in Chrome</strong>), then add it from there.';
+    if (isIos) return 'Tap the <strong>Share</strong> button (the square with an arrow) at the bottom of Safari, then choose <strong>Add to Home Screen</strong>.';
+    if (deferredInstall) return 'Add it to your home screen, so you do not have to search for the address again.';
+    return 'Tap the <strong>\u22ee</strong> menu of your browser, then choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.';
+  }
+  function renderBanner() {
+    ib.innerHTML =
+      '<div class="bg-white border border-slate-300 rounded-2xl shadow-xl p-3.5 space-y-2.5">' +
+        '<div class="flex items-start justify-between gap-2"><div class="text-sm font-extrabold text-slate-900">\ud83d\udcf2 Keep Isabel LGU on your phone</div>' +
+        '<button type="button" id="ibClose" aria-label="Close" class="text-slate-500 hover:text-slate-900 text-lg leading-none px-1">\u2715</button></div>' +
+        '<p class="text-xs text-slate-700">' + bannerText() + '</p>' +
+        '<div class="flex gap-2">' + (deferredInstall && !inApp && !isIos ? '<button type="button" id="ibInstall" class="' + BTN + 'bg-blue-600 hover:bg-blue-700 text-white border-blue-700">Add to home screen</button>' : '') +
+        '<button type="button" id="ibLater" class="' + BTN + 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300">Not now</button></div>' +
+      '</div>';
+    var later = function () { store(DISMISS_KEY, String(Date.now())); ib.style.display = 'none'; };
+    $('ibClose').addEventListener('click', later);
+    $('ibLater').addEventListener('click', later);
+    if ($('ibInstall')) $('ibInstall').addEventListener('click', function () {
+      if (!deferredInstall) return;
+      deferredInstall.prompt();
+      deferredInstall.userChoice.then(function () { deferredInstall = null; $('qaInstall').classList.add('hidden'); ib.style.display = 'none'; });
+    });
+  }
+  var bannerWanted = isMobile && !standalone && !dismissedRecently();
+  function showBanner() {
+    if (!bannerWanted || navigator.onLine === false) return;
+    renderBanner(); ib.style.display = 'block';
+  }
+  if (bannerWanted) {
+    setTimeout(showBanner, 4500); // after the opening screen has gone
+    window.addEventListener('beforeinstallprompt', function () { if (ib.style.display === 'block') renderBanner(); });
+    window.addEventListener('appinstalled', function () { bannerWanted = false; ib.style.display = 'none'; });
+    window.addEventListener('offline', function () { ib.style.display = 'none'; });
+  }
+
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').catch(function () {});
