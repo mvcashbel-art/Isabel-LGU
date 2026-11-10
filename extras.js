@@ -155,7 +155,7 @@
     '<div class="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[92vh] overflow-y-auto p-4 sm:p-5 space-y-3">' +
       '<div class="flex items-start justify-between gap-2">' +
         '<div><h3 class="text-base font-extrabold text-slate-900">📝 Report a Concern</h3>' +
-        '<p class="text-xs text-slate-600 mt-0.5">Tell the Municipality about a problem in your barangay.</p></div>' +
+        '<p class="text-xs text-slate-600 mt-0.5">A photo is the quickest way to show the problem.</p></div>' +
         '<button type="button" id="rpClose" aria-label="Close" class="text-slate-500 hover:text-slate-900 text-lg px-2">✕</button>' +
       '</div>' +
       '<div class="text-xs bg-rose-50 border border-rose-200 text-rose-800 rounded-xl p-2.5"><strong>Is it an emergency?</strong> Do not use this form. Call the Emergency Hotlines listed on this page.</div>' +
@@ -166,22 +166,31 @@
         '<div><label for="rpCategory" class="block text-xs font-bold text-slate-700 mb-1">What is the problem about? *</label>' +
           '<select id="rpCategory" required class="' + INPUT + '"><option value="">Choose one...</option>' +
           CATEGORIES.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('') + '</select></div>' +
-        '<div><label for="rpDetails" class="block text-xs font-bold text-slate-700 mb-1">Describe it (where, and what you see) *</label>' +
-          '<textarea id="rpDetails" rows="4" maxlength="600" required placeholder="Example: Big hole in the road in front of the chapel in Purok 3." class="' + INPUT + '"></textarea>' +
-          '<div id="rpCount" class="text-xs text-slate-500 text-right mt-0.5">0 / 600</div></div>' +
+        '<div><div class="block text-xs font-bold text-slate-700 mb-1">Photo of the problem</div>' +
+          '<input id="rpPhoto" type="file" accept="image/*" class="hidden">' +
+          '<button type="button" id="rpPhotoBtn" class="w-full ' + BTN + 'justify-center bg-slate-50 hover:bg-slate-100 text-slate-800 border-slate-400 border-dashed !text-sm !py-3">\ud83d\udcf7 Take or choose a photo</button>' +
+          '<div id="rpPhotoPrev" class="hidden relative"><img id="rpPhotoImg" alt="Your photo" class="w-full max-h-52 object-cover rounded-xl border border-slate-300">' +
+            '<button type="button" id="rpPhotoDel" class="absolute top-2 right-2 bg-slate-900/80 text-white text-xs font-bold px-2.5 py-1 rounded-lg">\u2715 Remove</button></div>' +
+          '<div id="rpPhotoMsg" class="text-xs text-slate-600 mt-1"></div></div>' +
+        '<button type="button" id="rpLocBtn" class="w-full ' + BTN + 'justify-center bg-white hover:bg-slate-100 text-slate-800 border-slate-300">\ud83d\udccd Add my location (helps us find the place)</button>' +
+        '<div><label for="rpDetails" class="block text-xs font-bold text-slate-700 mb-1">Short note <span class="font-normal text-slate-500">(optional if you added a photo)</span></label>' +
+          '<textarea id="rpDetails" rows="2" maxlength="300" placeholder="Example: In front of the chapel, Purok 3" class="' + INPUT + '"></textarea>' +
+          '<div id="rpCount" class="text-xs text-slate-500 text-right mt-0.5">0 / 300</div></div>' +
         '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' +
           '<div><label for="rpName" class="block text-xs font-bold text-slate-700 mb-1">Your name (optional)</label><input id="rpName" type="text" maxlength="60" autocomplete="name" class="' + INPUT + '"></div>' +
           '<div><label for="rpContact" class="block text-xs font-bold text-slate-700 mb-1">Mobile number (optional)</label><input id="rpContact" type="tel" maxlength="40" inputmode="tel" autocomplete="tel" placeholder="09XX XXX XXXX" class="' + INPUT + '"></div>' +
         '</div>' +
-        '<p class="text-xs text-slate-600">Leave your number only if you want the office to call you back.</p>' +
         '<div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>Website <input id="rpWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>' +
-        '<label class="flex items-start gap-2 text-xs text-slate-700"><input id="rpConsent" type="checkbox" class="mt-0.5"><span>I agree that the Municipality of Isabel may read this report and use my name and number (if given) only to respond to it, as allowed by the Data Privacy Act.</span></label>' +
+        '<label class="flex items-start gap-2 text-xs text-slate-700"><input id="rpConsent" type="checkbox" class="mt-0.5"><span>I agree that the Municipality may use this report, my photo and my name or number (if given) only to respond to it (Data Privacy Act).</span></label>' +
         '<div id="rpMessage" class="hidden" role="status"></div>' +
         '<button type="submit" id="rpSubmit" class="w-full ' + BTN + 'justify-center bg-amber-500 hover:bg-amber-600 text-white border-amber-600 !text-sm">Send Report</button>' +
       '</form>' +
     '</div>';
   document.body.appendChild(rm);
 
+  var photoData = '', locVal = '', photoBusy = false;
+  function resetPhoto() { photoData = ''; $('rpPhoto').value = ''; $('rpPhotoPrev').classList.add('hidden'); $('rpPhotoBtn').classList.remove('hidden'); $('rpPhotoMsg').textContent = ''; }
+  function resetLoc() { locVal = ''; $('rpLocBtn').textContent = '\ud83d\udccd Add my location (helps us find the place)'; $('rpLocBtn').classList.remove('!bg-emerald-50'); }
   function openReport() {
     $('rpMessage').className = 'hidden';
     $('rpSubmit').disabled = false;
@@ -192,7 +201,57 @@
   $('qaReport').addEventListener('click', openReport);
   $('rpClose').addEventListener('click', closeReport);
   rm.addEventListener('click', function (e) { if (e.target === rm) closeReport(); });
-  $('rpDetails').addEventListener('input', function () { $('rpCount').textContent = $('rpDetails').value.length + ' / 600'; });
+  $('rpDetails').addEventListener('input', function () { $('rpCount').textContent = $('rpDetails').value.length + ' / 300'; });
+
+  // Shrinks a phone photo (often 3-8 MB) to a small JPEG. Re-drawing it on a canvas also removes hidden data such as the camera's GPS tags.
+  function shrinkPhoto(file) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () {
+        URL.revokeObjectURL(url);
+        var sides = [1280, 1024, 800, 640], quals = [0.72, 0.62, 0.55, 0.5];
+        for (var i = 0; i < sides.length; i++) {
+          var k = Math.min(1, sides[i] / Math.max(img.width, img.height));
+          var c = document.createElement('canvas');
+          c.width = Math.max(1, Math.round(img.width * k)); c.height = Math.max(1, Math.round(img.height * k));
+          var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+          var d = c.toDataURL('image/jpeg', quals[i]);
+          if (d.length <= 600000) return resolve(d);
+        }
+        reject(new Error('too big'));
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('unreadable')); };
+      img.src = url;
+    });
+  }
+  $('rpPhotoBtn').addEventListener('click', function () { $('rpPhoto').click(); });
+  $('rpPhotoDel').addEventListener('click', resetPhoto);
+  $('rpPhoto').addEventListener('change', function () {
+    var f = $('rpPhoto').files && $('rpPhoto').files[0];
+    if (!f) return;
+    if (!/^image\//.test(f.type || '')) { $('rpPhotoMsg').textContent = 'Please choose a photo.'; $('rpPhoto').value = ''; return; }
+    photoBusy = true; $('rpPhotoMsg').textContent = 'Preparing your photo...';
+    shrinkPhoto(f).then(function (d) {
+      photoData = d; photoBusy = false;
+      $('rpPhotoImg').src = d; $('rpPhotoPrev').classList.remove('hidden'); $('rpPhotoBtn').classList.add('hidden');
+      $('rpPhotoMsg').textContent = 'Photo ready (' + Math.round(d.length * 0.75 / 1024) + ' KB).';
+    }).catch(function () {
+      photoBusy = false; photoData = ''; $('rpPhoto').value = '';
+      $('rpPhotoMsg').textContent = 'That photo could not be used. Please try another one.';
+    });
+  });
+  $('rpLocBtn').addEventListener('click', function () {
+    if (locVal) { resetLoc(); return; }
+    if (!navigator.geolocation) { showInline($('rpMessage'), 'Your phone cannot share its location here. You can still send the report.', false); return; }
+    $('rpLocBtn').textContent = 'Getting your location...';
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      locVal = pos.coords.latitude.toFixed(5) + ',' + pos.coords.longitude.toFixed(5);
+      $('rpLocBtn').textContent = '\u2705 Location added (tap to remove)';
+    }, function () {
+      resetLoc();
+      showInline($('rpMessage'), 'Could not get your location. You can still send the report.', false);
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+  });
 
   $('reportForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -201,22 +260,24 @@
       action: 'report', v: 2,
       barangay: $('rpBarangay').value, category: $('rpCategory').value, details: $('rpDetails').value.trim(),
       name: $('rpName').value.trim(), contact: $('rpContact').value.trim(),
+      photo: photoData, loc: locVal,
       consent: $('rpConsent').checked, website: $('rpWebsite').value
     };
+    if (photoBusy) return showInline(msg, 'Your photo is still being prepared. Please wait a moment.', false);
     if (!p.barangay) return showInline(msg, 'Please choose your barangay.', false);
     if (!p.category) return showInline(msg, 'Please choose what the problem is about.', false);
-    if (p.details.length < 10) return showInline(msg, 'Please describe the problem (at least 10 characters).', false);
+    if (!p.photo && p.details.length < 10) return showInline(msg, 'Please add a photo, or write a short note about the problem.', false);
     if (/https?:\/\/|www\./i.test(p.details)) return showInline(msg, 'Please do not put web links in the report.', false);
     if (!p.consent) return showInline(msg, 'Please tick the box to agree.', false);
     var last = Number(load('isabel_last_report') || 0);
     if (Date.now() - last < 30000) return showInline(msg, 'Please wait a few seconds before sending another report.', false);
 
-    btn.disabled = true; btn.textContent = 'Sending...';
+    btn.disabled = true; btn.textContent = p.photo ? 'Sending photo...' : 'Sending...';
     var done = function (res) {
       if (res && res.ok) {
         store('isabel_last_report', String(Date.now()));
         showInline(msg, res.ref ? 'Thank you. Your report was sent. Reference number: ' + res.ref : 'Thank you. Your report was sent.', true);
-        $('rpDetails').value = ''; $('rpCount').textContent = '0 / 600'; $('rpConsent').checked = false;
+        $('rpDetails').value = ''; $('rpCount').textContent = '0 / 300'; $('rpConsent').checked = false; resetPhoto(); resetLoc();
         btn.textContent = 'Sent ✓';
         setTimeout(function () { btn.disabled = false; btn.textContent = 'Send Report'; }, 4000);
       } else {
@@ -277,7 +338,9 @@
           '<div><div class="font-bold text-slate-900">' + esc(r.category) + ' • ' + esc(r.barangay) + '</div>' +
           '<div class="text-xs text-slate-500">' + esc(r.created) + ' • ' + esc(r.id) + '</div></div>' +
           '<span class="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full ' + (STATUS_STYLE[r.status] || STATUS_STYLE.SEEN) + '">' + esc(r.status) + '</span></div>' +
-        '<p class="text-slate-800 whitespace-pre-line">' + esc(r.details) + '</p>' +
+        (r.details ? '<p class="text-slate-800 whitespace-pre-line">' + esc(r.details) + '</p>' : '<p class="text-slate-500 italic">No note. See the photo.</p>') +
+        (r.hasPhoto ? '<div data-photo-box="' + esc(r.id) + '"><button type="button" data-photo="' + esc(r.id) + '" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-300 bg-white hover:bg-slate-100">\ud83d\udcf7 View photo</button></div>' : '') +
+        (/^-?\d{1,2}\.\d+,-?\d{1,3}\.\d+$/.test(r.loc || '') ? '<a href="https://www.google.com/maps?q=' + esc(r.loc) + '" target="_blank" rel="noopener noreferrer" class="inline-block text-xs font-bold text-blue-700 underline">\ud83d\udccd Open the location on the map</a>' : '') +
         '<div class="text-xs text-slate-700">' + (r.name ? 'From: <strong>' + esc(r.name) + '</strong> ' : 'Name not given. ') +
           (tel ? '<a class="text-blue-700 font-bold underline" href="tel:' + esc(tel) + '">' + esc(r.contact) + '</a>' : (r.contact ? esc(r.contact) : 'No number given.')) +
           (r.by ? ' • Last handled by ' + esc(r.by) : '') + '</div>' +
@@ -306,6 +369,18 @@
   im.addEventListener('click', function (e) { if (e.target === im) toggleModal('reportsInboxModal', false); });
   $('inboxFilter').addEventListener('change', renderInbox);
   $('inboxBody').addEventListener('click', function (e) {
+    var pb = e.target.closest ? e.target.closest('button[data-photo]') : null;
+    if (pb) {
+      var pid = pb.getAttribute('data-photo'), box = pb.parentNode;
+      pb.disabled = true; pb.textContent = 'Loading photo...';
+      api('getReportPhoto', { id: pid }).then(function (res) {
+        if (res && res.ok && /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(res.photo || '')) {
+          box.innerHTML = '<img alt="Photo sent by the resident" class="w-full max-h-96 object-contain rounded-xl border border-slate-300 bg-slate-50">';
+          box.firstChild.src = res.photo;
+        } else { pb.disabled = false; pb.textContent = '\ud83d\udcf7 View photo'; if (res && res.code !== 'AUTH') alert('\u274c ' + ((res && res.error) || 'Could not load the photo.')); }
+      }).catch(function () { pb.disabled = false; pb.textContent = '\ud83d\udcf7 View photo'; alert('No connection. Please try again.'); });
+      return;
+    }
     var b = e.target.closest ? e.target.closest('button[data-id]') : null;
     if (!b) return;
     b.disabled = true;
