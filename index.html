@@ -24,40 +24,22 @@
       position: relative;
     }
     
-    /* Header with the officials banner */
-    header.hdr { overflow: hidden; }
-    header.hdr .hdr-banner { width: 100%; max-width: 640px; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; line-height: 0; }
-    header.hdr .hdr-photo { width: 100%; height: auto; display: block; }
-    @media (min-width: 768px) and (max-width: 1023px) {
-      header.hdr { flex-direction: column; align-items: center; }
-      header.hdr .hdr-left { width: 100%; }
+    /* Header: the officials picture fills the header and the seal + title sit on it (all screens) */
+    header.hdr { container-type: inline-size; display: block; padding: 0; background: #fff; border: 0; border-bottom: 4px solid #c9a24a; overflow: hidden; }
+    header.hdr .hdr-banner { position: static; width: 100%; max-width: none; border: 0; border-radius: 0; line-height: 0; overflow: visible; }
+    header.hdr .hdr-photo { width: 100%; height: auto; display: block; max-width: none; }
+    header.hdr .hdr-left { position: absolute; left: 12.5%; top: 5.5%; width: 51%; height: 36%; max-width: none; padding: 0; gap: 1.6cqw; align-items: center; z-index: 1; }
+    header.hdr .hdr-left > img { width: 12cqw; height: 12cqw; border: .38cqw solid #c9a24a; background: #fff; box-shadow: 0 .4cqw 1.4cqw rgba(15,23,42,.32); }
+    header.hdr .hdr-kicker { color: #7a5c12; font-size: max(10px, 1.2cqw); }
+    header.hdr .hdr-title { color: #14224f; font-size: 3.7cqw; line-height: 1.04; text-shadow: 0 0 .6cqw rgba(255,255,255,.9); }
+    header.hdr .hdr-sub { color: #334155; font-size: max(11px, 1.5cqw); line-height: 1.3; margin-top: .4cqw; text-shadow: 0 0 .5cqw rgba(255,255,255,.9); }
+    /* Phones: seal and title only, a bit bigger, kept clear of the man on the left */
+    @media (max-width: 639px) {
+      header.hdr .hdr-left { left: 12%; top: 5%; width: 57%; height: 40%; gap: 2.6cqw; }
+      header.hdr .hdr-left > img { width: 15.5cqw; height: 15.5cqw; border-width: .8cqw; }
+      header.hdr .hdr-kicker, header.hdr .hdr-sub { display: none; }
+      header.hdr .hdr-title { font-size: 5.4cqw; }
     }
-    @media (min-width: 1024px) {
-      /* Wide screens: the officials picture fills the header and the seal + title sit on it, where the old wording was */
-      header.hdr { container-type: inline-size; display: block; padding: 0; background: #fff; border: 0; border-bottom: 4px solid #c9a24a; }
-      header.hdr .hdr-banner { position: static; width: 100%; max-width: none; border: 0; border-radius: 0; }
-      header.hdr .hdr-photo { width: 100%; height: auto; max-width: none; }
-      header.hdr .hdr-left { position: absolute; left: 12.5%; top: 5.5%; width: 51%; height: 36%; max-width: none; padding: 0; gap: 1.6cqw; align-items: center; z-index: 1; }
-      header.hdr .hdr-left > img { width: 12cqw; height: 12cqw; border: .38cqw solid #c9a24a; background: #fff; box-shadow: 0 .4cqw 1.4cqw rgba(15,23,42,.32); }
-      header.hdr .hdr-kicker { color: #7a5c12; font-size: max(10px, 1.2cqw); }
-      header.hdr .hdr-title { color: #14224f; font-size: 3.7cqw; line-height: 1.04; text-shadow: 0 0 .6cqw rgba(255,255,255,.9); }
-      header.hdr .hdr-sub { color: #334155; font-size: max(11px, 1.5cqw); line-height: 1.3; margin-top: .4cqw; text-shadow: 0 0 .5cqw rgba(255,255,255,.9); }
-    }
-    /* Opening splash screen */
-    #splash { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-      background: linear-gradient(160deg, #101c3d 0%, #1b2b5a 70%, #243a73 100%); color: #fff; text-align: center; padding: 24px;
-      transition: opacity .45s ease, visibility .45s ease; }
-    #splash.splash-out { opacity: 0; visibility: hidden; }
-    #splash .splash-seal { width: clamp(110px, 30vw, 170px); height: clamp(110px, 30vw, 170px); border-radius: 50%; background: #fff; border: 4px solid #c9a24a;
-      box-shadow: 0 10px 40px rgba(0,0,0,.45); animation: splashPulse 1.8s ease-in-out infinite; }
-    #splash .splash-kicker { font-size: 12px; letter-spacing: .18em; font-weight: 800; color: #e6c46f; text-transform: uppercase; }
-    #splash .splash-title { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; line-height: 1.1; }
-    #splash .splash-bar { width: min(240px, 60vw); height: 4px; border-radius: 4px; background: rgba(255,255,255,.18); overflow: hidden; margin-top: 6px; }
-    #splash .splash-bar i { display: block; height: 100%; width: 40%; border-radius: 4px; background: #c9a24a; animation: splashSlide 1.2s ease-in-out infinite; }
-    #splash .splash-note { font-size: 12px; color: #aab6d3; }
-    @keyframes splashPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    @keyframes splashSlide { 0% { transform: translateX(-120%); } 100% { transform: translateX(320%); } }
-    @media (prefers-reduced-motion: reduce) { #splash .splash-seal, #splash .splash-bar i { animation: none; } #splash { transition: none; } }
     .bg-watermark {
       position: fixed;
       inset: 0;
@@ -174,7 +156,7 @@
       </div>
 
       <!-- Officials banner: sits on the right of the header on wide screens, below it on phones and tablets -->
-      <div class="hdr-banner"><picture><source media="(min-width: 1024px)" srcset="isabel-banner-wide.jpg"><img class="hdr-photo" src="isabel-banner.jpg" alt="Municipality of Isabel, Leyte officials" width="1120" height="414"></picture></div>
+      <div class="hdr-banner"><img class="hdr-photo" src="isabel-banner-wide.jpg" alt="Municipality of Isabel, Leyte officials" width="1600" height="592"></div>
 
       <!-- Live Search Box (hidden for now: delete the word "hidden" below to bring it back) -->
       <div class="hidden w-full md:w-80">
