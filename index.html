@@ -24,22 +24,6 @@
       position: relative;
     }
     
-    /* Header: the officials picture fills the header and the seal + title sit on it (all screens) */
-    header.hdr { container-type: inline-size; display: block; padding: 0; background: #fff; border: 0; border-bottom: 4px solid #c9a24a; overflow: hidden; }
-    header.hdr .hdr-banner { position: static; width: 100%; max-width: none; border: 0; border-radius: 0; line-height: 0; overflow: visible; }
-    header.hdr .hdr-photo { width: 100%; height: auto; display: block; max-width: none; }
-    header.hdr .hdr-left { position: absolute; left: 12.5%; top: 5.5%; width: 51%; height: 36%; max-width: none; padding: 0; gap: 1.6cqw; align-items: center; z-index: 1; }
-    header.hdr .hdr-left > img { width: 12cqw; height: 12cqw; border: .38cqw solid #c9a24a; background: #fff; box-shadow: 0 .4cqw 1.4cqw rgba(15,23,42,.32); }
-    header.hdr .hdr-kicker { color: #7a5c12; font-size: max(10px, 1.2cqw); }
-    header.hdr .hdr-title { color: #14224f; font-size: 3.7cqw; line-height: 1.04; text-shadow: 0 0 .6cqw rgba(255,255,255,.9); }
-    header.hdr .hdr-sub { color: #334155; font-size: max(11px, 1.5cqw); line-height: 1.3; margin-top: .4cqw; text-shadow: 0 0 .5cqw rgba(255,255,255,.9); }
-    /* Phones: seal and title only, a bit bigger, kept clear of the man on the left */
-    @media (max-width: 639px) {
-      header.hdr .hdr-left { left: 12%; top: 5%; width: 57%; height: 40%; gap: 2.6cqw; }
-      header.hdr .hdr-left > img { width: 15.5cqw; height: 15.5cqw; border-width: .8cqw; }
-      header.hdr .hdr-kicker, header.hdr .hdr-sub { display: none; }
-      header.hdr .hdr-title { font-size: 5.4cqw; }
-    }
     .bg-watermark {
       position: fixed;
       inset: 0;
@@ -66,7 +50,6 @@
   </style>
 </head>
 <body class="text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white pb-12">
-
 
   <!-- Background Layer -->
   <div class="bg-watermark"></div>
@@ -104,29 +87,26 @@
   <div class="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 space-y-4 sm:space-y-5">
 
     <!-- EDITABLE HEADER BANNER -->
-    <header class="hdr bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4 relative group">
+    <header class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 flex flex-col md:flex-row justify-between items-center gap-4 relative group">
       <!-- Officer Edit Header Trigger -->
       <button type="button" onclick="openHeaderEditModal()" class="officer-only-btn hidden absolute top-3 right-3 md:top-4 md:right-4 bg-amber-500 hover:bg-amber-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg shadow transition flex items-center gap-1 cursor-pointer z-20">
         <span>✏️</span> Edit Header Info
       </button>
 
-      <div class="hdr-left flex items-center gap-3.5 sm:gap-4 w-full md:w-auto">
+      <div class="flex items-center gap-3.5 sm:gap-4 w-full md:w-auto">
         <img src="isabel-seal.png" onerror="this.src='https://via.placeholder.com/60?text=LGU'" alt="Municipality of Isabel Seal" class="w-12 h-12 sm:w-16 sm:h-16 object-contain rounded-full shadow-sm border-2 border-slate-100 shrink-0">
         <div>
-          <div class="hdr-kicker text-xs sm:text-xs font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
+          <div class="text-xs sm:text-xs font-extrabold text-emerald-700 tracking-wider uppercase flex items-center gap-1">
             <span>🇵🇭 Republic of the Philippines</span>
           </div>
-          <h1 id="portalTitleText" class="hdr-title text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+          <h1 id="portalTitleText" class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-tight">
             Municipality of Isabel
           </h1>
-          <p id="portalSubtitleText" class="hdr-sub text-xs sm:text-sm text-slate-500 font-medium">
+          <p id="portalSubtitleText" class="text-xs sm:text-sm text-slate-500 font-medium">
             Local Government Unit • Public Information & Digital Services Gateway
           </p>
         </div>
       </div>
-
-      <!-- Officials banner: sits on the right of the header on wide screens, below it on phones and tablets -->
-      <div class="hdr-banner"><img class="hdr-photo" src="isabel-banner-wide.jpg" alt="Municipality of Isabel, Leyte officials" width="1600" height="592"></div>
 
       <!-- Live Search Box (hidden for now: delete the word "hidden" below to bring it back) -->
       <div class="hidden w-full md:w-80">
