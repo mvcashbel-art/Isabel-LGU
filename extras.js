@@ -22,14 +22,6 @@
   var STATUSES = ['NEW', 'SEEN', 'IN PROGRESS', 'DONE', 'SPAM'];
   var TEXT_SIZES = [100, 112, 125, 140];
 
-  // Shown when services.json cannot be read. Requirements are left empty on purpose: each office must confirm its own list.
-  var DEFAULT_SERVICES = [
-    { title: 'Business Permit (new and renewal)', office: 'Business Permit & Licensing Office (BPLO)', category: 'Permits & licenses', requirements: [] },
-    { title: 'Community Tax Certificate (Cedula)', office: "Municipal Treasurer's Office", category: 'Taxes & payments', requirements: [] },
-    { title: 'Birth, marriage and death certificates', office: 'Local Civil Registrar', category: 'Civil registry', requirements: [] },
-    { title: 'Real property tax and tax declaration', office: "Municipal Assessor's / Treasurer's Office", category: 'Taxes & payments', requirements: [] }
-  ];
-
   function $(id) { return document.getElementById(id); }
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
@@ -54,7 +46,6 @@
   qa.setAttribute('aria-label', 'Quick actions');
   qa.className = 'bg-white rounded-2xl p-2.5 sm:p-3 shadow-sm border border-slate-200/80 flex flex-wrap items-center gap-2';
   qa.innerHTML =
-    '<button type="button" id="qaServices" class="' + BTN + 'bg-blue-600 hover:bg-blue-700 text-white border-blue-700">📋 Services &amp; Requirements</button>' +
     '<button type="button" id="qaReport" class="' + BTN + 'bg-amber-500 hover:bg-amber-600 text-white border-amber-600">📝 Report a Concern</button>' +
     '<button type="button" id="qaReports" class="officer-only-btn hidden ' + BTN + 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700">📥 Reports</button>' +
     '<button type="button" id="qaInstall" class="hidden ' + BTN + 'bg-slate-800 hover:bg-slate-900 text-white border-slate-900">📲 Install App</button>' +
@@ -66,21 +57,10 @@
     '<div id="installHelp" class="hidden basis-full text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-2.5"></div>';
   header.parentNode.insertBefore(qa, header.nextSibling);
 
-  /* ================= 2. Services & Requirements ================= */
-  var svc = document.createElement('section');
-  svc.id = 'servicesInfo';
-  svc.className = 'hidden bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200/80 space-y-3';
-  svc.innerHTML =
-    '<div class="flex items-center justify-between gap-2">' +
-      '<h2 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider">📋 Services &amp; Requirements</h2>' +
-      '<button type="button" id="svcInfoClose" class="text-xs font-semibold text-slate-600 hover:text-slate-900 px-2 py-1 rounded-lg hover:bg-slate-100">Close ✕</button>' +
-    '</div>' +
-    '<input type="search" id="svcSearch" placeholder="Search a service, e.g. permit, cedula, certificate..." aria-label="Search services" class="' + INPUT + '">' +
-    '<div id="svcInfoList" class="space-y-2"></div>' +
-    '<p class="text-xs text-slate-600">Requirements and fees can change. If you are unsure, ask the office before you go.</p>';
-  qa.parentNode.insertBefore(svc, qa.nextSibling);
-
-  var services = null, servicesLoading = false;
+  /* ================= 2. Requirements inside each office pop-up ================= */
+  // services.json lists what to bring for each service. Each entry has an "office" that is the key of an
+  // office card (mayor, lcr, assessor, treasury, bfp, bjmp). It is shown inside that office's pop-up.
+  var services = null, servicesLoading = null, openKey = '';
 
   function safeLink(u) {
     u = String(u || '').trim();
@@ -92,12 +72,9 @@
   function serviceHtml(s) {
     var reqs = Array.isArray(s.requirements) ? s.requirements.filter(Boolean) : [];
     var link = safeLink(s.form);
-    var h = '<details class="group border border-slate-200 rounded-xl bg-white">' +
-      '<summary class="cursor-pointer list-none p-3 flex items-start justify-between gap-3">' +
-        '<span><span class="block text-sm font-bold text-slate-900">' + esc(s.title) + '</span>' +
-        '<span class="block text-xs text-slate-600 mt-0.5">' + esc(s.office || '') + '</span></span>' +
-        (s.category ? '<span class="shrink-0 bg-blue-100 text-blue-800 text-xs font-bold px-2 py-0.5 rounded-full">' + esc(s.category) + '</span>' : '') +
-      '</summary><div class="px-3 pb-3 text-sm text-slate-800 space-y-2 border-t border-slate-100 pt-2">';
+    var h = '<details class="border border-slate-200 rounded-xl bg-white">' +
+      '<summary class="cursor-pointer p-2.5 font-bold text-slate-900 text-xs sm:text-sm">' + esc(s.title) + '</summary>' +
+      '<div class="px-3 pb-3 text-xs sm:text-sm text-slate-800 space-y-2 border-t border-slate-100 pt-2">';
     if (reqs.length) {
       h += '<div><div class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">What to bring</div><ol class="list-decimal ml-5 space-y-0.5">' +
         reqs.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ol></div>';
@@ -111,37 +88,49 @@
     return h + '</div></details>';
   }
 
-  function renderServices() {
-    var q = ($('svcSearch').value || '').toLowerCase().trim();
-    var list = (services || DEFAULT_SERVICES).filter(function (s) {
-      if (!q) return true;
-      var hay = [s.title, s.office, s.category, s.note].concat(Array.isArray(s.requirements) ? s.requirements : []).join(' ').toLowerCase();
-      return hay.indexOf(q) >= 0;
-    });
-    $('svcInfoList').innerHTML = list.length ? list.map(serviceHtml).join('') :
-      '<p class="text-sm text-slate-600 p-2">Nothing matches your search. Try another word, or ask the office.</p>';
-  }
-
   function loadServices() {
-    if (services || servicesLoading) return;
-    servicesLoading = true;
-    fetch('services.json', { cache: 'no-cache' })
+    if (services) return Promise.resolve();
+    if (!/^https?:$/.test(location.protocol)) { services = []; return Promise.resolve(); } // opened from a file: nothing to fetch
+    if (servicesLoading) return servicesLoading;
+    servicesLoading = fetch('services.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error('http'); return r.json(); })
       .then(function (d) {
         var list = d && Array.isArray(d.services) ? d.services : null;
         if (list) services = list.filter(function (s) { return s && s.title; });
       })
       .catch(function () {})
-      .then(function () { servicesLoading = false; renderServices(); });
+      .then(function () { if (!services) services = []; servicesLoading = null; });
+    return servicesLoading;
   }
 
-  $('qaServices').addEventListener('click', function () {
-    var open = svc.classList.contains('hidden');
-    svc.classList.toggle('hidden', !open);
-    if (open) { loadServices(); renderServices(); svc.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-  });
-  $('svcInfoClose').addEventListener('click', function () { svc.classList.add('hidden'); });
-  $('svcSearch').addEventListener('input', renderServices);
+  var reqBox = document.createElement('div');
+  reqBox.id = 'modalOfficeReqs';
+  var ofUl = $('modalOfficeServices');
+  if (ofUl && $('officeModal')) {
+    ofUl.parentNode.parentNode.appendChild(reqBox);
+    $('officeModal').firstElementChild.classList.add('max-h-[90vh]', 'overflow-y-auto');
+  }
+
+  function showReqs() {
+    if (!openKey) return;
+    var list = (services || []).filter(function (s) { return s.office === openKey; });
+    var h = '<h4 class="font-bold text-slate-800 mb-1">📋 Requirements (what to bring):</h4>';
+    if (!services) h += '<p class="text-slate-600">Loading...</p>';
+    else if (!list.length) h += '<p class="text-slate-600">The list of requirements will be posted soon. Please ask the office directly.</p>';
+    else h += '<div class="space-y-1.5">' + list.map(serviceHtml).join('') + '</div>' +
+      '<p class="text-xs text-slate-600 mt-1.5">Requirements and fees can change. If you are unsure, ask the office before you go.</p>';
+    reqBox.innerHTML = h;
+  }
+
+  if (typeof window.openOfficeModal === 'function') {
+    var origOpenOffice = window.openOfficeModal;
+    window.openOfficeModal = function (key) {
+      origOpenOffice.apply(this, arguments);
+      openKey = key; showReqs();
+      if (!services) loadServices().then(function () { if (openKey === key) showReqs(); });
+    };
+  }
+  loadServices(); // fetch early so the service worker keeps a copy for offline use
 
   /* ================= 3a. Report a Concern (residents) ================= */
   var rm = document.createElement('div');
