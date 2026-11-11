@@ -755,6 +755,7 @@
 
     const DEFAULT_SERVICES = [
       { key: "mayor", category: "👑 EXECUTIVE", color: "blue", title: "Mayor's Office", subtitle: "Clearances & Appointments" },
+      { key: "bplo", category: "🏪 BUSINESS", color: "cyan", title: "Business Permits (BPLO)", subtitle: "Permits & Licensing" },
       { key: "lcr", category: "📑 CIVIL REGISTRY", color: "indigo", title: "Civil Registrar", subtitle: "Birth, Marriage, Death" },
       { key: "assessor", category: "📐 REAL PROPERTY", color: "amber", title: "Assessor's Office", subtitle: "Land Assessment & RPTD" },
       { key: "treasury", category: "💰 FINANCE", color: "emerald", title: "Treasury & Tax", subtitle: "Local Taxes & Receipts" },
@@ -867,7 +868,23 @@
       scheduleInfo = st.schedule || clone(DEFAULT_SCHEDULE);
       hotlinesList = Array.isArray(st.hotlines) && st.hotlines.length ? st.hotlines : clone(DEFAULT_HOTLINES);
       quickServicesList = Array.isArray(st.services) && st.services.length ? st.services : clone(DEFAULT_SERVICES);
+      quickServicesList = withNewDefaultCards(quickServicesList);
       defaultPosts = Array.isArray(res.posts) ? res.posts : [];
+    }
+
+    // Offices added to the page later (such as BPLO) also appear for sites that already saved their own list of cards.
+    function withNewDefaultCards(list) {
+      const out = list.slice();
+      DEFAULT_SERVICES.forEach((d, i) => {
+        if (out.some(s => s && s.key === d.key)) return;
+        let at = out.length;
+        for (let j = i - 1; j >= 0; j--) {
+          const k = out.findIndex(s => s && s.key === DEFAULT_SERVICES[j].key);
+          if (k >= 0) { at = k + 1; break; }
+        }
+        out.splice(at, 0, clone(d));
+      });
+      return out;
     }
 
     function applyState(res) {
@@ -1687,6 +1704,13 @@
         loc: "Executive Wing, 2nd Floor, Municipal Hall",
         phone: "",
         services: ["Mayor's Clearance & Recommendations", "Public Appointments & Consultations", "Executive Orders & Issuances", "Community Financial & Medical Assistance"]
+      },
+      bplo: {
+        title: "Business Permit & Licensing Office (BPLO)",
+        desc: "Processes new and renewal business permits and licenses for businesses operating in the Municipality of Isabel.",
+        loc: "Municipal Hall, Isabel, Leyte",
+        phone: "",
+        services: ["New Business Permit Application", "Business Permit Renewal", "Business Permit & Licensing Inquiries"]
       },
       lcr: {
         title: "Local Civil Registrar (LCR)",
